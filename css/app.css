@@ -1,0 +1,96 @@
+.onLoadAnimate {
+    animation: 0.5s ease-out 0s 1 initialScaleIn;
+}
+
+.onMouseoverAnimate {
+    cursor: pointer;
+    animation: 0.2s ease 0s 1 emphasizeScale;
+    animation-fill-mode: forwards;
+}
+
+.onMouseoutAnimate {
+    animation: 0.2s ease 0s 1 unemphasizeScale;
+    animation-fill-mode: forwards;
+}
+
+.onClickAnimate {
+    animation: 0.7s ease 0s 1 scaleOut;
+    animation-fill-mode: forwards;
+}
+
+.button-player {
+    position: absolute;
+    width: 6%;
+    height: 6%;
+    z-index: 1; 
+    opacity: 0.7;
+}
+
+#playVideo01 {
+    top: 40%;
+    left: 65%;
+}
+
+#playVideo02 {
+    top: 30%;
+    left: 20%;
+}
+
+.button-fullscreen {
+    width: 5%;
+    height: 5%;
+    bottom: 5.3%;
+    left: 0.5%;
+    position: absolute;
+    z-index: 1; 
+    transition: all 0.2s ease-in-out;
+    opacity: 0.6;
+    animation: 0.5s ease-out 0s 1 initialScaleIn;
+}
+
+.button-fullscreen:hover {
+    cursor: pointer;
+    z-index: 1; 
+    opacity: 1.0;
+    transform: scale(1.05) perspective(1px);
+}
+
+@keyframes initialScaleIn {
+    0% {
+        transform: scale(0.0) perspective(1px);
+        opacity: 0;
+    }
+    100% {
+      transform: scale(1.0) perspective(1px);
+      opacity: 0.7;
+    }
+  }
+
+  @keyframes scaleOut {
+    to {
+        opacity: 0.0;
+        transform: scale(0.0) perspective(0px);
+    }
+  }
+
+  @keyframes emphasizeScale {
+    0% {
+        transform: scale(1.0) perspective(0px);
+        opacity: 0.7;
+    }
+    100% {
+      transform: scale(1.1) perspective(1px);
+      opacity: 1.0;
+    }
+  }
+
+  @keyframes unemphasizeScale {
+    0% {
+        transform: scale(1.1) perspective(1px);
+        opacity: 1.0;
+    }
+    100% {
+      transform: scale(1.0) perspective(0px);
+      opacity: 0.7;
+    }
+  }
