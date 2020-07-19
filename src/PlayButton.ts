@@ -1,53 +1,6 @@
-class App {
-    private static instance: App;
+import { Player } from "./Exporter.js";
 
-    constructor() {
-        if (!App.instance) {
-            this.addGlobalEventListeners();
-            App.instance = this;
-        }
-        return App.instance;
-    }
-
-    private addGlobalEventListeners(): void {
-        const events: string[] = ["load", "click"];
-        events.map(e => { return window.addEventListener(e, this) });
-    }
-
-    // Called JS-internally by the added listeners!
-    public handleEvent(e: Event): void {
-        switch (e.type) {
-            case "click":
-                console.log('document click event called');
-                this.handleClick(e);
-                break;
-        }
-    }
-
-    private handleClick(e: Event): void {
-        let elem: HTMLElement;
-        if (e.target instanceof HTMLElement) {
-            elem = e.target;
-        } else {
-            return;
-        }
-        const isButton: boolean = elem.tagName.toLowerCase() == 'button';
-        const isForcedClickable: boolean = elem.classList.contains('clickable');
-        const isClickAllowed: boolean = isButton || isForcedClickable;
-        if (!isClickAllowed) return;
-
-        e.preventDefault();
-        switch (elem.id) {
-            case 'goFullscreen':
-                FULLSCREEN.toggle();
-                break;
-            default:
-                alert('Error! id \"' + elem.id + '\" is an unexpected switch case!')
-        }
-    }
-}
-
-class PlayButton {
+export class PlayButton {
     private readonly elemID: string;
     private readonly pathToVideo: string;
     private readonly buttonImageSource: string
@@ -76,7 +29,7 @@ class PlayButton {
     }
 
     private initDom(): void {
-        let elem: HTMLVideoElement = <HTMLVideoElement> this.getDomElem();
+        let elem: HTMLVideoElement = this.getDomElem() as HTMLVideoElement;
         elem.src = this.buttonImageSource;
     }
 
@@ -170,69 +123,3 @@ class PlayButton {
         elem?.removeEventListener("animationend", this.animationEndMethod);
     }
 }
-
-class Player {
-    video: HTMLVideoElement;
-    homeScreenPosterFake: HTMLVideoElement;
-
-    constructor() {
-        this.video = <HTMLVideoElement> document.getElementById("mainVideoTarget");
-        this.homeScreenPosterFake = <HTMLVideoElement> document.getElementById("homeScreenPosterFake");
-    }
-
-    public start(pathToSource: string): void {
-        PLAYBUTTON_01.animateOnClick();
-        PLAYBUTTON_02.animateOnClick();
-        this.video.src = pathToSource;
-        this.homeScreenPosterFake.classList.remove("visible");
-        this.video.classList.remove("invisible");
-        this.video.play();
-    }
-}
-
-class Fullscreen {
-    private static instance: Fullscreen;
-
-    constructor() {
-        if (!Fullscreen.instance) {
-            Fullscreen.instance = this;
-        }
-        return Fullscreen.instance;
-    }
-
-    public toggle(): void {
-        let fullscreenElem = document.fullscreenElement;
-
-        if (fullscreenElem) {
-            this.exit();
-        } else {
-            this.enter();
-        }
-    }
-
-    private enter(): void {
-        // Source: https://davidwalsh.name/fullscreen
-        let target = document.getElementById('interactiveContainer');
-        if (target === null) {
-            const err = new Error("Could not get DOM element by ID 'interactiveContainer'.");
-            alert(err.message);
-            console.error(err.message);
-            throw err;
-        }
-
-        if (target.requestFullscreen) {
-            target.requestFullscreen();
-        }
-    }
-
-    private exit(): void {
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-        }
-    }
-}
-
-const APP = new App();
-const FULLSCREEN = new Fullscreen();
-const PLAYBUTTON_01 = new PlayButton("playVideo01", "../assets/animation-01.mp4");
-const PLAYBUTTON_02 = new PlayButton("playVideo02", "../assets/animation-01.mp4");
