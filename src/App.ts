@@ -1,14 +1,19 @@
-import { Fullscreen, PlayButton } from "./Exporter.js";
+import { FullscreenButton, PlayButton } from "./Exporter.js";
 
 export class App {
-    private static instance: App;
+    private static Singleton: App;
 
-    constructor() {
-        if (!App.instance) {
-            this.addGlobalEventListeners();
-            App.instance = this;
+    private constructor() {}
+
+    public static get instance(): App {
+        if (!App.Singleton) {
+            App.Singleton = new App();
         }
-        return App.instance;
+        return App.Singleton;
+    }
+
+    public start() {
+        this.addGlobalEventListeners();
     }
 
     private addGlobalEventListeners(): void {
@@ -41,7 +46,7 @@ export class App {
         e.preventDefault();
         switch (elem.id) {
             case 'goFullscreen':
-                FULLSCREEN.toggle();
+                FULLSCREENBUTTON.toggle();
                 break;
             default:
                 alert('Error! id \"' + elem.id + '\" is an unexpected switch case!')
@@ -50,7 +55,7 @@ export class App {
 }
 
 // Bootstrap application
-export const APP = new App();
-export const FULLSCREEN = new Fullscreen();
+App.instance.start();
+export const FULLSCREENBUTTON = new FullscreenButton();
 export const PLAYBUTTON_01 = new PlayButton("playVideo01", "../assets/animation-01.mp4");
 export const PLAYBUTTON_02 = new PlayButton("playVideo02", "../assets/animation-01.mp4");

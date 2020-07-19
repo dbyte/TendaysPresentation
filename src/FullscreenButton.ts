@@ -1,11 +1,11 @@
-export class Fullscreen {
-    private static instance: Fullscreen;
+export class FullscreenButton {
+    private static instance: FullscreenButton;
 
     constructor() {
-        if (!Fullscreen.instance) {
-            Fullscreen.instance = this;
+        if (!FullscreenButton.instance) {
+            FullscreenButton.instance = this;
         }
-        return Fullscreen.instance;
+        return FullscreenButton.instance;
     }
 
     public toggle(): void {
