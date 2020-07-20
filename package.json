@@ -12,10 +12,7 @@
   },
   "author": "dbyte-solutions",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/dbyte/Tendays_PresentationProject/issues"
-  },
-  "homepage": "https://github.com/dbyte/Tendays_PresentationProject#readme",
+  "homepage": "",
   "devDependencies": {
     "ts-polyfill": "^3.8.2"
   }
