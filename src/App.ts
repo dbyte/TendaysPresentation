@@ -1,4 +1,6 @@
-import "./Polyfills.js";
+// Load polyfills first
+import "../../node_modules/ts-polyfill/lib/es2017-object";
+
 import { FullscreenButton, PlayButton } from "./Exporter.js";
 
 export class App {
