@@ -1,3 +1,4 @@
+import "./Polyfills.js";
 import { FullscreenButton, PlayButton } from "./Exporter.js";
 
 export class App {
@@ -18,7 +19,7 @@ export class App {
 
     private addGlobalEventListeners(): void {
         const events: string[] = ["load", "click"];
-        events.map(e => { return window.addEventListener(e, this) });
+        events.map(e => { window.addEventListener(e, this) });
     }
 
     // Called JS-internally by the added listeners!

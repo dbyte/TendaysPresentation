@@ -24,11 +24,7 @@ export class CssAnimation {
 
     private enumValuesToStringArray(theEnum: typeof CssAnimationEvent): string[] {
         var stringValues: string[] = [];
-        // This is a polyfill for Pre-ES7 clients. We don't have Object.values in pre-ES7.
-        for (let key of Object.keys(theEnum)) {
-            // @ts-ignore
-            stringValues.push(theEnum[key]);
-        }
+        stringValues = Object.values(CssAnimationEvent);
         return stringValues;
     }
 }

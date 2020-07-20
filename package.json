@@ -1,0 +1,22 @@
+{
+  "name": "tendays_presentation",
+  "version": "1.0.0",
+  "description": "Does interactive video presentations",
+  "main": "App.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dbyte/Tendays_PresentationProject.git"
+  },
+  "author": "dbyte-solutions",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dbyte/Tendays_PresentationProject/issues"
+  },
+  "homepage": "https://github.com/dbyte/Tendays_PresentationProject#readme",
+  "devDependencies": {
+    "ts-polyfill": "^3.8.2"
+  }
+}

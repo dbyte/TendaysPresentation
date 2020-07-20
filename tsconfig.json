@@ -13,5 +13,5 @@
         "noUnusedLocals": true
     },
     "include": ["./src"],
-    "exclude": ["./out/js"]
+    "exclude": ["./out/js", "./node_modules"]
 }
