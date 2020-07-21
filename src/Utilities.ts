@@ -18,13 +18,7 @@ export class CssAnimation {
     }
 
     public removeAll(): void {
-        const animationsToRemove: string[] = this.enumValuesToStringArray(CssAnimationEvent);
+        const animationsToRemove: string[] = Object.values(CssAnimationEvent);;
         this.element.classList.remove(...animationsToRemove);
-    }
-
-    private enumValuesToStringArray(theEnum: typeof CssAnimationEvent): string[] {
-        var stringValues: string[] = [];
-        stringValues = Object.values(CssAnimationEvent);
-        return stringValues;
     }
 }
