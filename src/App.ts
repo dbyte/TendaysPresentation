@@ -1,10 +1,11 @@
 // Load polyfills first
 import "../../node_modules/ts-polyfill/lib/es2017-object";
 
-import { FullscreenButton, PlayButton } from "./Exporter.js";
+import { PlayerController } from "./Exporter.js";
 
 export class App {
     private static Singleton: App;
+    private playerController?: PlayerController;
 
     private constructor() {}
 
@@ -15,8 +16,13 @@ export class App {
         return App.Singleton;
     }
 
+    public get controller(): PlayerController | undefined {
+        return this.playerController;
+    }
+
     public start() {
         this.addGlobalEventListeners();
+        this.playerController = new PlayerController();
     }
 
     private addGlobalEventListeners(): void {
@@ -49,7 +55,7 @@ export class App {
         e.preventDefault();
         switch (elem.id) {
             case 'goFullscreen':
-                FULLSCREENBUTTON.toggle();
+                this.controller?.fullscreenButton.toggle();
                 break;
             default:
                 alert('Error! id \"' + elem.id + '\" is an unexpected switch case!')
@@ -59,6 +65,3 @@ export class App {
 
 // Bootstrap application
 App.instance.start();
-export const FULLSCREENBUTTON = new FullscreenButton();
-export const PLAYBUTTON_01 = new PlayButton("playVideo01", "../assets/animation-01.mp4");
-export const PLAYBUTTON_02 = new PlayButton("playVideo02", "../assets/animation-01.mp4");

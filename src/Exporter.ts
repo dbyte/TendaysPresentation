@@ -6,4 +6,4 @@ export * from "./App.js";
 export * from "./Utilities.js";
 export * from "./PlayButton.js";
 export * from "./FullscreenButton.js";
-export * from "./Player.js";
+export * from "./PlayerController.js";
