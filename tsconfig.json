@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "watch": true,
         "target": "ES6",
         "module": "CommonJS",
         "lib": ["ES6", "DOM", "ES2017.object"],
@@ -8,7 +9,7 @@
         "outDir": "./out/js",
         "removeComments": true,
         "sourceMap": true,
-        
+
         "strict": true,
         "forceConsistentCasingInFileNames": true,
         "noImplicitReturns": true,
