@@ -5,7 +5,6 @@ export class PlayButton {
     private readonly pathToVideo: string;
     private readonly buttonImageSource: string;
     private cssAnimation: CssAnimation;
-    //private readonly player: PlayerController;
     private animationEndMethod?: any;
 
     constructor(elemID: string, pathToVideo: string) {
@@ -13,7 +12,6 @@ export class PlayButton {
         this.pathToVideo = pathToVideo;
         this.buttonImageSource = "assets/play-button-grey.svg";
         this.cssAnimation = new CssAnimation(this.getDomElem());
-        //this.player = new PlayerController();
         this.animationEndMethod = undefined;
 
         this.initView();
@@ -57,7 +55,6 @@ export class PlayButton {
             case "click":
                 console.log('click event called');
                 App.instance.controller?.start(this.pathToVideo);
-                //this.player.start(this.pathToVideo);
                 break;
             case "mouseover":
                 this.animateOnMouseover();

@@ -21,8 +21,7 @@ export class PlayerController {
 
     public start(pathToSource: string): void {
         this.playButtons.forEach(button => { button.animateOnClick() })
-        //PLAYBUTTON_01.animateOnClick();
-        //PLAYBUTTON_02.animateOnClick();
+
         this.video.src = pathToSource;
         this.homeScreenPosterFake.classList.remove("visible");
         this.video.classList.remove("invisible");
