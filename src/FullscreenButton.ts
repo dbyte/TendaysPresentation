@@ -8,11 +8,10 @@ export class FullscreenButton {
         this.elem = document.getElementById(this.elemID) as HTMLVideoElement;
         this.buttonImageSource = "assets/fullscreen-button.svg";
 
-        this.initView();
         this.addEventListeners();
     }
 
-    private initView(): void {
+    public initView(): void {
         this.elem.src = this.buttonImageSource;
         this.elem.classList.add("button-fullscreen");
     }

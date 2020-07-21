@@ -16,11 +16,10 @@ export class PlayButton {
         this.cssAnimation = new CssAnimation(this.elem);
         this.animationEndMethod = undefined;
 
-        this.initView();
         this.addEventListeners();
     }
 
-    private initView(): void {
+    public initView(): void {
         this.elem.src = this.buttonImageSource;
         this.elem.classList.add("button-player");
     }
@@ -43,7 +42,7 @@ export class PlayButton {
                 break;
             case "click":
                 console.log('click event called');
-                App.instance.controller?.start(this.pathToVideo);
+                App.instance.controller?.startVideo(this.pathToVideo);
                 break;
             case "mouseover":
                 this.animateOnMouseover();
