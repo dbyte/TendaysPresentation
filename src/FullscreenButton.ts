@@ -1,9 +1,11 @@
 export class FullscreenButton {
     private readonly elemID: string;
+    private readonly elem: HTMLVideoElement;
     private readonly buttonImageSource: string;
 
     constructor() {
         this.elemID = "goFullscreen";
+        this.elem = document.getElementById(this.elemID) as HTMLVideoElement;
         this.buttonImageSource = "assets/fullscreen-button.svg";
 
         this.initView();
@@ -11,26 +13,13 @@ export class FullscreenButton {
     }
 
     private initView(): void {
-        let elem: HTMLVideoElement = this.getDomElem() as HTMLVideoElement;
-        elem.src = this.buttonImageSource;
-        elem.classList.add("button-fullscreen");
-    }
-
-    private getDomElem(): HTMLElement | never {
-        const elem = document.getElementById(this.elemID);
-        if (elem != null) {
-            return elem;
-        } else {
-            const err = new Error("Could not get DOM element by ID.");
-            alert(err.message);
-            console.error(err.message);
-            throw err;
-        }
+        this.elem.src = this.buttonImageSource;
+        this.elem.classList.add("button-fullscreen");
     }
 
     private addEventListeners(): void {
         const events = ["click"];
-        events.map(e => { this.getDomElem().addEventListener(e, this) });
+        events.map(e => { this.elem.addEventListener(e, this) });
     }
 
     // Called JS-internally by the added listeners!
