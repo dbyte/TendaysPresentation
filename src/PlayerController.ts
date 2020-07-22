@@ -30,8 +30,8 @@ export class PlayerController {
         return getElementsOfObjects(overlays);
     }
 
-    public startVideo(pathToSource: string): void {
-        this.switchVideoSource(pathToSource);
+    public startVideo(relativePathToSource: string): void {
+        this.switchVideoSource(relativePathToSource);
         this.playButtons.forEach(btn => { btn.animateOnClick(); });
         this.video.play();
     }
@@ -43,7 +43,6 @@ export class PlayerController {
         flicker when user wants to play same video as previous time) */
         if (this.video.src !== absolutePathToNewSource) {
             this.video.src = relativePathToNewSource;
-            console.log("Video path switched to " + this.video.src);
         }
     }
 }
