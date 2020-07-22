@@ -8,4 +8,5 @@ export * from "./OverlayHandler";
 export * from "./Button";
 export * from "./PlayButton";
 export * from "./FullscreenButton";
+export * from "./HomeButton";
 export * from "./PlayerController";

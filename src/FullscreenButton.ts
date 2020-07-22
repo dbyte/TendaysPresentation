@@ -7,9 +7,9 @@ export class FullscreenButton extends Button {
     }
 
     public initView(): void {
-        const videoElem = this.elem as HTMLVideoElement;
-        videoElem.src = this.buttonImageSource;
-        this.elem.classList.add("button-fullscreen");
+        const imageElem = this.elem as HTMLImageElement;
+        imageElem.src = this.buttonImageSource;
+        this.elem.classList.add("player-navigation");
 
         /* Overlay elements should have the 'hidden' selector in their HTML
         as they may have wrong positions/sizes when entering the page.
