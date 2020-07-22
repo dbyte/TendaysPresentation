@@ -1,11 +1,8 @@
 import { Button, App } from "./Exporter";
 
 export class HomeButton extends Button {
-    private readonly pathToVideo: string;
-
-    constructor(pathToVideo: string) {
+    constructor() {
         super("goHome", "assets/reload-button.svg");
-        this.pathToVideo = pathToVideo;
     }
 
     public initView(): void {
@@ -30,7 +27,7 @@ export class HomeButton extends Button {
         switch (e.type) {
             case "click":
                 console.log('click event called');
-                App.instance.controller?.startVideo(this.pathToVideo);
+                App.instance.controller?.goHome();
                 break;
         }
     }

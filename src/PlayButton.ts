@@ -24,12 +24,12 @@ export class PlayButton extends Button {
         this.elem.hidden = false;
     }
 
-    protected addEventListeners(): void {
+    public addEventListeners(): void {
         const events = ["load", "click", "mouseover", "mouseout"];
         events.map(e => { this.elem.addEventListener(e, this) });
     }
 
-    private removeEventListeners(): void {
+    public removeEventListeners(): void {
         const events = ["load", "click", "mouseover", "mouseout"];
         events.map(e => { this.elem.removeEventListener(e, this) });
     }
@@ -91,7 +91,7 @@ export class PlayButton extends Button {
     }
     private onClickAnimationEnd(e: Event): void {
         console.log('onClickAnimationEnd called');
-        this.elem.classList.add('invisible');
+        this.elem.hidden = true;
         this.elem.removeEventListener("animationend", this.animationEndMethod);
     }
 }

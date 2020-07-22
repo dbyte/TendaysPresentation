@@ -1,20 +1,20 @@
 import { PlayButton, FullscreenButton, HomeButton, OverlayHandler, HasHtmlElement, getElementsOfObjects } from "./Exporter";
 
 export class PlayerController {
+    private readonly video: HTMLVideoElement;
     private readonly playButtons: PlayButton[];
     private readonly fullscreenButton: FullscreenButton;
     private readonly homeButton: HomeButton;
-    private readonly video: HTMLVideoElement;
     private readonly overlayHandler: OverlayHandler;
 
     constructor() {
-        this.playButtons = [];
         this.video = document.getElementById("mainVideoTarget") as HTMLVideoElement;
+        this.playButtons = [];
         this.playButtons.push(new PlayButton("playVideo01", "../assets/animation-01.mp4"));
         this.playButtons.push(new PlayButton("playVideo02", "../assets/animation-02.mp4"));
         this.playButtons.push(new PlayButton("playVideo03", "../assets/animation-03.mp4"));
         this.fullscreenButton = new FullscreenButton();
-        this.homeButton = new HomeButton(this.video.src);
+        this.homeButton = new HomeButton();
 
         this.overlayHandler = new OverlayHandler(this.getAllOverlayElements());
     }
@@ -38,6 +38,21 @@ export class PlayerController {
         this.switchVideoSource(relativePathToSource);
         this.playButtons.forEach(btn => { btn.animateOnClick(); });
         this.video.play();
+    }
+
+    public goHome() {
+        this.video.pause();
+        this.video.currentTime = 0;
+
+        // ----> TODO encapsulate this block.
+        // TODO switch button events on/off in THIS class, not in the Button itself
+        this.playButtons.forEach(button => { button.removeEventListeners() });
+        this.playButtons.forEach(button => { button.addEventListeners() });
+
+        this.playButtons.forEach(button => { button.initView() });
+        this.fullscreenButton.initView();
+        this.homeButton.initView();
+        // <----
     }
 
     private switchVideoSource(relativePathToNewSource: string): void {
