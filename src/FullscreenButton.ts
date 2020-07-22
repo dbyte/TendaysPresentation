@@ -1,6 +1,8 @@
-export class FullscreenButton {
+import { HasHtmlElement } from "./Exporter";
+
+export class FullscreenButton implements HasHtmlElement {
     private readonly elemID: string;
-    private readonly elem: HTMLVideoElement;
+    public readonly elem: HTMLVideoElement;
     private readonly buttonImageSource: string;
 
     constructor() {
@@ -14,6 +16,12 @@ export class FullscreenButton {
     public initView(): void {
         this.elem.src = this.buttonImageSource;
         this.elem.classList.add("button-fullscreen");
+
+        /* Overlay elements should have the 'hidden' selector in their HTML
+        as they may have wrong positions/sizes when entering the page.
+        As soon as the page got loaded and we've rearranged things, we can
+        switch them on. */
+        this.elem.hidden = false;
     }
 
     private addEventListeners(): void {
@@ -32,9 +40,12 @@ export class FullscreenButton {
     }
 
     public toggle(): void {
-        let fullscreenElem = document.fullscreenElement;
+        const isInFullScreen = (document.fullscreenElement && document.fullscreenElement !== null) ||
+        (document.webkitFullscreenElement && document.webkitFullscreenElement !== null) ||
+        (document.mozFullScreenElement && document.mozFullScreenElement !== null) ||
+        (document.msFullscreenElement && document.msFullscreenElement !== null);
 
-        if (fullscreenElem) {
+        if (isInFullScreen) {
             this.exit();
         } else {
             this.enter();
@@ -53,12 +64,44 @@ export class FullscreenButton {
 
         if (target.requestFullscreen) {
             target.requestFullscreen();
+        } else if (target.mozRequestFullscreen) { /* Firefox */
+            target.mozRequestFullscreen();
+        } else if (target.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+            target.webkitRequestFullscreen();
+        } else if (target.msRequestFullscreen) { /* IE/Edge */
+            target.msRequestFullscreen();
         }
     }
 
     private exit(): void {
         if (document.exitFullscreen) {
             document.exitFullscreen();
+        } else if (document.mozCancelFullScreen) { /* Firefox */
+            document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { /* IE/Edge */
+            document.msExitFullscreen();
         }
     }
 }
+
+/* Missing typescript interfaces for fullscreen mode. This is for
+typescript only (compiler would complain without that) and has 
+no impact for distributed code. */
+declare global {
+    interface Document {
+      mozCancelFullScreen?: () => Promise<void>;
+      msExitFullscreen?: () => Promise<void>;
+      webkitExitFullscreen?: () => Promise<void>;
+      mozFullScreenElement?: Element;
+      msFullscreenElement?: Element;
+      webkitFullscreenElement?: Element;
+    }
+  
+    interface HTMLElement {
+      msRequestFullscreen?: () => Promise<void>;
+      mozRequestFullscreen?: () => Promise<void>;
+      webkitRequestFullscreen?: () => Promise<void>;
+    }
+  }

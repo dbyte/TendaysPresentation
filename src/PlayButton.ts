@@ -1,8 +1,8 @@
-import { CssAnimation, CssAnimationEvent, App } from "./Exporter.js";
+import { CssAnimation, CssAnimationEvent, HasHtmlElement, App } from "./Exporter.js";
 
-export class PlayButton {
+export class PlayButton implements HasHtmlElement {
     private readonly elemID: string;
-    private readonly elem: HTMLVideoElement;
+    public readonly elem: HTMLVideoElement;
     private readonly pathToVideo: string;
     private readonly buttonImageSource: string;
     private cssAnimation: CssAnimation;
@@ -22,6 +22,12 @@ export class PlayButton {
     public initView(): void {
         this.elem.src = this.buttonImageSource;
         this.elem.classList.add("button-player");
+
+        /* Overlay elements should have the 'hidden' selector in their HTML
+        as they may have wrong positions/sizes when entering the page.
+        As soon as the page got loaded and we've rearranged things, we can
+        switch them on. */
+        this.elem.hidden = false;
     }
 
     private addEventListeners(): void {

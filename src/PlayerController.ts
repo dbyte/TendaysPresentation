@@ -1,10 +1,11 @@
-import { PlayButton, FullscreenButton } from "./Exporter.js";
+import { PlayButton, FullscreenButton, OverlayHandler, HasHtmlElement, getElementsOfObjects } from "./Exporter.js";
 
 export class PlayerController {
-    private playButtons: PlayButton[];
-    private fullscreenButton: FullscreenButton;
-    private video: HTMLVideoElement;
-    private homeScreenPosterFake: HTMLVideoElement;
+    private readonly playButtons: PlayButton[];
+    private readonly fullscreenButton: FullscreenButton;
+    private readonly video: HTMLVideoElement;
+    private readonly homeScreenPosterFake: HTMLVideoElement;
+    private readonly overlayHandler: OverlayHandler;
 
     constructor() {
         this.playButtons = [];
@@ -14,20 +15,30 @@ export class PlayerController {
         this.video = document.getElementById("mainVideoTarget") as HTMLVideoElement;
         this.homeScreenPosterFake = document.getElementById("homeScreenPosterFake") as HTMLVideoElement;
 
+        this.overlayHandler = new OverlayHandler(this.getAllOverlayElements());
         this.initView();
     }
 
-    private initView() {
-        this.playButtons.forEach(button => { button.initView() })
+    private getAllOverlayElements(): HTMLElement[] {
+        let overlays: HasHtmlElement[] = [...this.playButtons]; // we need a value copy of playButtons
+        overlays.push(this.fullscreenButton);
+        return getElementsOfObjects(overlays);
+    }
+
+    private initView(): void {
+        this.playButtons.forEach(button => { button.initView() });
         this.fullscreenButton.initView();
+        this.overlayHandler.repositionOnVideo(this.video);
+        
+        window.addEventListener("resize", () => { this.overlayHandler.repositionOnVideo(this.video) });
     }
 
     public startVideo(pathToSource: string): void {
-        this.playButtons.forEach(button => { button.animateOnClick() })
+        this.playButtons.forEach(btn => { btn.animateOnClick(); });
 
         this.video.src = pathToSource;
-        this.homeScreenPosterFake.classList.remove("visible");
-        this.video.classList.remove("invisible");
+        this.homeScreenPosterFake.hidden = true;
+        this.video.hidden = false;
         this.video.play();
     }
 }
