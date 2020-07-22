@@ -9,7 +9,8 @@ export class PlayerController {
     constructor() {
         this.playButtons = [];
         this.playButtons.push(new PlayButton("playVideo01", "../assets/animation-01.mp4"));
-        this.playButtons.push(new PlayButton("playVideo02", "../assets/animation-01.mp4"));
+        this.playButtons.push(new PlayButton("playVideo02", "../assets/animation-02.mp4"));
+        this.playButtons.push(new PlayButton("playVideo03", "../assets/animation-03.mp4"));
         this.fullscreenButton = new FullscreenButton();
         this.video = document.getElementById("mainVideoTarget") as HTMLVideoElement;
 
