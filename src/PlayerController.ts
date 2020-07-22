@@ -39,8 +39,8 @@ export class PlayerController {
     private switchVideoSource(relativePathToNewSource: string): void {
         const absolutePathToNewSource = new URL(relativePathToNewSource, document.baseURI).href;
 
-        /* Only switch source if not yet set (will reduce flicker on
-        switch when same video is selected again) */
+        /* Only switch source if not yet set (which will reduce
+        flicker when user wants to play same video as previous time) */
         if (this.video.src !== absolutePathToNewSource) {
             this.video.src = relativePathToNewSource;
             console.log("Video path switched to " + this.video.src);
