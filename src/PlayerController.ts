@@ -1,4 +1,4 @@
-import { PlayButton, FullscreenButton, OverlayHandler, HasHtmlElement, getElementsOfObjects } from "./Exporter.js";
+import { PlayButton, FullscreenButton, OverlayHandler, HasHtmlElement, getElementsOfObjects } from "./Exporter";
 
 export class PlayerController {
     private readonly playButtons: PlayButton[];

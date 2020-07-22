@@ -1,4 +1,4 @@
-import { CssAnimation, CssAnimationEvent, HasHtmlElement, App } from "./Exporter.js";
+import { CssAnimation, CssAnimationEvent, HasHtmlElement, App } from "./Exporter";
 
 export class PlayButton implements HasHtmlElement {
     private readonly elemID: string;

@@ -1,7 +1,7 @@
 // Load polyfills first
-import "../../node_modules/ts-polyfill/lib/es2017-object";
+import "ts-polyfill/lib/es2017-object";
 
-import { PlayerController } from "./Exporter.js";
+import { PlayerController } from "./Exporter";
 
 export class App {
     private static Singleton: App;
