@@ -22,6 +22,7 @@ export class App {
 
     public start() {
         this.playerController = new PlayerController();
+        this.playerController.initView();
     }
 }
 

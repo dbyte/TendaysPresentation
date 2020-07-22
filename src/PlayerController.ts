@@ -4,7 +4,6 @@ export class PlayerController {
     private readonly playButtons: PlayButton[];
     private readonly fullscreenButton: FullscreenButton;
     private readonly video: HTMLVideoElement;
-    private readonly homeScreenPosterFake: HTMLVideoElement;
     private readonly overlayHandler: OverlayHandler;
 
     constructor() {
@@ -13,10 +12,16 @@ export class PlayerController {
         this.playButtons.push(new PlayButton("playVideo02", "../assets/animation-01.mp4"));
         this.fullscreenButton = new FullscreenButton();
         this.video = document.getElementById("mainVideoTarget") as HTMLVideoElement;
-        this.homeScreenPosterFake = document.getElementById("homeScreenPosterFake") as HTMLVideoElement;
 
         this.overlayHandler = new OverlayHandler(this.getAllOverlayElements());
-        this.initView();
+    }
+
+    public initView(): void {
+        this.playButtons.forEach(button => { button.initView() });
+        this.fullscreenButton.initView();
+        this.overlayHandler.repositionOnVideo(this.video);
+
+        window.addEventListener("resize", () => { this.overlayHandler.repositionOnVideo(this.video) });
     }
 
     private getAllOverlayElements(): HTMLElement[] {
@@ -25,20 +30,20 @@ export class PlayerController {
         return getElementsOfObjects(overlays);
     }
 
-    private initView(): void {
-        this.playButtons.forEach(button => { button.initView() });
-        this.fullscreenButton.initView();
-        this.overlayHandler.repositionOnVideo(this.video);
-        
-        window.addEventListener("resize", () => { this.overlayHandler.repositionOnVideo(this.video) });
+    public startVideo(pathToSource: string): void {
+        this.switchVideoSource(pathToSource);
+        this.playButtons.forEach(btn => { btn.animateOnClick(); });
+        this.video.play();
     }
 
-    public startVideo(pathToSource: string): void {
-        this.playButtons.forEach(btn => { btn.animateOnClick(); });
+    private switchVideoSource(relativePathToNewSource: string): void {
+        const absolutePathToNewSource = new URL(relativePathToNewSource, document.baseURI).href;
 
-        this.video.src = pathToSource;
-        this.homeScreenPosterFake.hidden = true;
-        this.video.hidden = false;
-        this.video.play();
+        /* Only switch source if not yet set (will reduce flicker on
+        switch when same video is selected again) */
+        if (this.video.src !== absolutePathToNewSource) {
+            this.video.src = relativePathToNewSource;
+            console.log("Video path switched to " + this.video.src);
+        }
     }
 }
