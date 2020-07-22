@@ -1,26 +1,20 @@
-import { CssAnimation, CssAnimationEvent, HasHtmlElement, App } from "./Exporter";
+import { Button, CssAnimation, CssAnimationEvent, App } from "./Exporter";
 
-export class PlayButton implements HasHtmlElement {
-    private readonly elemID: string;
-    public readonly elem: HTMLVideoElement;
+export class PlayButton extends Button {
     private readonly pathToVideo: string;
-    private readonly buttonImageSource: string;
     private cssAnimation: CssAnimation;
     private animationEndMethod?: any;
 
     constructor(elemID: string, pathToVideo: string) {
-        this.elemID = elemID;
-        this.elem = document.getElementById(this.elemID) as HTMLVideoElement;
+        super(elemID, "assets/play-button-grey.svg");
         this.pathToVideo = pathToVideo;
-        this.buttonImageSource = "assets/play-button-grey.svg";
         this.cssAnimation = new CssAnimation(this.elem);
         this.animationEndMethod = undefined;
-
-        this.addEventListeners();
     }
 
     public initView(): void {
-        this.elem.src = this.buttonImageSource;
+        const videoElem = this.elem as HTMLVideoElement;
+        videoElem.src = this.buttonImageSource;
         this.elem.classList.add("button-player");
 
         /* Overlay elements should have the 'hidden' selector in their HTML
@@ -30,7 +24,7 @@ export class PlayButton implements HasHtmlElement {
         this.elem.hidden = false;
     }
 
-    private addEventListeners(): void {
+    protected addEventListeners(): void {
         const events = ["load", "click", "mouseover", "mouseout"];
         events.map(e => { this.elem.addEventListener(e, this) });
     }

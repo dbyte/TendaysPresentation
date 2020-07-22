@@ -1,20 +1,14 @@
-import { HasHtmlElement } from "./Exporter";
+import { Button } from "./Exporter";
 
-export class FullscreenButton implements HasHtmlElement {
-    private readonly elemID: string;
-    public readonly elem: HTMLVideoElement;
-    private readonly buttonImageSource: string;
+export class FullscreenButton extends Button {
 
     constructor() {
-        this.elemID = "goFullscreen";
-        this.elem = document.getElementById(this.elemID) as HTMLVideoElement;
-        this.buttonImageSource = "assets/fullscreen-button.svg";
-
-        this.addEventListeners();
+        super("goFullscreen", "assets/fullscreen-button.svg");
     }
 
     public initView(): void {
-        this.elem.src = this.buttonImageSource;
+        const videoElem = this.elem as HTMLVideoElement;
+        videoElem.src = this.buttonImageSource;
         this.elem.classList.add("button-fullscreen");
 
         /* Overlay elements should have the 'hidden' selector in their HTML
@@ -24,7 +18,7 @@ export class FullscreenButton implements HasHtmlElement {
         this.elem.hidden = false;
     }
 
-    private addEventListeners(): void {
+    protected addEventListeners(): void {
         const events = ["click"];
         events.map(e => { this.elem.addEventListener(e, this) });
     }
@@ -41,9 +35,9 @@ export class FullscreenButton implements HasHtmlElement {
 
     public toggle(): void {
         const isInFullScreen = (document.fullscreenElement && document.fullscreenElement !== null) ||
-        (document.webkitFullscreenElement && document.webkitFullscreenElement !== null) ||
-        (document.mozFullScreenElement && document.mozFullScreenElement !== null) ||
-        (document.msFullscreenElement && document.msFullscreenElement !== null);
+            (document.webkitFullscreenElement && document.webkitFullscreenElement !== null) ||
+            (document.mozFullScreenElement && document.mozFullScreenElement !== null) ||
+            (document.msFullscreenElement && document.msFullscreenElement !== null);
 
         if (isInFullScreen) {
             this.exit();
@@ -91,17 +85,17 @@ typescript only (compiler would complain without that) and has
 no impact for distributed code. */
 declare global {
     interface Document {
-      mozCancelFullScreen?: () => Promise<void>;
-      msExitFullscreen?: () => Promise<void>;
-      webkitExitFullscreen?: () => Promise<void>;
-      mozFullScreenElement?: Element;
-      msFullscreenElement?: Element;
-      webkitFullscreenElement?: Element;
+        mozCancelFullScreen?: () => Promise<void>;
+        msExitFullscreen?: () => Promise<void>;
+        webkitExitFullscreen?: () => Promise<void>;
+        mozFullScreenElement?: Element;
+        msFullscreenElement?: Element;
+        webkitFullscreenElement?: Element;
     }
-  
+
     interface HTMLElement {
-      msRequestFullscreen?: () => Promise<void>;
-      mozRequestFullscreen?: () => Promise<void>;
-      webkitRequestFullscreen?: () => Promise<void>;
+        msRequestFullscreen?: () => Promise<void>;
+        mozRequestFullscreen?: () => Promise<void>;
+        webkitRequestFullscreen?: () => Promise<void>;
     }
-  }
+}
