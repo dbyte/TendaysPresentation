@@ -22,7 +22,9 @@ export class App {
 
     public start() {
         this.playerController = new PlayerController();
-        this.playerController.initView();
+        window.onload = (() => { 
+            this.playerController?.initView() });
+            console.log("PlayerController View initialized.")
     }
 }
 
