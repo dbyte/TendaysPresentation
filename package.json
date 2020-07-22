@@ -5,8 +5,8 @@
   "main": "App.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-debug": "browserify src/App.ts --debug -p [ tsify --noImplicitAny ] > out/js/bundle.js",
-    "build-production": "browserify src/App.ts -p [ tsify --noImplicitAny ] > out/js/bundle.js"
+    "build-debug": "browserify src/App.ts --debug -p [ tsify ] > out/js/bundle.js",
+    "build-production": "browserify src/App.ts -p [ tsify ] > out/js/bundle.js"
   },
   "repository": {
     "type": "git",
