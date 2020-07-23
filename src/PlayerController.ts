@@ -44,15 +44,9 @@ export class PlayerController {
         this.video.pause();
         this.video.currentTime = 0;
 
-        // ----> TODO encapsulate this block.
-        // TODO switch button events on/off in THIS class, not in the Button itself
-        this.playButtons.forEach(button => { button.removeEventListeners() });
-        this.playButtons.forEach(button => { button.addEventListeners() });
-
         this.playButtons.forEach(button => { button.initView() });
         this.fullscreenButton.initView();
         this.homeButton.initView();
-        // <----
     }
 
     private switchVideoSource(relativePathToNewSource: string): void {

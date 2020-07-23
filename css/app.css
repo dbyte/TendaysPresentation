@@ -1,3 +1,9 @@
+@media all and (display-mode: standalone) {
+    body {
+      background-color: yellow;
+    }
+  }
+
 body {
     height: 99vh; /* Not 100vh - hide vertical scrollbar on some clients */
     display: flex;
@@ -41,7 +47,7 @@ objects. Instead define in HTML tags which are observerd by JS */
     z-index: 2; 
     transition: all 0.2s ease-in-out;
     opacity: 0.7;
-    animation: 0.5s ease-out 0s 1 initialScaleIn;
+    animation: 0.5s ease-out 0s 1 scaleIn;
 }
 
 .player-navigation:hover {
@@ -50,8 +56,8 @@ objects. Instead define in HTML tags which are observerd by JS */
     transform: scale(1.05) perspective(1px);
 }
 
-.onLoadAnimate {
-    animation: 0.5s ease-out 0s 1 initialScaleIn;
+.scaleIn {
+    animation: 0.5s ease-out 0s 1 scaleIn;
 }
 
 .onMouseoverAnimate {
@@ -70,7 +76,7 @@ objects. Instead define in HTML tags which are observerd by JS */
     animation-fill-mode: forwards;
 }
 
-@keyframes initialScaleIn {
+@keyframes scaleIn {
     0% {
         transform: scale(0.0);
         opacity: 0;

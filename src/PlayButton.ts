@@ -13,33 +13,15 @@ export class PlayButton extends Button {
     }
 
     public initView(): void {
-        const videoElem = this.elem as HTMLVideoElement;
-        videoElem.src = this.buttonImageSource;
+        super.initView();
+
         this.elem.classList.add("button-player");
-
-        /* Overlay elements should have the 'hidden' selector in their HTML
-        as they may have wrong positions/sizes when entering the page.
-        As soon as the page got loaded and we've rearranged things, we can
-        switch them on. */
-        this.elem.hidden = false;
-    }
-
-    public addEventListeners(): void {
-        const events = ["load", "click", "mouseover", "mouseout"];
-        events.map(e => { this.elem.addEventListener(e, this) });
-    }
-
-    public removeEventListeners(): void {
-        const events = ["load", "click", "mouseover", "mouseout"];
-        events.map(e => { this.elem.removeEventListener(e, this) });
+        this.animateIn();
     }
 
     // Called JS-internally by the added listeners!
     public handleEvent(e: Event): void {
         switch (e.type) {
-            case "load":
-                this.animateOnLoad();
-                break;
             case "click":
                 console.log('click event called');
                 App.instance.controller?.startVideo(this.pathToVideo);
@@ -53,13 +35,13 @@ export class PlayButton extends Button {
         }
     }
 
-    private animateOnLoad(): void {
-        console.log('load event called');
-        this.elem.addEventListener("animationend", this.animationEndMethod = this.onLoadAnimationEnd.bind(this));
-        this.cssAnimation.start(CssAnimationEvent.OnDocumentLoaded);
+    private animateIn(): void {
+        console.log('animateIn event called');
+        this.elem.addEventListener("animationend", this.animationEndMethod = this.onInAnimationEnd.bind(this));
+        this.cssAnimation.start(CssAnimationEvent.ScaleIn);
     }
-    private onLoadAnimationEnd(e: Event): void {
-        console.log('onAnimationEnd called');
+    private onInAnimationEnd(e: Event): void {
+        console.log('onInAnimationEnd called');
         this.cssAnimation.removeAll();
         this.elem.removeEventListener("animationend", this.animationEndMethod);
     }

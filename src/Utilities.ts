@@ -1,5 +1,8 @@
+/**
+ * These are the mappings to literal CSS definitions.
+ */
 export enum CssAnimationEvent {
-    OnDocumentLoaded = "onLoadAnimate",
+    ScaleIn = "scaleIn",
     OnMouseOver = "onMouseoverAnimate",
     OnMouseOut = "onMouseoutAnimate",
     OnClick = "onClickAnimate"
