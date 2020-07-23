@@ -1,11 +1,13 @@
-import { PlayButton, FullscreenButton, HomeButton, OverlayHandler, HasHtmlElement, getElementsOfObjects, CssAnimation, CssAnimationEvent } from "./Exporter";
+import {
+    PlayButton, FullscreenButton, HomeButton, OverlayHandler, HasHtmlElement, getElementsOfObjects,
+    LoadingSpinner} from "./Exporter";
 
 export class PlayerController {
     private readonly video: HTMLVideoElement;
     private readonly playButtons: PlayButton[];
     private readonly fullscreenButton: FullscreenButton;
     private readonly homeButton: HomeButton;
-    private readonly loadingSpinner: HTMLElement;
+    private readonly loadingSpinner: LoadingSpinner;
     private readonly overlayHandler: OverlayHandler;
 
     constructor() {
@@ -16,8 +18,7 @@ export class PlayerController {
         this.playButtons.push(new PlayButton("playVideo03", "assets/animation-03.mp4"));
         this.fullscreenButton = new FullscreenButton();
         this.homeButton = new HomeButton();
-        this.loadingSpinner = document.getElementById("loadingSpinner") as HTMLElement;
-
+        this.loadingSpinner = new LoadingSpinner();
         this.overlayHandler = new OverlayHandler(this.getAllOverlayElements());
     }
 
@@ -39,23 +40,8 @@ export class PlayerController {
     public startVideo(relativePathToSource: string): void {
         this.switchVideoSource(relativePathToSource);
         this.playButtons.forEach(btn => { btn.animateOnClick(); });
-        this.showLoadingSpinner();
-        this.video.play().then(() => this.removeLoadingSpinner());
-    }
-
-    private showLoadingSpinner() {
-        const cssAnimation = new CssAnimation(this.loadingSpinner);
-        this.loadingSpinner.hidden = false;
-        cssAnimation.start(CssAnimationEvent.ScaleIn);
-    }
-
-    private removeLoadingSpinner() {
-        const cssAnimation = new CssAnimation(this.loadingSpinner);
-        cssAnimation.start(CssAnimationEvent.OnClick);
-        this.loadingSpinner.addEventListener(
-            "animationend",
-            () => { this.loadingSpinner.hidden = true; },
-            { once: true });
+        this.loadingSpinner.show();
+        this.video.play().then(() => this.loadingSpinner.hide());
     }
 
     public goHome() {
@@ -65,7 +51,7 @@ export class PlayerController {
         this.playButtons.forEach(button => { button.initView() });
         this.fullscreenButton.initView();
         this.homeButton.initView();
-        this.loadingSpinner.hidden = true;
+        this.loadingSpinner.elem.hidden = true; //?????
     }
 
     private switchVideoSource(relativePathToNewSource: string): void {

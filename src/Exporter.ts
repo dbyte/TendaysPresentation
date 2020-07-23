@@ -9,4 +9,5 @@ export * from "./Button";
 export * from "./PlayButton";
 export * from "./FullscreenButton";
 export * from "./HomeButton";
+export * from "./LoadingSpinner";
 export * from "./PlayerController";
