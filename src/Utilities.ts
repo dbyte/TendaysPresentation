@@ -8,6 +8,9 @@ export enum CssAnimationEvent {
     OnClick = "onClickAnimate"
 }
 
+/**
+ * Trigger CSS animations by manipulating HTMLDomElement-Classes
+ */
 export class CssAnimation {
     private readonly element: HTMLElement;
 

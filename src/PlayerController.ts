@@ -1,12 +1,13 @@
 import {
     PlayButton, FullscreenButton, HomeButton, OverlayHandler, HasHtmlElement, getElementsOfObjects,
-    LoadingSpinner} from "./Exporter";
+    LoadingSpinner, InfoButton} from "./Exporter";
 
 export class PlayerController {
     private readonly video: HTMLVideoElement;
     private readonly playButtons: PlayButton[];
     private readonly fullscreenButton: FullscreenButton;
     private readonly homeButton: HomeButton;
+    private readonly infoButton01: InfoButton;
     private readonly loadingSpinner: LoadingSpinner;
     private readonly overlayHandler: OverlayHandler;
 
@@ -18,6 +19,7 @@ export class PlayerController {
         this.playButtons.push(new PlayButton("playVideo03", "assets/animation-03.mp4"));
         this.fullscreenButton = new FullscreenButton();
         this.homeButton = new HomeButton();
+        this.infoButton01 = new InfoButton();
         this.loadingSpinner = new LoadingSpinner();
         this.overlayHandler = new OverlayHandler(this.getAllOverlayElements());
     }
@@ -29,11 +31,12 @@ export class PlayerController {
         this.overlayHandler.repositionOnVideo(this.video);
 
         window.addEventListener("resize", () => { this.overlayHandler.repositionOnVideo(this.video) });
+        this.video.addEventListener("ended", () => { this.onVideoEnded() });
     }
 
     private getAllOverlayElements(): HTMLElement[] {
         let overlays: HasHtmlElement[] = [...this.playButtons]; // we need a value copy of playButtons
-        overlays.push(this.fullscreenButton, this.homeButton);
+        overlays.push(this.fullscreenButton, this.homeButton, this.infoButton01);
         return getElementsOfObjects(overlays);
     }
 
@@ -44,6 +47,11 @@ export class PlayerController {
         this.video.play().then(() => this.loadingSpinner.hide());
     }
 
+    private onVideoEnded(): void {
+        console.log("onVideoEnded called");
+        this.infoButton01.initView();
+    }
+
     public goHome() {
         this.video.pause();
         this.video.currentTime = 0;
@@ -51,7 +59,7 @@ export class PlayerController {
         this.playButtons.forEach(button => { button.initView() });
         this.fullscreenButton.initView();
         this.homeButton.initView();
-        this.loadingSpinner.elem.hidden = true; //?????
+        this.infoButton01.elem.hidden = true;
     }
 
     private switchVideoSource(relativePathToNewSource: string): void {
