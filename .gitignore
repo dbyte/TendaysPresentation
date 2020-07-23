@@ -1,6 +1,6 @@
 *.DS_Store
+*.mp4
 /.vscode
 /out
 /dist
-*.mp4
-node_modules
+/node_modules
