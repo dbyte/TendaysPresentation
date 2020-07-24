@@ -4,7 +4,7 @@ export class InfoButton extends Button {
     private cssAnimation: CssAnimation;
 
     constructor() {
-        super("infoButton01", "assets/info-button.svg");
+        super("infoButton01", "assets/info-button.png");
         this.cssAnimation = new CssAnimation(this.elem);
     }
 
