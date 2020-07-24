@@ -19,6 +19,7 @@ export class FullscreenButton extends Button {
                 this.toggle();
                 break;
         }
+        e.stopPropagation();
     }
 
     public toggle(): void {

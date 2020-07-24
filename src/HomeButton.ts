@@ -18,5 +18,6 @@ export class HomeButton extends Button {
                 App.instance.controller?.goHome();
                 break;
         }
+        e.stopPropagation();
     }
 }

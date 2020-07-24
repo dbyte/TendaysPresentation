@@ -31,6 +31,7 @@ export class PlayButton extends Button {
                 this.animateOnMouseout();
                 break;
         }
+        e.stopPropagation();
     }
 
     private animateIn(): void {

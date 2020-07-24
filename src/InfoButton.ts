@@ -22,15 +22,17 @@ export class InfoButton extends Button {
                 //ToDo
                 break;
         }
+        e.stopPropagation();
     }
 
     private animateIn(): void {
         console.log('animateIn event called');
-        this.elem.addEventListener("animationend", () => { this.onInAnimationEnd() }, { once: true });
+        this.elem.addEventListener("animationend", (event) => { this.onInAnimationEnd(event) }, { once: true });
         this.cssAnimation.start(CssAnimationEvent.ScaleIn);
     }
-    private onInAnimationEnd(): void {
+    private onInAnimationEnd(event: AnimationEvent): void {
         console.log('onInAnimationEnd called');
         this.cssAnimation.removeAll();
+        event.stopPropagation();
     }
 }
