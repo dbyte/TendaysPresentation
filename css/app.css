@@ -40,6 +40,9 @@ objects. Instead define in HTML tags which are observerd by JS */
     position: absolute;
     z-index: 2; 
     opacity: 0.7;
+    /* Minimum constraints for small screen sizes */
+    min-width: 25px;
+    min-height: 25px;
 }
 
 .player-navigation, .button-info {
