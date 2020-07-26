@@ -11,4 +11,5 @@ export * from "./FullscreenButton";
 export * from "./HomeButton";
 export * from "./InfoButton";
 export * from "./LoadingSpinner";
+export * from "./Video";
 export * from "./PlayerController";

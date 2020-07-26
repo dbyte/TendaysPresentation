@@ -1,5 +1,5 @@
 import {
-    PlayButton, FullscreenButton, HomeButton, OverlayHandler, HasHtmlElement, getElementsOfObjects,
+    VideoModel, PlayButton, FullscreenButton, HomeButton, OverlayHandler, HasHtmlElement, getElementsOfObjects,
     LoadingSpinner, InfoButton} from "./Exporter";
 
 export class PlayerController {
@@ -14,9 +14,9 @@ export class PlayerController {
     constructor() {
         this.video = document.getElementById("mainVideoTarget") as HTMLVideoElement;
         this.playButtons = [];
-        this.playButtons.push(new PlayButton("playVideo01", "assets/animation-01.mp4"));
-        this.playButtons.push(new PlayButton("playVideo02", "assets/animation-02.mp4"));
-        this.playButtons.push(new PlayButton("playVideo03", "assets/animation-03.mp4"));
+        this.playButtons.push(new PlayButton("playVideo01", "animation-01"));
+        this.playButtons.push(new PlayButton("playVideo02", "animation-02"));
+        this.playButtons.push(new PlayButton("playVideo03", "animation-03"));
         this.fullscreenButton = new FullscreenButton();
         this.homeButton = new HomeButton();
         this.infoButton01 = new InfoButton();
@@ -25,6 +25,7 @@ export class PlayerController {
     }
 
     public initView(): void {
+        this.switchVideoSource("animation-01");
         this.playButtons.forEach(button => { button.initView() });
         this.fullscreenButton.initView();
         this.homeButton.initView();
@@ -40,8 +41,8 @@ export class PlayerController {
         return getElementsOfObjects(overlays);
     }
 
-    public startVideo(relativePathToSource: string): void {
-        this.switchVideoSource(relativePathToSource);
+    public startVideo(videoBaseFilename: string): void {
+        this.switchVideoSource(videoBaseFilename);
         this.playButtons.forEach(btn => { btn.animateOnClick(); });
         this.loadingSpinner.show();
         this.video.play().then(() => this.loadingSpinner.hide());
@@ -62,13 +63,16 @@ export class PlayerController {
         this.infoButton01.elem.hidden = true;
     }
 
-    private switchVideoSource(relativePathToNewSource: string): void {
-        const absolutePathToNewSource = new URL(relativePathToNewSource, document.baseURI).href;
+    private switchVideoSource(videoBaseFilename: string): void {
+        const videoModel = new VideoModel(videoBaseFilename);
+        const relativePath = videoModel.getRelativePath();
+        const absolutePathToNewSource = new URL(relativePath, document.baseURI).href;
 
         /* Only switch source if not yet set (which will reduce
         flicker when user wants to play same video as previous time) */
         if (this.video.src !== absolutePathToNewSource) {
-            this.video.src = relativePathToNewSource;
+            this.video.src = relativePath;
+            console.log("Video source is now ".concat(relativePath));
         }
     }
 }

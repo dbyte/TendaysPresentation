@@ -14,7 +14,6 @@ export class HomeButton extends Button {
     public handleEvent(e: Event): void {
         switch (e.type) {
             case "click":
-                console.log('click event called');
                 App.instance.controller?.goHome();
                 break;
         }

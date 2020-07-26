@@ -18,7 +18,6 @@ export class InfoButton extends Button {
     public handleEvent(e: Event): void {
         switch (e.type) {
             case "click":
-                console.log('click event called');
                 //ToDo
                 break;
         }
@@ -26,12 +25,10 @@ export class InfoButton extends Button {
     }
 
     private animateIn(): void {
-        console.log('animateIn event called');
         this.elem.addEventListener("animationend", (event) => { this.onInAnimationEnd(event) }, { once: true });
         this.cssAnimation.start(CssAnimationEvent.ScaleIn);
     }
     private onInAnimationEnd(event: AnimationEvent): void {
-        console.log('onInAnimationEnd called');
         this.cssAnimation.removeAll();
         event.stopPropagation();
     }
