@@ -3,6 +3,7 @@ import {
     LoadingSpinner, InfoButton} from "./Exporter";
 
 export class PlayerController {
+    private static readonly DEFAULT_VIDEOSOURCE = "animation-01";
     private readonly video: HTMLVideoElement;
     private readonly playButtons: PlayButton[];
     private readonly fullscreenButton: FullscreenButton;
@@ -14,7 +15,7 @@ export class PlayerController {
     constructor() {
         this.video = document.getElementById("mainVideoTarget") as HTMLVideoElement;
         this.playButtons = [];
-        this.playButtons.push(new PlayButton("playVideo01", "animation-01"));
+        this.playButtons.push(new PlayButton("playVideo01", PlayerController.DEFAULT_VIDEOSOURCE));
         this.playButtons.push(new PlayButton("playVideo02", "animation-02"));
         this.playButtons.push(new PlayButton("playVideo03", "animation-03"));
         this.fullscreenButton = new FullscreenButton();
@@ -25,7 +26,7 @@ export class PlayerController {
     }
 
     public initView(): void {
-        this.switchVideoSource("animation-01");
+        this.switchVideoSource(PlayerController.DEFAULT_VIDEOSOURCE);
         this.playButtons.forEach(button => { button.initView() });
         this.fullscreenButton.initView();
         this.homeButton.initView();
@@ -33,6 +34,9 @@ export class PlayerController {
 
         window.addEventListener("resize", () => { this.overlayHandler.repositionOnVideo(this.video) });
         this.video.addEventListener("ended", () => { this.onVideoEnded() });
+        
+        // Hide address bar on mobiles, https://developers.google.com/web/fundamentals/native-hardware/fullscreen/
+        window.scrollTo(0, 1);
     }
 
     private getAllOverlayElements(): HTMLElement[] {
@@ -53,16 +57,6 @@ export class PlayerController {
         this.infoButton01.initView();
     }
 
-    public goHome() {
-        this.video.pause();
-        this.video.currentTime = 0;
-
-        this.playButtons.forEach(button => { button.initView() });
-        this.fullscreenButton.initView();
-        this.homeButton.initView();
-        this.infoButton01.elem.hidden = true;
-    }
-
     private switchVideoSource(videoBaseFilename: string): void {
         const videoModel = new VideoModel(videoBaseFilename);
         const relativePath = videoModel.getRelativePath();
@@ -74,5 +68,15 @@ export class PlayerController {
             this.video.src = relativePath;
             console.log("Video source is now ".concat(relativePath));
         }
+    }
+
+    public goHome() {
+        this.video.pause();
+        this.video.currentTime = 0;
+
+        this.playButtons.forEach(button => { button.initView() });
+        this.fullscreenButton.initView();
+        this.homeButton.initView();
+        this.infoButton01.elem.hidden = true;
     }
 }
