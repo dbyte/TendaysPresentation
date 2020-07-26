@@ -16,19 +16,19 @@ export class OverlayHandler {
         var a = videoObject.videoWidth || 1920,
             b = videoObject.videoHeight || 1080,
             c = videoObject.getBoundingClientRect(),
-            e = c.width;
-        const boundingRectHeight = c.height;
+            d = c.width;
+        const e = c.height;
 
-        if (e && c) {
-            var g = Math.max(a / e, b / boundingRectHeight),
+        if (d && c) {
+            var g = Math.max(a / d, b / e),
                 l = parseFloat(this.getLeft(elem));
-            elem.style.left = 50 + a / e / g * (l - 50) + "%";
+            elem.style.left = 50 + a / d / g * (l - 50) + "%";
             var y = parseFloat(this.getTop(elem));
-            elem.style.top = 50 + b / boundingRectHeight / g * (y - 50) + "%";
+            elem.style.top = 50 + b / e / g * (y - 50) + "%";
             l = Math.min(parseFloat(this.getWidth(elem)), 100 - l);
-            elem.style.width = a / e / g * l + "%";
+            elem.style.width = a / d / g * l + "%";
             a = Math.min(parseFloat(this.getHeight(elem)), 100 - y);
-            elem.style.height = b / boundingRectHeight / g * a + "%";
+            elem.style.height = b / e / g * a + "%";
         }
     }
 
