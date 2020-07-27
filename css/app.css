@@ -105,7 +105,7 @@ objects. Instead define in HTML tags which are observerd by JS */
     animation-fill-mode: forwards;
 }
 
-.onClickAnimate {
+.scaleOut {
     animation: 0.7s ease 0s 1 scaleOut;
     animation-fill-mode: forwards;
 }

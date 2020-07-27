@@ -3,9 +3,9 @@
  */
 export enum CssAnimationEvent {
     ScaleIn = "scaleIn",
+    ScaleOut = "scaleOut",
     OnMouseOver = "onMouseoverAnimate",
-    OnMouseOut = "onMouseoutAnimate",
-    OnClick = "onClickAnimate"
+    OnMouseOut = "onMouseoutAnimate"
 }
 
 /**
