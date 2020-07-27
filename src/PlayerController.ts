@@ -39,13 +39,13 @@ export class PlayerController {
         this.overlayHandler.repositionOnVideo(this.video);
 
         window.addEventListener("resize", () => { this.overlayHandler.repositionOnVideo(this.video) });
+        this.video.addEventListener("click", (event) => { this.onClickedVideo(event) });
         this.video.addEventListener("ended", () => { this.onVideoEnded() });
     }
 
     private getAllOverlayElements(): HTMLElement[] {
         let overlays: HasHtmlElement[] = [...this.playButtons]; // we need a value copy of playButtons
         overlays.push(this.infoButton01, this.navbar);
-        //overlays.push(this.fullscreenButton, this.homeButton, this.infoButton01, this.navbar);
         return getElementsOfObjects(overlays);
     }
 
@@ -76,6 +76,14 @@ export class PlayerController {
             this.video.src = relativePath;
             console.log("Video source is now ".concat(relativePath));
         }
+    }
+
+    private onClickedVideo(event: Event) {
+        if (event.type == "click") {
+            event.preventDefault();
+            this.navbar.toggle();
+        }
+        event.stopPropagation();
     }
 
     public goHome() {

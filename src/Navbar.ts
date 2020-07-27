@@ -9,15 +9,23 @@ export class Navbar implements HasHtmlElement {
         this.cssAnimation = new CssAnimation(this.elem);
     }
 
+    public toggle() {
+        this.elem.hidden ? this.show() : this.hide();
+    }
+
     public show() {
-        this.elem.addEventListener("animationend", () => { this.cssAnimation.removeAll() }, { once: true });
-        this.elem.hidden = false;
-        this.cssAnimation.start(CssAnimationEvent.FadeIn);
+        if (this.elem.hidden) {
+            this.elem.addEventListener("animationend", () => { this.cssAnimation.removeAll() }, { once: true });
+            this.elem.hidden = false;
+            this.cssAnimation.start(CssAnimationEvent.FadeIn);
+        }
     }
 
     public hide() {
-        this.elem.addEventListener("animationend", () => { this.onHideAnimationEnd() }, { once: true });
-        this.cssAnimation.start(CssAnimationEvent.FadeOut);
+        if (!this.elem.hidden) {
+            this.elem.addEventListener("animationend", () => { this.onHideAnimationEnd() }, { once: true });
+            this.cssAnimation.start(CssAnimationEvent.FadeOut);
+        }
     }
     private onHideAnimationEnd(): void {
         this.elem.hidden = true;

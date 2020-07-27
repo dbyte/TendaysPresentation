@@ -38,3 +38,7 @@ export interface HasHtmlElement {
 export function getElementsOfObjects(objects: HasHtmlElement[]): HTMLElement[] {
     return objects.map(o => { return o.elem });
 }
+
+export function isTouchDevice(): boolean {
+    return window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+}
