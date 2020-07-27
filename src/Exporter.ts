@@ -10,6 +10,7 @@ export * from "./PlayButton";
 export * from "./FullscreenButton";
 export * from "./HomeButton";
 export * from "./InfoButton";
+export * from "./Navbar";
 export * from "./LoadingSpinner";
 export * from "./Video";
 export * from "./PlayerController";

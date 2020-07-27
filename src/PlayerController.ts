@@ -1,6 +1,6 @@
 import {
-    VideoModel, PlayButton, FullscreenButton, HomeButton, OverlayHandler, HasHtmlElement, getElementsOfObjects,
-    LoadingSpinner, InfoButton} from "./Exporter";
+    VideoModel, PlayButton, FullscreenButton, HomeButton, Navbar, OverlayHandler, HasHtmlElement,
+    getElementsOfObjects, LoadingSpinner, InfoButton} from "./Exporter";
 
 export class PlayerController {
     private static readonly DEFAULT_VIDEOSOURCE = "animation-01";
@@ -10,6 +10,7 @@ export class PlayerController {
     private readonly homeButton: HomeButton;
     private readonly infoButton01: InfoButton;
     private readonly loadingSpinner: LoadingSpinner;
+    private readonly navbar: Navbar;
     private readonly overlayHandler: OverlayHandler;
 
     constructor() {
@@ -22,10 +23,14 @@ export class PlayerController {
         this.homeButton = new HomeButton();
         this.infoButton01 = new InfoButton();
         this.loadingSpinner = new LoadingSpinner();
+        this.navbar = new Navbar();
         this.overlayHandler = new OverlayHandler(this.getAllOverlayElements());
     }
 
     public initView(): void {
+        // Hide address bar on mobiles, https://developers.google.com/web/fundamentals/native-hardware/fullscreen/
+        //window.scrollTo(0, 1);
+
         this.switchVideoSource(PlayerController.DEFAULT_VIDEOSOURCE);
         this.playButtons.forEach(button => { button.initView() });
         this.fullscreenButton.initView();
@@ -34,14 +39,12 @@ export class PlayerController {
 
         window.addEventListener("resize", () => { this.overlayHandler.repositionOnVideo(this.video) });
         this.video.addEventListener("ended", () => { this.onVideoEnded() });
-        
-        // Hide address bar on mobiles, https://developers.google.com/web/fundamentals/native-hardware/fullscreen/
-        window.scrollTo(0, 1);
     }
 
     private getAllOverlayElements(): HTMLElement[] {
         let overlays: HasHtmlElement[] = [...this.playButtons]; // we need a value copy of playButtons
-        overlays.push(this.fullscreenButton, this.homeButton, this.infoButton01);
+        overlays.push(this.infoButton01, this.navbar);
+        //overlays.push(this.fullscreenButton, this.homeButton, this.infoButton01, this.navbar);
         return getElementsOfObjects(overlays);
     }
 
