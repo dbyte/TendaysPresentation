@@ -15,7 +15,7 @@ export class LoadingSpinner implements HasHtmlElement {
     }
 
     public hide() {
-        this.cssAnimation.start(CssAnimationEvent.OnClick);
+        this.cssAnimation.start(CssAnimationEvent.ScaleOut);
         this.elem.addEventListener(
             "animationend",
             (event) => { this.elem.hidden = true; event.stopPropagation(); },

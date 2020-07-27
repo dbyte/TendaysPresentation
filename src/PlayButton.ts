@@ -60,7 +60,7 @@ export class PlayButton extends Button {
     public animateOnClick(): void {
         this.removeEventListeners();
         this.elem.addEventListener("animationend", () => { this.onClickAnimationEnd() }, { once: true });
-        this.cssAnimation.start(CssAnimationEvent.OnClick)
+        this.cssAnimation.start(CssAnimationEvent.ScaleOut)
     }
     private onClickAnimationEnd(): void {
         this.elem.hidden = true;
