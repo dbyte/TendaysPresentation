@@ -31,9 +31,9 @@ export class PlayerController {
         // Hide address bar on mobiles, https://developers.google.com/web/fundamentals/native-hardware/fullscreen/
         //window.scrollTo(0, 1);
 
-        this.playButtons.forEach(button => { button.initView() });
-        this.fullscreenButton.initView();
-        this.homeButton.initView();
+        this.playButtons.forEach(button => { button.show() });
+        this.fullscreenButton.show();
+        this.homeButton.show();
         this.navbar.show();
         this.overlayHandler.repositionOnVideo(this.video.elem);
 
@@ -50,8 +50,8 @@ export class PlayerController {
 
     public startVideo(videoBaseFilename: string): void {
         this.video.switchSource(videoBaseFilename);
-        this.playButtons.forEach(btn => { btn.animateOnClick(); });
         this.loadingSpinner.show();
+        this.playButtons.forEach(btn => { btn.hide() });
         this.video.elem.play().then(() => { 
             this.loadingSpinner.hide();
             this.navbar.hide();
@@ -61,7 +61,7 @@ export class PlayerController {
     private onVideoEnded(): void {
         console.log("onVideoEnded called");
         this.navbar.show();
-        this.infoButton01.initView();
+        this.infoButton01.show();
     }
 
     private onClickedVideo(event: Event) {
@@ -74,9 +74,9 @@ export class PlayerController {
 
     public goHome() {
         this.video.jumpToStart();
-        this.playButtons.forEach(button => { button.initView() });
-        this.fullscreenButton.initView();
-        this.homeButton.initView();
+        this.playButtons.forEach(button => { button.show() });
+        this.fullscreenButton.show();
+        this.homeButton.show();
         this.infoButton01.elem.hidden = true;
     }
 }

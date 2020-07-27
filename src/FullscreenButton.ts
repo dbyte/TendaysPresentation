@@ -6,8 +6,8 @@ export class FullscreenButton extends Button {
         super("goFullscreen", "assets/fullscreen-button.svg");
     }
 
-    public initView(): void {
-        super.initView();
+    public show(): void {
+        super.show();
         this.elem.classList.add("player-navigation");
     }
 

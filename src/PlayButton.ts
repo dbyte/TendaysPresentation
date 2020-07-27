@@ -10,8 +10,8 @@ export class PlayButton extends Button {
         this.cssAnimation = new CssAnimation(this.elem);
     }
 
-    public initView(): void {
-        super.initView();
+    public show(): void {
+        super.show();
 
         this.elem.classList.add("button-player");
         this.animateIn();
@@ -57,12 +57,12 @@ export class PlayButton extends Button {
         // TODO
     }
 
-    public animateOnClick(): void {
+    public hide(): void {
         this.removeEventListeners();
-        this.elem.addEventListener("animationend", () => { this.onClickAnimationEnd() }, { once: true });
+        this.elem.addEventListener("animationend", () => { this.onHideAnimationEnd() }, { once: true });
         this.cssAnimation.start(CssAnimationEvent.ScaleOut)
     }
-    private onClickAnimationEnd(): void {
+    private onHideAnimationEnd(): void {
         this.elem.hidden = true;
     }
 }

@@ -11,7 +11,7 @@ export abstract class Button implements HasHtmlElement {
         this.elem = document.getElementById(this.elemID) as HTMLElement;
     }
 
-    public initView(): void {
+    public show(): void {
         const imageElem = this.elem as HTMLImageElement;
         imageElem.src = this.buttonImageSource;
 

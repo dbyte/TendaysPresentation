@@ -8,8 +8,8 @@ export class InfoButton extends Button {
         this.cssAnimation = new CssAnimation(this.elem);
     }
 
-    public initView(): void {
-        super.initView();
+    public show(): void {
+        super.show();
         this.elem.classList.add("button-info");
         this.animateIn();
     }
