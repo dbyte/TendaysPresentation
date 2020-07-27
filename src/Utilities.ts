@@ -4,6 +4,8 @@
 export enum CssAnimationEvent {
     ScaleIn = "scaleIn",
     ScaleOut = "scaleOut",
+    FadeIn = "fadeIn",
+    FadeOut = "fadeOut",
     OnMouseOver = "onMouseoverAnimate",
     OnMouseOut = "onMouseoutAnimate"
 }

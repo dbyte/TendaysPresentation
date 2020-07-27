@@ -35,6 +35,7 @@ export class PlayerController {
         this.playButtons.forEach(button => { button.initView() });
         this.fullscreenButton.initView();
         this.homeButton.initView();
+        this.navbar.show();
         this.overlayHandler.repositionOnVideo(this.video);
 
         window.addEventListener("resize", () => { this.overlayHandler.repositionOnVideo(this.video) });
@@ -52,11 +53,15 @@ export class PlayerController {
         this.switchVideoSource(videoBaseFilename);
         this.playButtons.forEach(btn => { btn.animateOnClick(); });
         this.loadingSpinner.show();
-        this.video.play().then(() => this.loadingSpinner.hide());
+        this.video.play().then(() => { 
+            this.loadingSpinner.hide();
+            this.navbar.hide();
+         });
     }
 
     private onVideoEnded(): void {
         console.log("onVideoEnded called");
+        this.navbar.show();
         this.infoButton01.initView();
     }
 
