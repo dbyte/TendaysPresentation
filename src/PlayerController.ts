@@ -1,10 +1,10 @@
 import {
-    VideoModel, PlayButton, FullscreenButton, HomeButton, Navbar, OverlayHandler, HasHtmlElement,
+    Video, PlayButton, FullscreenButton, HomeButton, Navbar, OverlayHandler, HasHtmlElement,
     getElementsOfObjects, LoadingSpinner, InfoButton} from "./Exporter";
 
 export class PlayerController {
     private static readonly DEFAULT_VIDEOSOURCE = "animation-01";
-    private readonly video: HTMLVideoElement;
+    private readonly video: Video;
     private readonly playButtons: PlayButton[];
     private readonly fullscreenButton: FullscreenButton;
     private readonly homeButton: HomeButton;
@@ -14,7 +14,7 @@ export class PlayerController {
     private readonly overlayHandler: OverlayHandler;
 
     constructor() {
-        this.video = document.getElementById("mainVideoTarget") as HTMLVideoElement;
+        this.video = new Video(PlayerController.DEFAULT_VIDEOSOURCE);
         this.playButtons = [];
         this.playButtons.push(new PlayButton("playVideo01", PlayerController.DEFAULT_VIDEOSOURCE));
         this.playButtons.push(new PlayButton("playVideo02", "animation-02"));
@@ -31,16 +31,15 @@ export class PlayerController {
         // Hide address bar on mobiles, https://developers.google.com/web/fundamentals/native-hardware/fullscreen/
         //window.scrollTo(0, 1);
 
-        this.switchVideoSource(PlayerController.DEFAULT_VIDEOSOURCE);
         this.playButtons.forEach(button => { button.initView() });
         this.fullscreenButton.initView();
         this.homeButton.initView();
         this.navbar.show();
-        this.overlayHandler.repositionOnVideo(this.video);
+        this.overlayHandler.repositionOnVideo(this.video.elem);
 
-        window.addEventListener("resize", () => { this.overlayHandler.repositionOnVideo(this.video) });
-        this.video.addEventListener("click", (event) => { this.onClickedVideo(event) });
-        this.video.addEventListener("ended", () => { this.onVideoEnded() });
+        window.addEventListener("resize", () => { this.overlayHandler.repositionOnVideo(this.video.elem) });
+        this.video.elem.addEventListener("click", (event) => { this.onClickedVideo(event) });
+        this.video.elem.addEventListener("ended", () => { this.onVideoEnded() });
     }
 
     private getAllOverlayElements(): HTMLElement[] {
@@ -50,10 +49,10 @@ export class PlayerController {
     }
 
     public startVideo(videoBaseFilename: string): void {
-        this.switchVideoSource(videoBaseFilename);
+        this.video.switchSource(videoBaseFilename);
         this.playButtons.forEach(btn => { btn.animateOnClick(); });
         this.loadingSpinner.show();
-        this.video.play().then(() => { 
+        this.video.elem.play().then(() => { 
             this.loadingSpinner.hide();
             this.navbar.hide();
          });
@@ -65,19 +64,6 @@ export class PlayerController {
         this.infoButton01.initView();
     }
 
-    private switchVideoSource(videoBaseFilename: string): void {
-        const videoModel = new VideoModel(videoBaseFilename);
-        const relativePath = videoModel.getRelativePath();
-        const absolutePathToNewSource = new URL(relativePath, document.baseURI).href;
-
-        /* Only switch source if not yet set (which will reduce
-        flicker when user wants to play same video as previous time) */
-        if (this.video.src !== absolutePathToNewSource) {
-            this.video.src = relativePath;
-            console.log("Video source is now ".concat(relativePath));
-        }
-    }
-
     private onClickedVideo(event: Event) {
         if (event.type == "click") {
             event.preventDefault();
@@ -87,9 +73,7 @@ export class PlayerController {
     }
 
     public goHome() {
-        this.video.pause();
-        this.video.currentTime = 0;
-
+        this.video.jumpToStart();
         this.playButtons.forEach(button => { button.initView() });
         this.fullscreenButton.initView();
         this.homeButton.initView();
