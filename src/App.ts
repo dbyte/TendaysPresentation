@@ -1,13 +1,13 @@
 // Load polyfills first
 import "ts-polyfill/lib/es2017-object";
 
-import { PlayerController } from "./Exporter";
+import { SceneLoader, PlayerController } from "./Exporter";
 
 export class App {
     private static Singleton: App;
     private playerController?: PlayerController;
 
-    private constructor() {}
+    private constructor() { }
 
     public static get instance(): App {
         if (!App.Singleton) {
@@ -21,10 +21,13 @@ export class App {
     }
 
     public start() {
-        this.playerController = new PlayerController();
-        window.onload = (() => { 
-            this.playerController?.initView() });
-            console.log("PlayerController View initialized.")
+        window.onload = (() => {
+            new SceneLoader().load("hotspots-scene-01").then(() => {
+                this.playerController = new PlayerController();
+                this.playerController?.initView();
+                console.log("PlayerController View initialized.");
+            });
+        });
     }
 }
 

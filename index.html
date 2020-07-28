@@ -1,55 +1,50 @@
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <!-- Progressive Web Application capabilities -->
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black">
-        <meta name="apple-mobile-web-app-title" content="Tendays App">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link rel="stylesheet" type="text/css" href="css/app.css" />
-        <link rel="stylesheet" type="text/css" href="css/spinner.css" />
+    <!-- Progressive Web Application capabilities -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Tendays App">
 
-        <title>Your Website</title>
-    </head>
+    <link rel="stylesheet" type="text/css" href="css/app.css" />
+    <link rel="stylesheet" type="text/css" href="css/spinner.css" />
 
-    <body>
-        <div id="interactiveContainer">
-                <!-- playsinline selector is for iOS devices to prevent switching to fullscreen
+    <title>Your Website</title>
+</head>
+
+<body>
+    <div id="interactiveContainer">
+        <!-- playsinline selector is for iOS devices to prevent switching to fullscreen
                     automatically clicked play -->
-                <video id="mainVideoTarget"  poster="assets/homeScreen.jpg" type="video/mp4" playsinline></video>
-                
-                <!-- Position & size must be set here (not in CSS). top, left, width, height are observed by
-                JavaScript for pinning these elements over the resizable and centered video. -->
-                <img id="playVideo01" class="button-player" hidden top="40%" left="65%" width="6%" height="6%">
-                <img id="playVideo02" class="button-player" hidden top="28%" left="23%" width="6%" height="6%">
-                <img id="playVideo03" class="button-player" hidden top="68%" left="27%" width="6%" height="6%">
-                
+        <video id="mainVideoTarget" poster="assets/homeScreen.jpg" type="video/mp4" playsinline></video>
 
-                <img id="infoButton01" class="button-info" hidden top="65%" left="55%" width="3.6%" height="6%">
-
-                <div id="loadingSpinner" hidden>
-                    <div class="sk-chase">
-                        <div class="sk-chase-dot"></div>
-                        <div class="sk-chase-dot"></div>
-                        <div class="sk-chase-dot"></div>
-                        <div class="sk-chase-dot"></div>
-                        <div class="sk-chase-dot"></div>
-                        <div class="sk-chase-dot"></div>
-                    </div>
-                </div>
-
-                <!-- Do not use height attribute for this span -->
-                <span id="navbar" hidden top="88%" left="0%" width="100%">
-                    <img id="goFullscreen" class="player-navigation" hidden>
-                    <img id="goHome" class="player-navigation" hidden>
-                    <span class="desktop-hint">Click screen to show/hide</span>
-                    <span class="touch-hint">Tap screen to show/hide</span>
-                </span>
+        <div id="loadingSpinner" hidden>
+            <div class="sk-chase">
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+            </div>
         </div>
 
-        <!-- Script bindings, order matters! -->
-        <script src="out/js/bundle.js"></script>
-    </body>
+        <!-- Do not use height attribute for this span -->
+        <span id="navbar" hidden top="88%" left="0%" width="100%">
+            <img id="goFullscreen" class="player-navigation" hidden>
+            <img id="goHome" class="player-navigation" hidden>
+            <span class="desktop-hint">Click screen to show/hide</span>
+            <span class="touch-hint">Tap screen to show/hide</span>
+        </span>
+
+        <span id="hotspots"></span>
+    </div>
+
+    <!-- Script bindings, order matters! -->
+    <script src="out/js/bundle.js"></script>
+</body>
+
 </html>
