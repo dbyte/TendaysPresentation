@@ -7,7 +7,6 @@ export class HomeButton extends Button {
 
     public show(): void {
         super.show();
-        this.elem.classList.add("player-navigation");
     }
 
     // Called JS-internally by the added listeners!

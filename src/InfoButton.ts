@@ -10,7 +10,6 @@ export class InfoButton extends Button {
 
     public show(): void {
         super.show();
-        this.elem.classList.add("button-info");
         this.animateIn();
     }
 

@@ -12,8 +12,6 @@ export class PlayButton extends Button {
 
     public show(): void {
         super.show();
-
-        this.elem.classList.add("button-player");
         this.animateIn();
     }
 

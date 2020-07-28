@@ -23,12 +23,12 @@
                 
                 <!-- Position & size must be set here (not in CSS). top, left, width, height are observed by
                 JavaScript for pinning these elements over the resizable and centered video. -->
-                <img id="playVideo01" hidden top="40%" left="65%" width="6%" height="6%">
-                <img id="playVideo02" hidden top="28%" left="23%" width="6%" height="6%">
-                <img id="playVideo03" hidden top="68%" left="27%" width="6%" height="6%">
+                <img id="playVideo01" class="button-player" hidden top="40%" left="65%" width="6%" height="6%">
+                <img id="playVideo02" class="button-player" hidden top="28%" left="23%" width="6%" height="6%">
+                <img id="playVideo03" class="button-player" hidden top="68%" left="27%" width="6%" height="6%">
                 
 
-                <img id="infoButton01" hidden top="65%" left="55%" width="3.6%" height="6%">
+                <img id="infoButton01" class="button-info" hidden top="65%" left="55%" width="3.6%" height="6%">
 
                 <div id="loadingSpinner" hidden>
                     <div class="sk-chase">
@@ -43,8 +43,8 @@
 
                 <!-- Do not use height attribute for this span -->
                 <span id="navbar" hidden top="88%" left="0%" width="100%">
-                    <img id="goFullscreen" hidden>
-                    <img id="goHome" hidden>
+                    <img id="goFullscreen" class="player-navigation" hidden>
+                    <img id="goHome" class="player-navigation" hidden>
                     <span class="desktop-hint">Click screen to show/hide</span>
                     <span class="touch-hint">Tap screen to show/hide</span>
                 </span>
