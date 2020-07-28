@@ -28,9 +28,19 @@ export class SceneLoader {
         switch (viewName) {
             case "hotspots-scene-01":
                 url = "./views/hotspots-scene-01.html";
-                rootElemID = "hotspots";
+                rootElemID = "hotspots-container";
                 break;
-        
+
+            case "main-navigation":
+                url = "./views/main-navigation-bar.html";
+                rootElemID = "main-navigation-container";
+                break;
+
+            case "loading-spinner":
+                url = "./views/loading-spinner.html";
+                rootElemID = "loading-spinner-container";
+                break;
+                
             default:
                 url = ".";
                 rootElemID = "";

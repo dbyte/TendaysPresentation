@@ -21,26 +21,9 @@
                     automatically clicked play -->
         <video id="mainVideoTarget" poster="assets/homeScreen.jpg" type="video/mp4" playsinline></video>
 
-        <div id="loadingSpinner" hidden>
-            <div class="sk-chase">
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
-            </div>
-        </div>
-
-        <!-- Do not use height attribute for this span -->
-        <span id="navbar" hidden top="88%" left="0%" width="100%">
-            <img id="goFullscreen" class="player-navigation" hidden>
-            <img id="goHome" class="player-navigation" hidden>
-            <span class="desktop-hint">Click screen to show/hide</span>
-            <span class="touch-hint">Tap screen to show/hide</span>
-        </span>
-
-        <span id="hotspots"></span>
+        <span id="loading-spinner-container"></span>
+        <span id="main-navigation-container"></span>
+        <span id="hotspots-container"></span>
     </div>
 
     <!-- Script bindings, order matters! -->
