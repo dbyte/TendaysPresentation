@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
@@ -8,6 +9,9 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="Tendays App">
+    <link rel="apple-touch-icon" href="assets/pwa-icons/icon-192x192.png">
+    <meta name="theme-color" content="#2F3BA2" />
+    <link rel="manifest" href="manifest.json">
 
     <link rel="stylesheet" type="text/css" href="views/css/app.css" />
     <link rel="stylesheet" type="text/css" href="views/css/spinner.css" />
@@ -27,7 +31,9 @@
     </div>
 
     <!-- Script bindings, order matters! -->
+    <noscript>Sorry, you can't see this site because Javascript is needed.</noscript>
     <script src="out/js/bundle.js"></script>
+    
 </body>
 
 </html>
