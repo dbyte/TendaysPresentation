@@ -5,24 +5,24 @@ const tsify = require('tsify');
 
 gulp.task('copy-indexHtml', function () {
     return gulp.src('index.html')
-        .pipe(gulp.dest('out'));
+        .pipe(gulp.dest('dist'));
 });
 
 gulp.task('copy-views', function () {
     return gulp.src('views/**/*')
-        .pipe(gulp.dest('out/views'));
+        .pipe(gulp.dest('dist/views'));
 });
 
 gulp.task('copy-pwa-roots', function () {
     return gulp.src('pwa-*.*')
-        .pipe(gulp.dest('out'));
+        .pipe(gulp.dest('dist'));
 });
 
 /* Copies the 'assets' directory into build directory.
  * Rarely used, so it's not included in our standard build tasks. */
 gulp.task('copy-assets', function () {
     return gulp.src('assets/**/*')
-        .pipe(gulp.dest('out/assets'));
+        .pipe(gulp.dest('dist/assets'));
 });
 
 /* Builds a debug version without copying "assets" directory. */
@@ -37,5 +37,5 @@ gulp.task('build-debug', gulp.series(gulp.parallel('copy-indexHtml', 'copy-views
     .plugin(tsify)
     .bundle()
     .pipe(source('bundle.js'))
-    .pipe(gulp.dest('out/js'));
+    .pipe(gulp.dest('dist/js'));
 }));
