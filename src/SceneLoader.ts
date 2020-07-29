@@ -44,7 +44,7 @@ export class SceneLoader {
             default:
                 url = ".";
                 rootElemID = "";
-                break;
+                throw new Error(`Could not resolve viewName '${viewName}' to matching context.`);
         }
 
         return {url, rootElemID};
