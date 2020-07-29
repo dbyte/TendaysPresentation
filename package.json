@@ -5,8 +5,8 @@
   "main": "App.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-debug": "browserify src/App.ts --debug -p [ tsify ] > out/js/bundle.js",
-    "build-production": "browserify src/App.ts -p [ tsify ] > out/js/bundle.js"
+    "gulp-build-debug": "gulp build-debug",
+    "gulp-copy-assets": "gulp copy-assets"
   },
   "repository": {
     "type": "git",
@@ -17,9 +17,11 @@
   "homepage": "",
   "devDependencies": {
     "browserify": "^16.5.1",
+    "gulp": "^4.0.2",
     "ts-polyfill": "^3.8.2",
     "tsify": "^4.0.2",
-    "typescript": "^3.9.7"
+    "typescript": "^3.9.7",
+    "vinyl-source-stream": "^2.0.0"
   },
   "dependencies": {}
 }
