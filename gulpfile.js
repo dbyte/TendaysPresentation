@@ -38,7 +38,7 @@ gulp.task('build-debug', gulp.series(gulp.parallel('copy-indexHtml', 'copy-views
     return browserify({
         basedir: '.',
         debug: true,
-        entries: ['src/App.ts'],
+        entries: ['src/ts/App.ts'],
         cache: {},
         packageCache: {}
     })
