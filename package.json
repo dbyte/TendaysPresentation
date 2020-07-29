@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "gulp-build-debug": "gulp build-debug",
+    "gulp-build-production": "gulp build-production",
     "gulp-copy-assets": "gulp copy-assets"
   },
   "repository": {
