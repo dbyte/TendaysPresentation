@@ -18,7 +18,7 @@ export class SceneLoader {
         })
         .then(response => response.text())
         .then(text => { rootElem.innerHTML = text; })
-        .catch(err => { console.log(err); })
+        .catch(err => { throw new Error(`Error loading component: ${err}`); })
     }
 
     private getContextByViewName(viewName: string): {url: string, rootElemID: string} {
