@@ -1,16 +1,11 @@
 // Load polyfills first
 import "ts-polyfill/lib/es2017-object";
 
-import { PlayerController } from "./Exporter";
+import { PlayerController, IS_CLIENT_SAFARI } from "./Exporter";
 
 export class App {
     private static Singleton: App;
     private playerController?: PlayerController;
-    public static readonly IS_CLIENT_SAFARI =
-        navigator.vendor && navigator.vendor.indexOf('Apple') > -1 &&
-        navigator.userAgent &&
-        navigator.userAgent.indexOf('CriOS') == -1 &&
-        navigator.userAgent.indexOf('FxiOS') == -1;
 
     private constructor() { }
 
@@ -27,7 +22,7 @@ export class App {
 
     public start() {
         window.onload = (() => {
-            if (!App.IS_CLIENT_SAFARI) this.registerServiceWorker();
+            if (!IS_CLIENT_SAFARI) this.registerServiceWorker();
             this.playerController = new PlayerController();
             this.playerController?.bindView()
                 .then(() => { this.playerController?.show() });

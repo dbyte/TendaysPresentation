@@ -42,3 +42,9 @@ export function getElementsOfObjects(objects: HasHtmlElement[]): HTMLElement[] {
 export function isTouchDevice(): boolean {
     return window.matchMedia("(hover: none) and (pointer: coarse)").matches;
 }
+
+export const IS_CLIENT_SAFARI =
+    navigator.vendor && navigator.vendor.indexOf("Apple") > -1 &&
+    navigator.userAgent &&
+    navigator.userAgent.indexOf("CriOS") == -1 &&
+    navigator.userAgent.indexOf("FxiOS") == -1;
