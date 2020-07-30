@@ -3,13 +3,15 @@ This is Gulp's build file.
 **/
 
 const gulp = require('gulp'),
-    merge = require('merge-stream'),
     browserify = require('browserify'),
+    tsify = require('tsify'),
+    uglify = require('gulp-terser'),
     source = require('vinyl-source-stream'),
-    tsify = require('tsify');
+    buffer = require('vinyl-buffer'),
+    merge = require('merge-stream');
 
 class Helper {
-    static taskname = {
+    static TASKNAME = {
         indexHtml: "copy-indexHtml",
         views: "copy-views",
         pwaRoots: "copy-pwa-roots"
@@ -17,9 +19,9 @@ class Helper {
 
     static runParallelCopyTasks = () => {
         return gulp.parallel(
-            Helper.taskname.indexHtml,
-            Helper.taskname.views,
-            Helper.taskname.pwaRoots);
+            Helper.TASKNAME.indexHtml,
+            Helper.TASKNAME.views,
+            Helper.TASKNAME.pwaRoots);
     }
 
     static runBrowserify = (isDebug) => {
@@ -30,25 +32,39 @@ class Helper {
             cache: {},
             packageCache: {}
         })
-        .plugin(tsify)
-        .bundle()
+            .plugin(tsify)
+            .bundle()
+    }
+
+    static UGLIFY_PRODUCTION_OPTIONS = {
+        warnings: "verbose",
+        sourceMap: false,
+        compress: {
+            drop_console: true
+        }
     }
 }
 
-gulp.task(Helper.taskname.indexHtml, () => {
+gulp.task(Helper.TASKNAME.indexHtml, () => {
     return gulp.src('src/index.html')
         .pipe(gulp.dest('dist'));
 });
 
-gulp.task(Helper.taskname.views, () => {
+gulp.task(Helper.TASKNAME.views, () => {
     return gulp.src('src/views/**/*')
         .pipe(gulp.dest('dist/views'));
 });
 
-gulp.task(Helper.taskname.pwaRoots, () => {
-    // These PWA files must go to the web-root to work properly.
-    return gulp.src('src/pwa-root/*')
+// These PWA files must go to the web-root to work properly.
+gulp.task(Helper.TASKNAME.pwaRoots, () => {
+    const serviceWorker = gulp.src('src/pwa-root/pwa-serviceworker.js')
+        .pipe(uglify(Helper.UGLIFY_PRODUCTION_OPTIONS))
         .pipe(gulp.dest('dist'));
+
+    const manifest = gulp.src('src/pwa-root/pwa-manifest.json')
+        .pipe(gulp.dest('dist'));
+
+    return merge(serviceWorker, manifest);
 });
 
 /* Task called by custom VSCode task!
@@ -78,5 +94,7 @@ Builds a production version without copying "assets" directory. */
 gulp.task('build-production', gulp.series(Helper.runParallelCopyTasks(), () => {
     return Helper.runBrowserify(false)
         .pipe(source('bundle.js'))
+        .pipe(buffer())
+        .pipe(uglify(Helper.UGLIFY_PRODUCTION_OPTIONS))
         .pipe(gulp.dest('dist/js'));
 }));
