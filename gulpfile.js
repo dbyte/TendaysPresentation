@@ -17,6 +17,14 @@ class Helper {
         pwaRoots: "copy-pwa-roots"
     }
 
+    static UGLIFY_PRODUCTION_OPTIONS = {
+        warnings: "verbose",
+        sourceMap: false,
+        compress: {
+            drop_console: true
+        }
+    }
+
     static runParallelCopyTasks = () => {
         return gulp.parallel(
             Helper.TASKNAME.indexHtml,
@@ -34,14 +42,6 @@ class Helper {
         })
             .plugin(tsify)
             .bundle()
-    }
-
-    static UGLIFY_PRODUCTION_OPTIONS = {
-        warnings: "verbose",
-        sourceMap: false,
-        compress: {
-            drop_console: true
-        }
     }
 }
 

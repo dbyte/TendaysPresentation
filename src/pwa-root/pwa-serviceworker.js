@@ -36,7 +36,8 @@ self.addEventListener("install", (event) => {
 });
 
 self.addEventListener('fetch', function (event) {
-    // Source https://googlechrome.github.io/samples/service-worker/prefetch-video/
+    // Source https://stackoverflow.com/a/52088073
+    // and https://philna.sh/blog/2018/10/23/service-workers-beware-safaris-range-request/
     console.log('Handling fetch event for', event.request.url);
 
     if (event.request.headers.get('range')) {
