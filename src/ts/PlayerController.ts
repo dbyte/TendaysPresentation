@@ -1,5 +1,5 @@
 import {
-    SceneLoader, Video, PlayButton, FullscreenButton, HomeButton, Navbar, OverlayHandler,
+    ComponentService, Video, PlayButton, Navbar, OverlayHandler,
     HasHtmlElement, getElementsOfObjects, LoadingSpinner, InfoButton
 } from "./Exporter";
 
@@ -7,44 +7,38 @@ export class PlayerController {
     private static readonly DEFAULT_VIDEOSOURCE = "animation-01";
     private video!: Video;
     private playButtons!: PlayButton[];
-    private fullscreenButton!: FullscreenButton;
-    private homeButton!: HomeButton;
     private infoButton01!: InfoButton;
     private loadingSpinner!: LoadingSpinner;
-    private navbar!: Navbar;
+    private navbar: Navbar;
     private overlayHandler!: OverlayHandler;
 
-    constructor() { }
+    constructor() {
+        this.loadingSpinner = LoadingSpinner.create();
+        this.navbar = Navbar.create();
+    }
 
-    public async bindView() {
+    public static create(): PlayerController {
+        const instance = new PlayerController();
+        return instance;
+    }
+
+    public async render(): Promise<void> {
         this.video = new Video(PlayerController.DEFAULT_VIDEOSOURCE);
         await Promise.all([
             this.bindPlayButtonViews(), 
-            this.bindNavbarView(),
-            this.bindSpinnerView()
+            this.navbar.render(),
+            this.loadingSpinner.render()
         ]);
         this.infoButton01 = new InfoButton();
         this.overlayHandler = new OverlayHandler(this.getAllOverlayElements());
     }
 
-    private async bindPlayButtonViews() {
-        await new SceneLoader().load("hotspots-scene-01");
+    private async bindPlayButtonViews(): Promise<void> {
+        await new ComponentService().loadView("hotspots-scene-01");
         this.playButtons = [];
         this.playButtons.push(new PlayButton("playVideo01", PlayerController.DEFAULT_VIDEOSOURCE));
         this.playButtons.push(new PlayButton("playVideo02", "animation-02"));
         this.playButtons.push(new PlayButton("playVideo03", "animation-03"));
-    }
-
-    private async bindNavbarView() {
-        await new SceneLoader().load("main-navigation");
-        this.navbar = new Navbar();
-        this.fullscreenButton = new FullscreenButton();
-        this.homeButton = new HomeButton();
-    }
-
-    private async bindSpinnerView() {
-        await new SceneLoader().load("loading-spinner");
-        this.loadingSpinner = new LoadingSpinner();
     }
 
     public show(): void {
@@ -52,8 +46,6 @@ export class PlayerController {
         //window.scrollTo(0, 1);
 
         this.playButtons.forEach(button => { button.show() });
-        this.fullscreenButton.show();
-        this.homeButton.show();
         this.navbar.show();
         this.overlayHandler.repositionOnVideo(this.video.elem);
 
@@ -84,19 +76,17 @@ export class PlayerController {
         this.infoButton01.show();
     }
 
-    private onClickedVideo(event: Event) {
+    private onClickedVideo(event: Event): void {
         if (event.type == "click") {
             event.preventDefault();
-            this.navbar.toggle();
+            this.navbar.toggleShowHide();
         }
         event.stopPropagation();
     }
 
-    public goHome() {
+    public goHome(): void {
         this.video.jumpToStart();
         this.playButtons.forEach(button => { button.show() });
-        this.fullscreenButton.show();
-        this.homeButton.show();
         this.infoButton01.elem.hidden = true;
     }
 }

@@ -20,15 +20,14 @@ export class App {
         return this.playerController;
     }
 
-    public start() {
-        window.onload = (() => {
-            if (!IS_CLIENT_SAFARI) this.registerServiceWorker();
-            this.playerController = new PlayerController();
-            this.playerController?.bindView()
-                .then(() => { this.playerController?.show() });
+    public async start() {
+        if (!IS_CLIENT_SAFARI) this.registerServiceWorker();
 
-            console.log("PlayerController View initialized.");
-        });
+        this.playerController = PlayerController.create();
+        await this.playerController?.render();
+        this.playerController?.show();
+        
+        console.log("PlayerController View initialized.");
     }
 
     private registerServiceWorker() {
@@ -46,4 +45,4 @@ export class App {
 }
 
 // Bootstrap application
-App.instance.start();
+window.onload = () => { App.instance.start() };

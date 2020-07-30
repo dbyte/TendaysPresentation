@@ -1,34 +1,56 @@
-import { HasHtmlElement, CssAnimation, CssAnimationEvent } from "./Exporter";
+import { HasHtmlElement, CssAnimation, CssAnimationEvent, FullscreenButton, HomeButton, ComponentService } from "./Exporter";
 
 export class Navbar implements HasHtmlElement {
-    public elem: HTMLElement;
-    private cssAnimation: CssAnimation;
+    public elem!: HTMLElement;
+    private fullscreenButton!: FullscreenButton;
+    private homeButton!: HomeButton;
+    private cssAnimation?: CssAnimation;
 
-    constructor() {
+    constructor() {}
+
+    public static create(): Navbar {
+        const instance = new Navbar();
+        return instance;
+    }
+
+    public async render(): Promise<void> {
+        await new ComponentService().loadView("main-navigation");
         this.elem = document.getElementById("navbar") as HTMLElement;
+        this.fullscreenButton = new FullscreenButton();
+        this.homeButton = new HomeButton();
         this.cssAnimation = new CssAnimation(this.elem);
     }
 
-    public toggle() {
+    public dispose(): void {
+        new ComponentService().removeView("main-navigation");
+        this.fullscreenButton?.dispose();
+        this.homeButton?.dispose();
+    }
+
+    public toggleShowHide(): void {
         this.elem.hidden ? this.show() : this.hide();
     }
 
-    public show() {
+    public show(): void {
         if (this.elem.hidden) {
-            this.elem.addEventListener("animationend", () => { this.cssAnimation.removeAll() }, { once: true });
+            this.elem.addEventListener("animationend", () => { this.cssAnimation?.removeAll() }, { once: true });
             this.elem.hidden = false;
-            this.cssAnimation.start(CssAnimationEvent.FadeIn);
+            this.cssAnimation?.start(CssAnimationEvent.FadeIn);
+            this.fullscreenButton?.show();
+            this.homeButton?.show();
         }
     }
 
-    public hide() {
+    public hide(): void {
         if (!this.elem.hidden) {
             this.elem.addEventListener("animationend", () => { this.onHideAnimationEnd() }, { once: true });
-            this.cssAnimation.start(CssAnimationEvent.FadeOut);
+            this.cssAnimation?.start(CssAnimationEvent.FadeOut);
         }
     }
     private onHideAnimationEnd(): void {
         this.elem.hidden = true;
-        this.cssAnimation.removeAll();
+        this.cssAnimation?.removeAll();
+        this.fullscreenButton.elem.hidden = true;
+        this.homeButton.elem.hidden = true;
     }
 }

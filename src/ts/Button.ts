@@ -25,6 +25,10 @@ export abstract class Button implements HasHtmlElement {
         this.addEventListeners();
     }
 
+    public dispose() {
+        this.removeEventListeners();
+    }
+
     protected addEventListeners(): void {
         const events = ["click", "mouseover", "mouseout"];
         events.map(e => { this.elem.addEventListener(e, this) });
