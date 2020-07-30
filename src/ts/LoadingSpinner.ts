@@ -12,13 +12,13 @@ export class LoadingSpinner implements HasHtmlElement {
     }
 
     public async render(): Promise<void> {
-        await new ComponentService().loadView("loading-spinner");
+        await ComponentService.instance.loadView("loading-spinner");
         this.elem = document.getElementById("loadingSpinner") as HTMLElement;
         this.cssAnimation = new CssAnimation(this.elem);
     }
 
     public dispose(): void {
-        new ComponentService().removeView("loading-spinner");
+        ComponentService.instance.removeView("loading-spinner");
     }
 
     public show(): void {

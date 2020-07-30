@@ -34,7 +34,7 @@ export class PlayerController {
     }
 
     private async bindPlayButtonViews(): Promise<void> {
-        await new ComponentService().loadView("hotspots-scene-01");
+        await ComponentService.instance.loadView("hotspots-scene-01");
         this.playButtons = [];
         this.playButtons.push(new PlayButton("playVideo01", PlayerController.DEFAULT_VIDEOSOURCE));
         this.playButtons.push(new PlayButton("playVideo02", "animation-02"));

@@ -1,4 +1,14 @@
 export class ComponentService {
+    private static Singleton: ComponentService;
+
+    private constructor() { }
+
+    public static get instance(): ComponentService {
+        if (!ComponentService.Singleton) {
+            ComponentService.Singleton = new ComponentService();
+        }
+        return ComponentService.Singleton;
+    }
 
     /**
      * Note that we tokenize viewName instead of parametrizing the path to the HTML file.
@@ -16,9 +26,9 @@ export class ComponentService {
             method: 'GET',
             headers: headers
         })
-        .then(response => response.text())
-        .then(text => { rootElem.innerHTML = text; })
-        .catch(err => { throw new Error(`Error loading component: ${err}`); })
+            .then(response => response.text())
+            .then(text => { rootElem.innerHTML = text; })
+            .catch(err => { throw new Error(`Error loading component: ${err}`); })
     }
 
     public removeView(viewName: string) {
@@ -27,7 +37,7 @@ export class ComponentService {
         rootElem.innerHTML = "";
     }
 
-    private getContextByViewName(viewName: string): {url: string, rootElemID: string} {
+    private getContextByViewName(viewName: string): { url: string, rootElemID: string } {
         let url: string;
         let rootElemID: string;
 
@@ -46,14 +56,14 @@ export class ComponentService {
                 url = "./views/loading-spinner.html";
                 rootElemID = "loading-spinner-container";
                 break;
-                
+
             default:
                 url = ".";
                 rootElemID = "";
                 throw new Error(`Could not resolve viewName '${viewName}' to matching context.`);
         }
 
-        return {url, rootElemID};
+        return { url, rootElemID };
     }
 
 }

@@ -14,7 +14,7 @@ export class Navbar implements HasHtmlElement {
     }
 
     public async render(): Promise<void> {
-        await new ComponentService().loadView("main-navigation");
+        await ComponentService.instance.loadView("main-navigation");
         this.elem = document.getElementById("navbar") as HTMLElement;
         this.fullscreenButton = new FullscreenButton();
         this.homeButton = new HomeButton();
@@ -22,7 +22,7 @@ export class Navbar implements HasHtmlElement {
     }
 
     public dispose(): void {
-        new ComponentService().removeView("main-navigation");
+        ComponentService.instance.removeView("main-navigation");
         this.fullscreenButton?.dispose();
         this.homeButton?.dispose();
     }
