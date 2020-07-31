@@ -1,12 +1,12 @@
 import { Button, App } from "./Exporter";
 
 export class HomeButton extends Button {
-    constructor(parentElem: HTMLElement) {
-        super("home-button-component", "assets/reload-button.svg", parentElem);
+    constructor(parentElemID: string) {
+        super("home-button-component", "assets/reload-button.svg", parentElemID);
     }
 
     public static create(parentElemID: string): HomeButton {
-        const instance = new HomeButton(document.getElementById(parentElemID)!);
+        const instance = new HomeButton(parentElemID);
         return instance;
     }
 

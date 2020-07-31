@@ -4,6 +4,7 @@ import {
 } from "./Exporter";
 
 export class PlayerController {
+    private static readonly COMPONENT_ID = "interactiveContainer";
     private static readonly DEFAULT_VIDEOSOURCE = "animation-01";
     private video!: Video;
     private playButtons: PlayButton[];
@@ -13,13 +14,13 @@ export class PlayerController {
     private overlayHandler!: OverlayHandler;
 
     constructor() {
-        this.loadingSpinner = LoadingSpinner.create("interactiveContainer");
+        this.loadingSpinner = LoadingSpinner.create(PlayerController.COMPONENT_ID);
         this.navbar = Navbar.create("interactiveContainer");
         this.playButtons = [];
-        this.playButtons.push(PlayButton.create("playVideo01", PlayerController.DEFAULT_VIDEOSOURCE, "interactiveContainer"));
-        this.playButtons.push(PlayButton.create("playVideo02", "animation-02", "interactiveContainer"));
-        this.playButtons.push(PlayButton.create("playVideo03", "animation-03", "interactiveContainer"));
-        this.infoButton01 = new InfoButton(document.getElementById("interactiveContainer")!);
+        this.playButtons.push(PlayButton.create("playVideo01", PlayerController.DEFAULT_VIDEOSOURCE, PlayerController.COMPONENT_ID));
+        this.playButtons.push(PlayButton.create("playVideo02", "animation-02", PlayerController.COMPONENT_ID));
+        this.playButtons.push(PlayButton.create("playVideo03", "animation-03", PlayerController.COMPONENT_ID));
+        this.infoButton01 = new InfoButton(PlayerController.COMPONENT_ID);
     }
 
     public static create(): PlayerController {
@@ -30,7 +31,7 @@ export class PlayerController {
     public async render(): Promise<void> {
         this.video = new Video(PlayerController.DEFAULT_VIDEOSOURCE);
         await Promise.all([
-            await ComponentService.instance.loadView("hotspots-scene-01-component", document.getElementById("interactiveContainer")!),
+            await ComponentService.instance.loadView("hotspots-scene-01-component", document.getElementById(PlayerController.COMPONENT_ID)!),
             this.playButtons.forEach(button => { button.render() }),
             this.navbar.render(),
             this.loadingSpinner.render(),

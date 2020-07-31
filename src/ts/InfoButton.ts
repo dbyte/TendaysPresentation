@@ -3,8 +3,8 @@ import { Button, CssAnimation, CssAnimationEvent } from "./Exporter";
 export class InfoButton extends Button {
     private cssAnimation?: CssAnimation;
 
-    constructor(parentElem: HTMLElement) {
-        super("info-button-component", "assets/info-button.png", parentElem);
+    constructor(parentElemID: string) {
+        super("info-button-component", "assets/info-button.png", parentElemID);
     }
 
     public async render(componentId?: string): Promise<void> {

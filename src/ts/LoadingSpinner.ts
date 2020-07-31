@@ -2,21 +2,24 @@ import { HasHtmlElement, CssAnimation, CssAnimationEvent, ComponentService } fro
 
 export class LoadingSpinner implements HasHtmlElement {
     private readonly COMPONENT_ID = "loadingspinner-component";
-    private readonly parentElem: HTMLElement;
+    private readonly parentElemId: string;
     public elem!: HTMLElement;
     private cssAnimation?: CssAnimation;
 
-    constructor(parentElem: HTMLElement) {
-        this.parentElem = parentElem;
+    constructor(parentElemId: string) {
+        this.parentElemId = parentElemId;
     }
 
-    public static create(parentElemID: string): LoadingSpinner {
-        const instance = new LoadingSpinner(document.getElementById(parentElemID)!);
+    public static create(parentElemId: string): LoadingSpinner {
+        const instance = new LoadingSpinner(parentElemId);
         return instance;
     }
 
     public async render(): Promise<void> {
-        await ComponentService.instance.loadView(this.COMPONENT_ID, this.parentElem);
+        const parentElem = document.getElementById(this.parentElemId);
+        if (!parentElem) new Error(`Unable to find DOM element with id '${this.parentElemId}'`);
+
+        await ComponentService.instance.loadView(this.COMPONENT_ID, parentElem!);
         this.elem = document.getElementById(this.COMPONENT_ID) as HTMLElement;
         this.cssAnimation = new CssAnimation(this.elem);
     }

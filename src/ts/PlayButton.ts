@@ -4,13 +4,13 @@ export class PlayButton extends Button {
     private readonly videoFileBasename: string;
     private cssAnimation?: CssAnimation;
 
-    constructor(elemID: string, pathToVideo: string, parentElem: HTMLElement) {
-        super(elemID, "assets/play-button-grey.svg", parentElem);
+    constructor(elemID: string, pathToVideo: string, parentElemId: string) {
+        super(elemID, "assets/play-button-grey.svg", parentElemId);
         this.videoFileBasename = pathToVideo;
     }
 
-    public static create(elemID: string, pathToVideo: string, parentElemID: string): PlayButton {
-        const instance = new PlayButton(elemID, pathToVideo, document.getElementById(parentElemID)!);
+    public static create(elemID: string, pathToVideo: string, parentElemId: string): PlayButton {
+        const instance = new PlayButton(elemID, pathToVideo, parentElemId);
         return instance;
     }
 
