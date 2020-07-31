@@ -6,9 +6,9 @@ import {
 export class PlayerController {
     private static readonly DEFAULT_VIDEOSOURCE = "animation-01";
     private video!: Video;
-    private playButtons!: PlayButton[];
-    private infoButton01!: InfoButton;
-    private loadingSpinner!: LoadingSpinner;
+    private playButtons: PlayButton[];
+    private infoButton01: InfoButton;
+    private loadingSpinner: LoadingSpinner;
     private navbar: Navbar;
     private overlayHandler!: OverlayHandler;
 
@@ -37,6 +37,7 @@ export class PlayerController {
             this.infoButton01.render()
         ]);
         this.overlayHandler = new OverlayHandler(this.getAllOverlayElements());
+        
         console.log(this.constructor.name + " rendered and ready to show()." )
     }
 
