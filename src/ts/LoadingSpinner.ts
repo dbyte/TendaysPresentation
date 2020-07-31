@@ -1,24 +1,28 @@
 import { HasHtmlElement, CssAnimation, CssAnimationEvent, ComponentService } from "./Exporter";
 
 export class LoadingSpinner implements HasHtmlElement {
+    private readonly COMPONENT_ID = "loadingspinner-component";
+    private readonly parentElem: HTMLElement;
     public elem!: HTMLElement;
     private cssAnimation?: CssAnimation;
 
-    constructor() { }
+    constructor(parentElem: HTMLElement) {
+        this.parentElem = parentElem;
+    }
 
-    public static create(): LoadingSpinner {
-        const instance = new LoadingSpinner();
+    public static create(parentElemID: string): LoadingSpinner {
+        const instance = new LoadingSpinner(document.getElementById(parentElemID)!);
         return instance;
     }
 
     public async render(): Promise<void> {
-        await ComponentService.instance.loadView("loading-spinner");
-        this.elem = document.getElementById("loadingSpinner") as HTMLElement;
+        await ComponentService.instance.loadView(this.COMPONENT_ID, this.parentElem);
+        this.elem = document.getElementById(this.COMPONENT_ID) as HTMLElement;
         this.cssAnimation = new CssAnimation(this.elem);
     }
 
     public dispose(): void {
-        ComponentService.instance.removeView("loading-spinner");
+        ComponentService.instance.removeView(this.elem);
     }
 
     public show(): void {

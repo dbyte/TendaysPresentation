@@ -8,7 +8,7 @@ const FILES_TO_CACHE = [
     "views/css/app.css",
     "views/css/spinner.css",
     "views/hotspots-scene-01.html",
-    "views/main-navigation-bar.html",
+    "views/main-navigation.html",
     "views/loading-spinner.html",
 
     "assets/fullscreen-button.svg",

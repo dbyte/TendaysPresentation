@@ -4,18 +4,18 @@ export class PlayButton extends Button {
     private readonly videoFileBasename: string;
     private cssAnimation?: CssAnimation;
 
-    constructor(elemID: string, pathToVideo: string) {
-        super(elemID, "assets/play-button-grey.svg");
+    constructor(elemID: string, pathToVideo: string, parentElem: HTMLElement) {
+        super(elemID, "assets/play-button-grey.svg", parentElem);
         this.videoFileBasename = pathToVideo;
     }
 
-    public static create(elemID: string, pathToVideo: string): PlayButton {
-        const instance = new PlayButton(elemID, pathToVideo);
+    public static create(elemID: string, pathToVideo: string, parentElemID: string): PlayButton {
+        const instance = new PlayButton(elemID, pathToVideo, document.getElementById(parentElemID)!);
         return instance;
     }
 
-    public async render(viewName?: string): Promise<void> {
-        super.render(viewName);
+    public async render(componentId?: string): Promise<void> {
+        super.render(componentId);
         this.cssAnimation = new CssAnimation(this.elem);
     }
 

@@ -1,13 +1,12 @@
 import { Button } from "./Exporter";
 
 export class FullscreenButton extends Button {
-
-    constructor() {
-        super("goFullscreen", "assets/fullscreen-button.svg");
+    constructor(parentElem: HTMLElement) {
+        super("fullscreen-button-component", "assets/fullscreen-button.svg", parentElem);
     }
 
-    public static create(): FullscreenButton {
-        const instance = new FullscreenButton();
+    public static create(parentElemID: string): FullscreenButton {
+        const instance = new FullscreenButton(document.getElementById(parentElemID)!);
         return instance;
     }
 

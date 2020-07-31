@@ -13,13 +13,13 @@ export class PlayerController {
     private overlayHandler!: OverlayHandler;
 
     constructor() {
-        this.loadingSpinner = LoadingSpinner.create();
-        this.navbar = Navbar.create();
+        this.loadingSpinner = LoadingSpinner.create("interactiveContainer");
+        this.navbar = Navbar.create("interactiveContainer");
         this.playButtons = [];
-        this.playButtons.push(PlayButton.create("playVideo01", PlayerController.DEFAULT_VIDEOSOURCE));
-        this.playButtons.push(PlayButton.create("playVideo02", "animation-02"));
-        this.playButtons.push(PlayButton.create("playVideo03", "animation-03"));
-        this.infoButton01 = new InfoButton();
+        this.playButtons.push(PlayButton.create("playVideo01", PlayerController.DEFAULT_VIDEOSOURCE, "interactiveContainer"));
+        this.playButtons.push(PlayButton.create("playVideo02", "animation-02", "interactiveContainer"));
+        this.playButtons.push(PlayButton.create("playVideo03", "animation-03", "interactiveContainer"));
+        this.infoButton01 = new InfoButton(document.getElementById("interactiveContainer")!);
     }
 
     public static create(): PlayerController {
@@ -30,7 +30,7 @@ export class PlayerController {
     public async render(): Promise<void> {
         this.video = new Video(PlayerController.DEFAULT_VIDEOSOURCE);
         await Promise.all([
-            await ComponentService.instance.loadView("hotspots-scene-01"),
+            await ComponentService.instance.loadView("hotspots-scene-01-component", document.getElementById("interactiveContainer")!),
             this.playButtons.forEach(button => { button.render() }),
             this.navbar.render(),
             this.loadingSpinner.render(),

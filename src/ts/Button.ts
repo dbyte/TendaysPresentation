@@ -3,15 +3,17 @@ import { HasHtmlElement, ComponentService } from "./Exporter";
 export abstract class Button implements HasHtmlElement {
     protected elemID: string;
     public elem!: HTMLElement;
+    private readonly parentElem: HTMLElement;
     protected buttonImageSource: string;
 
-    constructor(elemID: string, buttonImageSource: string) {
+    constructor(elemID: string, buttonImageSource: string, parentElem: HTMLElement) {
         this.elemID = elemID;
         this.buttonImageSource = buttonImageSource;
+        this.parentElem = parentElem;
     }
 
-    public async render(viewName?: string): Promise<void> {
-        if (viewName) await ComponentService.instance.loadView(viewName);
+    public async render(componentId?: string): Promise<void> {
+        if (componentId) await ComponentService.instance.loadView(this.elemID, this.parentElem);
         this.elem = document.getElementById(this.elemID) as HTMLElement;
         this.elem.hidden = true;
         const imageElem = this.elem as HTMLImageElement;
@@ -30,6 +32,8 @@ export abstract class Button implements HasHtmlElement {
 
     public dispose(): void {
         this.removeEventListeners();
+        ComponentService.instance.removeView(this.elem)
+        this.elem = undefined!;
     }
 
     protected addEventListeners(): void {

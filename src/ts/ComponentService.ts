@@ -14,10 +14,10 @@ export class ComponentService {
      * Note that we tokenize viewName instead of parametrizing the path to the HTML file.
      * This is due to security reasons (path injection).
      * 
-     * @param viewName Token for the view which we want to load into the DOM
+     * @param componentId Token for the component which we want to load into the DOM
      */
-    public async loadView(viewName: string): Promise<void> {
-        const context = this.getContextByViewName(viewName);
+    public async loadView(componentId: string, parentElem: HTMLElement): Promise<void> {
+        const context = this.getContextByComponent(componentId);
         const headers = new Headers();
         headers.append('Content-Type', 'text/html');
         let response;
@@ -40,7 +40,7 @@ export class ComponentService {
 
         if (response && response.ok) {
             responseText = await response.text();
-            this.getPlaceholderElement(viewName).append(this.htmlTextToDomFragment(responseText));
+            parentElem.append(this.htmlTextToDomFragment(responseText));
         }
 
     }
@@ -52,57 +52,40 @@ export class ComponentService {
         return fragment;
     }
 
-    public removeView(viewName: string) {
-        this.getPlaceholderElement(viewName).innerHTML = "";
+    public removeView(elem: HTMLElement) {
+        elem.remove();
     }
 
-    private getPlaceholderElement(viewName: string): HTMLElement {
-        const context = this.getContextByViewName(viewName);
-        const rootElem = document.getElementById(context.rootElemID) as HTMLElement;
-
-        if (!rootElem) throw new Error(
-            `No root element found in DOM for element-id '${context.rootElemID}'!`);
-
-        return rootElem;
-    }
-
-    private getContextByViewName(viewName: string): { url: string, rootElemID: string } {
+    private getContextByComponent(viewName: string): { url: string } {
         let url: string;
-        let rootElemID: string;
 
         switch (viewName) {
-            case "hotspots-scene-01":
+            case "hotspots-scene-01-component":
                 url = "./views/hotspots-scene-01.html";
-                rootElemID = "hotspots-container";
                 break;
 
-            case "main-navigation":
-                url = "./views/main-navigation-bar.html";
-                rootElemID = "main-navigation-container";
+            case "main-navigation-component":
+                url = "./views/main-navigation.html";
                 break;
 
-            case "loading-spinner":
-                url = "./views/loading-spinner.html";
-                rootElemID = "loading-spinner-container";
+            case "loadingspinner-component":
+                url = "./views/loadingspinner.html";
                 break;
 
-            case "fullscreen-button":
+            case "fullscreen-button-component":
                 url = "./views/fullscreen-button.html";
-                rootElemID = "navbar";
                 break;
 
-            case "home-button":
+            case "home-button-component":
                 url = "./views/home-button.html";
-                rootElemID = "navbar";
                 break;
 
             default:
                 url = ".";
-                rootElemID = "";
                 throw new Error(`Could not resolve viewName '${viewName}' to matching context.`);
         }
 
-        return { url, rootElemID };
+        return { url };
     }
 
 }
