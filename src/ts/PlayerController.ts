@@ -15,6 +15,11 @@ export class PlayerController {
     constructor() {
         this.loadingSpinner = LoadingSpinner.create();
         this.navbar = Navbar.create();
+        this.playButtons = [];
+        this.playButtons.push(PlayButton.create("playVideo01", PlayerController.DEFAULT_VIDEOSOURCE));
+        this.playButtons.push(PlayButton.create("playVideo02", "animation-02"));
+        this.playButtons.push(PlayButton.create("playVideo03", "animation-03"));
+        this.infoButton01 = new InfoButton();
     }
 
     public static create(): PlayerController {
@@ -25,26 +30,17 @@ export class PlayerController {
     public async render(): Promise<void> {
         this.video = new Video(PlayerController.DEFAULT_VIDEOSOURCE);
         await Promise.all([
-            this.bindPlayButtonViews(), 
+            await ComponentService.instance.loadView("hotspots-scene-01"),
+            this.playButtons.forEach(button => { button.render() }),
             this.navbar.render(),
-            this.loadingSpinner.render()
+            this.loadingSpinner.render(),
+            this.infoButton01.render()
         ]);
-        this.infoButton01 = new InfoButton();
         this.overlayHandler = new OverlayHandler(this.getAllOverlayElements());
-    }
-
-    private async bindPlayButtonViews(): Promise<void> {
-        await ComponentService.instance.loadView("hotspots-scene-01");
-        this.playButtons = [];
-        this.playButtons.push(new PlayButton("playVideo01", PlayerController.DEFAULT_VIDEOSOURCE));
-        this.playButtons.push(new PlayButton("playVideo02", "animation-02"));
-        this.playButtons.push(new PlayButton("playVideo03", "animation-03"));
+        console.log(this.constructor.name + " rendered and ready to show()." )
     }
 
     public show(): void {
-        // Hide address bar on mobiles, https://developers.google.com/web/fundamentals/native-hardware/fullscreen/
-        //window.scrollTo(0, 1);
-
         this.playButtons.forEach(button => { button.show() });
         this.navbar.show();
         this.overlayHandler.repositionOnVideo(this.video.elem);

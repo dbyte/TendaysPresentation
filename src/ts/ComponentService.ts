@@ -18,23 +18,52 @@ export class ComponentService {
      */
     public async loadView(viewName: string): Promise<void> {
         const context = this.getContextByViewName(viewName);
-        const rootElem = document.getElementById(context.rootElemID) as HTMLElement;
-
         const headers = new Headers();
         headers.append('Content-Type', 'text/html');
-        await fetch(context.url, {
-            method: 'GET',
-            headers: headers
-        })
-            .then(response => response.text())
-            .then(text => { rootElem.innerHTML = text; })
-            .catch(err => { throw new Error(`Error loading component: ${err}`); })
+        let response;
+        let responseText;
+
+        try {
+            response = await fetch(context.url, {
+                method: 'GET',
+                headers: headers
+            });
+            if (!response) throw new Error(
+                `Unable to load component. No response for request url ${context.url}`);
+
+            if (!response.ok) throw new Error(
+                `Unable to load component. Response status = ${response.status}`);
+
+        } catch (error) {
+            return Promise.reject(error);
+        }
+
+        if (response && response.ok) {
+            responseText = await response.text();
+            this.getPlaceholderElement(viewName).append(this.htmlTextToDomFragment(responseText));
+        }
+
+    }
+
+    private htmlTextToDomFragment(text: string): DocumentFragment {
+        const htmlBody = new DOMParser().parseFromString(text, "text/html").body;
+        const fragment = new DocumentFragment();
+        htmlBody.childNodes.forEach((child) => { fragment.appendChild(child) });
+        return fragment;
     }
 
     public removeView(viewName: string) {
+        this.getPlaceholderElement(viewName).innerHTML = "";
+    }
+
+    private getPlaceholderElement(viewName: string): HTMLElement {
         const context = this.getContextByViewName(viewName);
         const rootElem = document.getElementById(context.rootElemID) as HTMLElement;
-        rootElem.innerHTML = "";
+
+        if (!rootElem) throw new Error(
+            `No root element found in DOM for element-id '${context.rootElemID}'!`);
+
+        return rootElem;
     }
 
     private getContextByViewName(viewName: string): { url: string, rootElemID: string } {
@@ -55,6 +84,16 @@ export class ComponentService {
             case "loading-spinner":
                 url = "./views/loading-spinner.html";
                 rootElemID = "loading-spinner-container";
+                break;
+
+            case "fullscreen-button":
+                url = "./views/fullscreen-button.html";
+                rootElemID = "navbar";
+                break;
+
+            case "home-button":
+                url = "./views/home-button.html";
+                rootElemID = "navbar";
                 break;
 
             default:

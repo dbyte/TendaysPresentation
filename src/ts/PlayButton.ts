@@ -2,11 +2,20 @@ import { Button, CssAnimation, CssAnimationEvent, App } from "./Exporter";
 
 export class PlayButton extends Button {
     private readonly videoFileBasename: string;
-    private cssAnimation: CssAnimation;
+    private cssAnimation?: CssAnimation;
 
     constructor(elemID: string, pathToVideo: string) {
         super(elemID, "assets/play-button-grey.svg");
         this.videoFileBasename = pathToVideo;
+    }
+
+    public static create(elemID: string, pathToVideo: string): PlayButton {
+        const instance = new PlayButton(elemID, pathToVideo);
+        return instance;
+    }
+
+    public async render(viewName?: string): Promise<void> {
+        super.render(viewName);
         this.cssAnimation = new CssAnimation(this.elem);
     }
 
@@ -33,15 +42,15 @@ export class PlayButton extends Button {
 
     private animateIn(): void {
         this.elem.addEventListener("animationend", () => { this.onInAnimationEnd() }, { once: true });
-        this.cssAnimation.start(CssAnimationEvent.ScaleIn);
+        this.cssAnimation?.start(CssAnimationEvent.ScaleIn);
     }
     private onInAnimationEnd(): void {
-        this.cssAnimation.removeAll();
+        this.cssAnimation?.removeAll();
     }
 
     private animateOnMouseover(): void {
         this.elem.addEventListener("animationend", () => { this.onMouseoverAnimationEnd() }, { once: true });
-        this.cssAnimation.start(CssAnimationEvent.OnMouseOver);
+        this.cssAnimation?.start(CssAnimationEvent.OnMouseOver);
     }
     private onMouseoverAnimationEnd(): void {
         // TODO
@@ -49,7 +58,7 @@ export class PlayButton extends Button {
 
     private animateOnMouseout(): void {
         this.elem.addEventListener("animationend", () => { this.onMouseoutAnimationEnd() }, { once: true });
-        this.cssAnimation.start(CssAnimationEvent.OnMouseOut);
+        this.cssAnimation?.start(CssAnimationEvent.OnMouseOut);
     }
     private onMouseoutAnimationEnd(): void {
         // TODO
@@ -58,7 +67,7 @@ export class PlayButton extends Button {
     public hide(): void {
         this.removeEventListeners();
         this.elem.addEventListener("animationend", () => { this.onHideAnimationEnd() }, { once: true });
-        this.cssAnimation.start(CssAnimationEvent.ScaleOut)
+        this.cssAnimation?.start(CssAnimationEvent.ScaleOut)
     }
     private onHideAnimationEnd(): void {
         this.elem.hidden = true;

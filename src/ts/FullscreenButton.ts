@@ -6,9 +6,14 @@ export class FullscreenButton extends Button {
         super("goFullscreen", "assets/fullscreen-button.svg");
     }
 
-    public show(): void {
-        super.show();
+    public static create(): FullscreenButton {
+        const instance = new FullscreenButton();
+        return instance;
     }
+
+    // public async render(): Promise<void> {
+    //     await super.render("fullscreen-button");
+    // }
 
     // Called JS-internally by the added listeners!
     public handleEvent(e: Event): void {

@@ -20,14 +20,11 @@ export class App {
         return this.playerController;
     }
 
-    public async start() {
+    public start() {
         if (!IS_CLIENT_SAFARI) this.registerServiceWorker();
 
         this.playerController = PlayerController.create();
-        await this.playerController?.render();
-        this.playerController?.show();
-        
-        console.log("PlayerController View initialized.");
+        this.playerController.render().then(() => this.playerController!.show());
     }
 
     private registerServiceWorker() {
@@ -45,4 +42,4 @@ export class App {
 }
 
 // Bootstrap application
-window.onload = () => { App.instance.start() };
+window.onload = () => App.instance.start();

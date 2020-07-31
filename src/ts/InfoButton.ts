@@ -1,10 +1,14 @@
 import { Button, CssAnimation, CssAnimationEvent } from "./Exporter";
 
 export class InfoButton extends Button {
-    private cssAnimation: CssAnimation;
+    private cssAnimation?: CssAnimation;
 
     constructor() {
         super("infoButton01", "assets/info-button.png");
+    }
+
+    public async render(viewName?: string): Promise<void> {
+        super.render(viewName);
         this.cssAnimation = new CssAnimation(this.elem);
     }
 
@@ -25,10 +29,10 @@ export class InfoButton extends Button {
 
     private animateIn(): void {
         this.elem.addEventListener("animationend", (event) => { this.onInAnimationEnd(event) }, { once: true });
-        this.cssAnimation.start(CssAnimationEvent.ScaleIn);
+        this.cssAnimation?.start(CssAnimationEvent.ScaleIn);
     }
     private onInAnimationEnd(event: AnimationEvent): void {
-        this.cssAnimation.removeAll();
+        this.cssAnimation?.removeAll();
         event.stopPropagation();
     }
 }
