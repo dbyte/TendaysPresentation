@@ -39,6 +39,28 @@ export function getElementsOfObjects(objects: HasHtmlElement[]): HTMLElement[] {
     return objects.map(o => { return o.elem });
 }
 
+export function getElementByUniqueClassName(className: string): HTMLElement {
+    const elems = document.getElementsByClassName(className);
+    const count: number = !elems ? 0 : elems.length;
+    switch (count) {
+        case 1:
+            return elems[0] as HTMLElement;
+
+        case 0:
+            throw new Error("Unable to find element with class name " + className);
+    
+        default:
+            throw new Error(`Class name not unique. Found ${count} elements, expected 1!`);
+    }
+}
+
+export function htmlTextToDomFragment(text: string): DocumentFragment {
+    const htmlBody = new DOMParser().parseFromString(text, "text/html").body;
+    const fragment = new DocumentFragment();
+    htmlBody.childNodes.forEach((child) => { fragment.appendChild(child) });
+    return fragment;
+}
+
 export function isTouchDevice(): boolean {
     return window.matchMedia("(hover: none) and (pointer: coarse)").matches;
 }

@@ -1,19 +1,16 @@
-import { HasHtmlElement, CssAnimation, CssAnimationEvent, FullscreenButton,
-    HomeButton, ComponentService } from "./Exporter";
+import { Component, CssAnimation, CssAnimationEvent, FullscreenButton,
+    HomeButton  } from "./Exporter";
 
-export class Navbar implements HasHtmlElement {
-    private readonly COMPONENT_ID = "main-navigation-component";
-    private readonly parentElemId: string;
-
-    public elem!: HTMLElement;
+export class Navbar extends Component<Navbar> {
     private fullscreenButton!: FullscreenButton;
     private homeButton!: HomeButton;
     private cssAnimation?: CssAnimation;
 
     constructor(parentElemId: string) {
-        this.parentElemId = parentElemId;
-        this.fullscreenButton = FullscreenButton.create(this.COMPONENT_ID);
-        this.homeButton = HomeButton.create(this.COMPONENT_ID);
+        super("main-navigation-component", parentElemId);
+
+        this.fullscreenButton = FullscreenButton.create(this.componentId);
+        this.homeButton = HomeButton.create(this.componentId);
     }
 
     public static create(parentElemId: string): Navbar {
@@ -22,22 +19,18 @@ export class Navbar implements HasHtmlElement {
     }
 
     public async render(): Promise<void> {
-        const parentElem = document.getElementById(this.parentElemId);
-        if (!parentElem) new Error(`Unable to find DOM element with id '${this.parentElemId}'`);
-
         // Set up my own component first!
-        await ComponentService.instance.loadView(this.COMPONENT_ID, parentElem!);
-        this.elem = document.getElementById(this.COMPONENT_ID) as HTMLElement
+        await super.render();
         this.elem.hidden = true
         this.cssAnimation = new CssAnimation(this.elem);
         
         // Now my children (their order matters for horiz. alignment, so no Promise.all!)
-        await this.fullscreenButton.render("fullscreen-button-component");
-        await this.homeButton.render("home-button-component");
+        await this.fullscreenButton.render();
+        await this.homeButton.render();
     }
 
     public dispose(): void {
-        ComponentService.instance.removeView(this.elem);
+        super.dispose();
         this.fullscreenButton.dispose();
         this.homeButton.dispose();
     }
@@ -65,7 +58,7 @@ export class Navbar implements HasHtmlElement {
     private onHideAnimationEnd(): void {
         this.elem.hidden = true;
         this.cssAnimation?.removeAll();
-        this.fullscreenButton.elem.hidden = true;
+        this.fullscreenButton.hide();
         this.homeButton.elem.hidden = true;
     }
 }

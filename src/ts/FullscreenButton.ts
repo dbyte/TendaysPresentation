@@ -1,4 +1,4 @@
-import { Button } from "./Exporter";
+import { Button, getElementByUniqueClassName } from "./Exporter";
 
 export class FullscreenButton extends Button {
     constructor(parentElemId: string) {
@@ -35,13 +35,7 @@ export class FullscreenButton extends Button {
 
     private enter(): void {
         // Source: https://davidwalsh.name/fullscreen
-        let target = document.getElementById('interactiveContainer');
-        if (target === null) {
-            const err = new Error("Could not get DOM element by ID 'interactiveContainer'.");
-            alert(err.message);
-            console.error(err.message);
-            throw err;
-        }
+        let target = getElementByUniqueClassName('interactiveContainer');
 
         if (target.requestFullscreen) {
             target.requestFullscreen();

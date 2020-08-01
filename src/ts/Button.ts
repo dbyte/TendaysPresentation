@@ -1,24 +1,15 @@
-import { HasHtmlElement, ComponentService } from "./Exporter";
+import { Component } from "./Exporter";
 
-export abstract class Button implements HasHtmlElement {
-    protected elemID: string;
-    public elem!: HTMLElement;
-    private readonly parentElemId: string;
+export abstract class Button extends Component<Button> {
     protected buttonImageSource: string;
 
-    constructor(elemID: string, buttonImageSource: string, parentElemId: string) {
-        this.elemID = elemID;
+    constructor(componentId: string, buttonImageSource: string, parentElemId: string) {
+        super(componentId, parentElemId)
         this.buttonImageSource = buttonImageSource;
-        this.parentElemId = parentElemId;
     }
 
-    public async render(componentId?: string): Promise<void> {
-        const parentElem = document.getElementById(this.parentElemId);
-        if (!parentElem) new Error(`Unable to find DOM element with id '${this.parentElemId}'`);
-
-        if (componentId) await ComponentService.instance.loadView(this.elemID, parentElem!);
-
-        this.elem = document.getElementById(this.elemID) as HTMLElement;
+    public async render(skipLoading?: "skipLoading"): Promise<void> {
+        await super.render(skipLoading);
         this.elem.hidden = true;
         const imageElem = this.elem as HTMLImageElement;
         imageElem.src = this.buttonImageSource;
@@ -34,10 +25,13 @@ export abstract class Button implements HasHtmlElement {
         this.addEventListeners();
     }
 
+    public hide() {
+        this.elem.hidden = true;
+    }
+
     public dispose(): void {
         this.removeEventListeners();
-        ComponentService.instance.removeView(this.elem)
-        this.elem = undefined!;
+        super.dispose();
     }
 
     protected addEventListeners(): void {

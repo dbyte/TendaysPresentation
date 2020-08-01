@@ -1,35 +1,49 @@
-export class ComponentService {
-    private static Singleton: ComponentService;
+import { getElementByUniqueClassName, HasHtmlElement,
+    htmlTextToDomFragment } from "./Exporter";
 
-    private constructor() { }
+export abstract class Component<T> implements HasHtmlElement  {
+    public elem: HTMLElement;
+    public readonly componentId: string;
+    protected readonly parentElemId: string;
 
-    public static get instance(): ComponentService {
-        if (!ComponentService.Singleton) {
-            ComponentService.Singleton = new ComponentService();
-        }
-        return ComponentService.Singleton;
+    constructor(componentId: string, parentElemId: string) {
+        this.componentId = componentId;
+        this.parentElemId = parentElemId;
+        this.elem = undefined!;
     }
 
-    /**
-     * Note that we tokenize viewName instead of parametrizing the path to the HTML file.
-     * This is due to security reasons (path injection).
-     * 
-     * @param componentId Token for the component which we want to load into the DOM
-     */
-    public async loadView(componentId: string, parentElem: HTMLElement): Promise<void> {
-        const context = this.getContextByComponent(componentId);
+    public async render(skipLoading?: "skipLoading"): Promise<void> {
+        const parentElem = getElementByUniqueClassName(this.parentElemId);
+        if (!parentElem) new Error(`Unable to find DOM element with id '${this.parentElemId}'`);
+
+        if (!skipLoading) await this.loadView();
+        this.elem = getElementByUniqueClassName(this.componentId) as HTMLElement
+    }
+
+    public dispose(): void {
+        this.elem.remove();
+        this.elem = undefined!;
+    }
+
+    public abstract show(): void;
+    public abstract hide(): void;
+
+    private async loadView(): Promise<void> {
+        const parentElem = getElementByUniqueClassName(this.parentElemId);
+        if (!parentElem) new Error(`Unable to find DOM element with id '${this.parentElemId}'`);
+
+        const url = ComponentUrl.get(this.componentId);
+        let response;
         const headers = new Headers();
         headers.append('Content-Type', 'text/html');
-        let response;
-        let responseText;
 
         try {
-            response = await fetch(context.url, {
+            response = await fetch(url, {
                 method: 'GET',
                 headers: headers
             });
             if (!response) throw new Error(
-                `Unable to load component. No response for request url ${context.url}`);
+                `Unable to load component. No response for request url ${url}`);
 
             if (!response.ok) throw new Error(
                 `Unable to load component. Response status = ${response.status}`);
@@ -39,53 +53,25 @@ export class ComponentService {
         }
 
         if (response && response.ok) {
-            responseText = await response.text();
-            parentElem.append(this.htmlTextToDomFragment(responseText));
+            const responseText = await response.text();
+            parentElem.append(htmlTextToDomFragment(responseText));
         }
-
     }
+}
 
-    private htmlTextToDomFragment(text: string): DocumentFragment {
-        const htmlBody = new DOMParser().parseFromString(text, "text/html").body;
-        const fragment = new DocumentFragment();
-        htmlBody.childNodes.forEach((child) => { fragment.appendChild(child) });
-        return fragment;
+class ComponentUrl {
+    private static readonly URL: Record<string, string> = {
+        "hotspots-scene-01-component": "./views/hotspots-scene-01.html",
+        "main-navigation-component": "./views/main-navigation.html",
+        "loadingspinner-component": "./views/loadingspinner.html",
+        "fullscreen-button-component": "./views/fullscreen-button.html",
+        "home-button-component": "./views/home-button.html",
+        "info-button-component": "./views/info-button.html"
+    };
+
+    public static get(componentId: string): string | never {
+        const url = ComponentUrl.URL[componentId];
+        if (url) return url;
+        throw new Error(`Could not find URL for component '${componentId}'`);
     }
-
-    public removeView(elem: HTMLElement) {
-        elem.remove();
-    }
-
-    private getContextByComponent(viewName: string): { url: string } {
-        let url: string;
-
-        switch (viewName) {
-            case "hotspots-scene-01-component":
-                url = "./views/hotspots-scene-01.html";
-                break;
-
-            case "main-navigation-component":
-                url = "./views/main-navigation.html";
-                break;
-
-            case "loadingspinner-component":
-                url = "./views/loadingspinner.html";
-                break;
-
-            case "fullscreen-button-component":
-                url = "./views/fullscreen-button.html";
-                break;
-
-            case "home-button-component":
-                url = "./views/home-button.html";
-                break;
-
-            default:
-                url = ".";
-                throw new Error(`Could not resolve viewName '${viewName}' to matching context.`);
-        }
-
-        return { url };
-    }
-
 }

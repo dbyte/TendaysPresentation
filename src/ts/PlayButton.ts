@@ -1,4 +1,5 @@
-import { Button, CssAnimation, CssAnimationEvent, App } from "./Exporter";
+import { Button, CssAnimation, CssAnimationEvent, App
+} from "./Exporter";
 
 export class PlayButton extends Button {
     private readonly videoFileBasename: string;
@@ -14,8 +15,8 @@ export class PlayButton extends Button {
         return instance;
     }
 
-    public async render(componentId?: string): Promise<void> {
-        super.render(componentId);
+    public async render(): Promise<void> {
+        super.render("skipLoading");
         this.cssAnimation = new CssAnimation(this.elem);
     }
 

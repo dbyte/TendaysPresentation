@@ -1,4 +1,4 @@
-import { HasHtmlElement } from "./Exporter";
+import { HasHtmlElement, getElementByUniqueClassName } from "./Exporter";
 
 export class Video implements HasHtmlElement {
     public elem: HTMLVideoElement;
@@ -10,7 +10,7 @@ export class Video implements HasHtmlElement {
     private static readonly FILE_SUFFIX = ".mp4";
 
     public constructor(baseFilename: string) {
-        this.elem = document.getElementById("mainVideoTarget") as HTMLVideoElement;
+        this.elem = getElementByUniqueClassName("mainVideoTarget") as HTMLVideoElement;
         this.baseFilename = baseFilename;
     }
 

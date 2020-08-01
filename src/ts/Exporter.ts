@@ -14,4 +14,5 @@ export * from "./InfoButton";
 export * from "./Navbar";
 export * from "./LoadingSpinner";
 export * from "./Video";
+export * from "./HotspotsScene01";
 export * from "./PlayerController";

@@ -7,8 +7,13 @@ export class InfoButton extends Button {
         super("info-button-component", "assets/info-button.png", parentElemID);
     }
 
-    public async render(componentId?: string): Promise<void> {
-        super.render(componentId);
+    public static create(parentElemID: string): InfoButton {
+        const instance = new InfoButton(parentElemID);
+        return instance;
+    }
+
+    public async render(): Promise<void> {
+        await super.render();
         this.cssAnimation = new CssAnimation(this.elem);
     }
 

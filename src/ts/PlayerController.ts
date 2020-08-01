@@ -1,13 +1,13 @@
 import {
-    ComponentService, Video, PlayButton, Navbar, OverlayHandler,
-    HasHtmlElement, getElementsOfObjects, LoadingSpinner, InfoButton
+    Video, HotspotsScene01, Navbar, OverlayHandler, HasHtmlElement,
+    getElementsOfObjects, LoadingSpinner, InfoButton
 } from "./Exporter";
 
 export class PlayerController {
     private static readonly COMPONENT_ID = "interactiveContainer";
     private static readonly DEFAULT_VIDEOSOURCE = "animation-01";
     private video!: Video;
-    private playButtons: PlayButton[];
+    private hotspotsScene01: HotspotsScene01;
     private infoButton01: InfoButton;
     private loadingSpinner: LoadingSpinner;
     private navbar: Navbar;
@@ -15,12 +15,9 @@ export class PlayerController {
 
     constructor() {
         this.loadingSpinner = LoadingSpinner.create(PlayerController.COMPONENT_ID);
-        this.navbar = Navbar.create("interactiveContainer");
-        this.playButtons = [];
-        this.playButtons.push(PlayButton.create("playVideo01", PlayerController.DEFAULT_VIDEOSOURCE, PlayerController.COMPONENT_ID));
-        this.playButtons.push(PlayButton.create("playVideo02", "animation-02", PlayerController.COMPONENT_ID));
-        this.playButtons.push(PlayButton.create("playVideo03", "animation-03", PlayerController.COMPONENT_ID));
-        this.infoButton01 = new InfoButton(PlayerController.COMPONENT_ID);
+        this.navbar = Navbar.create(PlayerController.COMPONENT_ID);
+        this.hotspotsScene01 = HotspotsScene01.create(PlayerController.COMPONENT_ID);
+        this.infoButton01 = InfoButton.create(PlayerController.COMPONENT_ID);
     }
 
     public static create(): PlayerController {
@@ -31,8 +28,7 @@ export class PlayerController {
     public async render(): Promise<void> {
         this.video = new Video(PlayerController.DEFAULT_VIDEOSOURCE);
         await Promise.all([
-            await ComponentService.instance.loadView("hotspots-scene-01-component", document.getElementById(PlayerController.COMPONENT_ID)!),
-            this.playButtons.forEach(button => { button.render() }),
+            this.hotspotsScene01.render(),
             this.navbar.render(),
             this.loadingSpinner.render(),
             this.infoButton01.render()
@@ -43,7 +39,7 @@ export class PlayerController {
     }
 
     public show(): void {
-        this.playButtons.forEach(button => { button.show() });
+        this.hotspotsScene01.show();
         this.navbar.show();
         this.overlayHandler.repositionOnVideo(this.video.elem);
 
@@ -52,8 +48,12 @@ export class PlayerController {
         this.video.elem.addEventListener("ended", () => { this.onVideoEnded() });
     }
 
+    public hide() {
+        new Error("Method not yet implemented.")
+    }
+
     private getAllOverlayElements(): HTMLElement[] {
-        let overlays: HasHtmlElement[] = [...this.playButtons]; // we need a value copy of playButtons
+        let overlays: HasHtmlElement[] = [...this.hotspotsScene01.playButtons]; // we need a value copy of playButtons
         overlays.push(this.infoButton01, this.navbar);
         return getElementsOfObjects(overlays);
     }
@@ -61,7 +61,7 @@ export class PlayerController {
     public startVideo(videoBaseFilename: string): void {
         this.video.switchSource(videoBaseFilename);
         this.loadingSpinner.show();
-        this.playButtons.forEach(btn => { btn.hide() });
+        this.hotspotsScene01.hide();
         this.video.elem.play().then(() => {
             this.loadingSpinner.hide();
             this.navbar.hide();
@@ -84,7 +84,7 @@ export class PlayerController {
 
     public goHome(): void {
         this.video.jumpToStart();
-        this.playButtons.forEach(button => { button.show() });
-        this.infoButton01.elem.hidden = true;
+        this.hotspotsScene01.show();
+        this.infoButton01.hide();
     }
 }
