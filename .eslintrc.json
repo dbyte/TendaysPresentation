@@ -1,26 +1,38 @@
 {
-    "env": {
-        "browser": true,
-        "es2020": true
-    },
-    "extends": [
-        "eslint:recommended",
-        "plugin:@typescript-eslint/eslint-recommended",
-        "plugin:@typescript-eslint/recommended"
+  "env": {
+    "browser": true, // browser global variables
+    "es6": true // this automatically sets the ecmaVersion parser option to 6
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "airbnb-typescript/base"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json", // required for rules that need type information
+    "sourceType": "module"
+  },
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "rules": {
+    "semi": [
+      "error",
+      "always"
     ],
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "ecmaVersion": 6,
-        "sourceType": "module"
-    },
-    "plugins": [
-        "@typescript-eslint"
+    "max-len": [
+      "error",
+      {
+        "code": 100,
+        "ignoreUrls": true
+      }
     ],
-    "rules": {
-        "semi": ["error", "never"],
-        "max-len": ["error", { 
-            "code": 100,
-            "ignoreUrls": true
-            }]
-    }
+    "import/prefer-default-export": "off",
+    "@typescript-eslint/quotes": [
+      "error",
+      "double"
+    ],
+    "no-console": "off"
+  }
 }
