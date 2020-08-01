@@ -1,17 +1,47 @@
-import { HasHtmlElement, getElementByUniqueClassName } from "./Exporter";
+import { Component } from "./Exporter";
+import { LoadingSpinner } from "./LoadingSpinner";
 
-export class Video implements HasHtmlElement {
+export class Video extends Component<Video> {
     public elem: HTMLVideoElement;
     private baseFilename: string;
+    private loadingSpinner: LoadingSpinner;
     private static readonly BASE_DIR = "assets/";
     private static readonly SMALLRES_FRAGMENT = "-small";
     private static readonly MEDIUMRES_FRAGMENT = "-medium";
     private static readonly LARGE_FRAGMENT = "-large";
     private static readonly FILE_SUFFIX = ".mp4";
 
-    public constructor(baseFilename: string) {
-        this.elem = getElementByUniqueClassName("mainVideoTarget") as HTMLVideoElement;
+    public constructor(parentElemId: string, baseFilename: string) {
+        super("video-component", parentElemId)
+        //'elem' also resides in superclass, but here we need to cast to HTMLVideoElement:
+        this.elem = super.elem as HTMLVideoElement;
         this.baseFilename = baseFilename;
+        this.loadingSpinner = LoadingSpinner.create("interactiveContainer");
+    }
+
+    public static create(parentElemId: string, baseFilename: string): Video {
+        const instance = new Video(parentElemId, baseFilename);
+        return instance;
+    }
+
+    public async render(): Promise<void> {
+        // Set up my own component first!
+        await super.render();
+        // Now my children
+        await this.loadingSpinner.render()
+    }
+
+    public dispose(): void {
+        super.dispose();
+        this.loadingSpinner.dispose();
+    }
+
+    public show(): void {
+        this.elem.hidden = false;
+    }
+    public hide(): void {
+        this.loadingSpinner.hide();
+        this.elem.hidden = true;
     }
 
     public switchSource(baseFilename: string): void {
@@ -25,6 +55,14 @@ export class Video implements HasHtmlElement {
             this.elem.src = relativePath;
             console.log("Video source is now ".concat(relativePath));
         }
+    }
+
+    public play(callback: Function) {
+        this.loadingSpinner.show();
+        this.elem.play().then(() => {
+            this.loadingSpinner.hide();
+            callback();
+        });
     }
 
     public jumpToStart() {

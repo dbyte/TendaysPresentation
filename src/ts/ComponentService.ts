@@ -61,6 +61,7 @@ export abstract class Component<T> implements HasHtmlElement  {
 
 class ComponentUrl {
     private static readonly URL: Record<string, string> = {
+        "video-component": "./views/video.html",
         "hotspots-scene-01-component": "./views/hotspots-scene-01.html",
         "main-navigation-component": "./views/main-navigation.html",
         "loadingspinner-component": "./views/loadingspinner.html",
