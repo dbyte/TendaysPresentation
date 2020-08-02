@@ -1,6 +1,7 @@
 {
   "env": {
     "browser": true, // browser global variables
+    "serviceworker": true,
     "es6": true // this automatically sets the ecmaVersion parser option to 6
   },
   "extends": [
@@ -33,6 +34,17 @@
       "error",
       "double"
     ],
-    "no-console": "off"
+    "no-console": "off",
+    "max-classes-per-file": ["error", 2],
+    "@typescript-eslint/lines-between-class-members": "off",
+    "class-methods-use-this": "off",
+    "arrow-parens": ["error", "as-needed"],
+    "comma-dangle": ["error", {
+      "arrays": "only-multiline",
+      "objects": "only-multiline",
+      "imports": "never",
+      "exports": "never",
+      "functions": "never"
+    }]
   }
 }
