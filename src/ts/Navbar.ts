@@ -9,7 +9,9 @@ export class Navbar extends Component {
   private cssAnimation?: CssAnimation;
 
   constructor(parentElemId: string, onClickHomeButtonCallback?: CallableFunction) {
-    super("main-navigation-component", parentElemId);
+    const COMPONENT_ID = "main-navigation-component";
+
+    super(COMPONENT_ID, parentElemId);
 
     this.fullscreenButton = FullscreenButton.create(this.componentId);
     this.homeButton = HomeButton.create(this.componentId);

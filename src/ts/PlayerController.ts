@@ -3,10 +3,9 @@ import { HotspotsScene01 } from "./HotspotsScene01";
 import { InfoButton } from "./InfoButton";
 import { OverlayHandler } from "./OverlayHandler";
 import { Navbar } from "./Navbar";
-import { HasHtmlElement, getElementsOfObjects } from "./Utilities";
+import { HasHtmlElement, getElementsOfObjects, IS_CLIENT_SAFARI } from "./Utilities";
 
 export class PlayerController {
-  private static readonly COMPONENT_ID = "interactiveContainer";
   private static readonly DEFAULT_VIDEOSOURCE = "animation-01";
   private video: Video;
   private navbar: Navbar;
@@ -14,13 +13,15 @@ export class PlayerController {
   private overlayHandler!: OverlayHandler;
 
   constructor() {
+    const COMPONENT_ID = "interactiveContainer";
+
     this.video = Video.create(
-      PlayerController.COMPONENT_ID,
+      COMPONENT_ID,
       PlayerController.DEFAULT_VIDEOSOURCE,
-      HotspotsScene01.create(PlayerController.COMPONENT_ID, this.startVideo.bind(this))
+      HotspotsScene01.create(COMPONENT_ID, this.startVideo.bind(this))
     );
-    this.navbar = Navbar.create(PlayerController.COMPONENT_ID, this.goHome.bind(this));
-    this.infoButton01 = InfoButton.create(PlayerController.COMPONENT_ID);
+    this.navbar = Navbar.create(COMPONENT_ID, this.goHome.bind(this));
+    this.infoButton01 = InfoButton.create(COMPONENT_ID);
   }
 
   public static create(): PlayerController {
@@ -49,9 +50,11 @@ export class PlayerController {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       this.overlayHandler.repositionOnVideo(this.video.elem!);
     });
+
     this.video.elem.addEventListener("click", event => {
       this.onClickedVideo(event);
     });
+
     this.video.elem.addEventListener("ended", () => {
       this.onVideoEnded();
     });
@@ -73,6 +76,11 @@ export class PlayerController {
   }
 
   private onVideoEnded(): void {
+    if (IS_CLIENT_SAFARI && this.video.elem) {
+      // Workaround for Safari Client, which sometimes shows white frame at end.
+      this.video.elem.currentTime = this.video.elem.duration;
+    }
+
     this.navbar.show();
     this.infoButton01.show();
   }

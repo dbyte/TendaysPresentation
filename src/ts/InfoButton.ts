@@ -5,7 +5,9 @@ export class InfoButton extends Button {
   private cssAnimation?: CssAnimation;
 
   constructor(parentElemID: string) {
-    super("info-button-component", "assets/info-button.png", parentElemID);
+    const COMPONENT_ID = "info-button-component";
+
+    super(COMPONENT_ID, "assets/info-button.png", parentElemID);
   }
 
   public static create(parentElemID: string): InfoButton {

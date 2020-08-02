@@ -5,7 +5,9 @@ export class FullscreenButton extends Button {
   private fullscreen: FullscreenService;
 
   constructor(parentElemId: string) {
-    super("fullscreen-button-component", "assets/fullscreen-button.svg", parentElemId);
+    const COMPONENT_ID = "fullscreen-button-component";
+
+    super(COMPONENT_ID, "assets/fullscreen-button.svg", parentElemId);
     this.fullscreen = new FullscreenService();
   }
 

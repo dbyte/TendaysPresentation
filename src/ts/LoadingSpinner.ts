@@ -5,7 +5,9 @@ export class LoadingSpinner extends Component {
   private cssAnimation?: CssAnimation;
 
   constructor(parentElemId: string) {
-    super("loadingspinner-component", parentElemId);
+    const COMPONENT_ID = "loadingspinner-component";
+
+    super(COMPONENT_ID, parentElemId);
   }
 
   public static create(parentElemId: string): LoadingSpinner {

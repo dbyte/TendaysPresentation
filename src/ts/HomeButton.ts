@@ -4,7 +4,9 @@ export class HomeButton extends Button {
   public onClickCallback?: CallableFunction;
 
   constructor(parentElemID: string) {
-    super("home-button-component", "assets/reload-button.svg", parentElemID);
+    const COMPONENT_ID = "home-button-component";
+
+    super(COMPONENT_ID, "assets/reload-button.svg", parentElemID);
   }
 
   public static create(parentElemID: string): HomeButton {
