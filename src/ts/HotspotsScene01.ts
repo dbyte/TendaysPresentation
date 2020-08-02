@@ -27,10 +27,7 @@ export class HotspotsScene01 extends Component {
     await super.render();
 
     // Now my children (their order matters for horiz. alignment, so no Promise.all!)
-    // eslint-disable-next-line no-restricted-syntax
-    for await (const button of this.playButtons) {
-      button.render();
-    }
+    await Promise.all(this.playButtons.map(btn => btn.render()));
   }
 
   public dispose(): void {
