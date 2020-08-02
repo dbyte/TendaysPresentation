@@ -1,6 +1,6 @@
 import { Component } from "./ComponentService";
 
-export abstract class Button extends Component<Button> {
+export abstract class Button extends Component {
   protected buttonImageSource: string;
 
   constructor(componentId: string, buttonImageSource: string, parentElemId: string) {

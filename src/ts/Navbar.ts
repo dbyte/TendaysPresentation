@@ -3,7 +3,7 @@ import { FullscreenButton } from "./FullscreenButton";
 import { HomeButton } from "./HomeButton";
 import { CssAnimation, CssAnimationEvent } from "./Utilities";
 
-export class Navbar extends Component<Navbar> {
+export class Navbar extends Component {
   private fullscreenButton!: FullscreenButton;
   private homeButton!: HomeButton;
   private cssAnimation?: CssAnimation;

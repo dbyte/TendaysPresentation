@@ -1,7 +1,7 @@
 import { Component } from "./ComponentService";
 import { PlayButton } from "./PlayButton";
 
-export class HotspotsScene01 extends Component<HotspotsScene01> {
+export class HotspotsScene01 extends Component {
   public readonly playButtons: PlayButton[];
 
   constructor(parentElemID: string) {

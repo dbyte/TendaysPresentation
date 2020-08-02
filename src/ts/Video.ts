@@ -1,7 +1,7 @@
 import { LoadingSpinner } from "./LoadingSpinner";
 import { Component } from "./ComponentService";
 
-export class Video extends Component<Video> {
+export class Video extends Component {
   public elem: HTMLVideoElement;
   private baseFilename: string;
   private loadingSpinner: LoadingSpinner;

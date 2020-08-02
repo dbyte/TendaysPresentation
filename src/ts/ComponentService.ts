@@ -1,6 +1,6 @@
 import { HasHtmlElement, getElementByUniqueClassName, htmlTextToDomFragment } from "./Utilities";
 
-export abstract class Component<T> implements HasHtmlElement {
+export abstract class Component implements HasHtmlElement {
   public elem: HTMLElement;
   public readonly componentId: string;
   protected readonly parentElemId: string;
@@ -8,7 +8,6 @@ export abstract class Component<T> implements HasHtmlElement {
   constructor(componentId: string, parentElemId: string) {
     this.componentId = componentId;
     this.parentElemId = parentElemId;
-    this.elem = undefined!;
   }
 
   public async render(skipLoading?: "skipLoading"): Promise<void> {
@@ -21,7 +20,7 @@ export abstract class Component<T> implements HasHtmlElement {
 
   public dispose(): void {
     this.elem.remove();
-    this.elem = undefined!;
+    delete this.elem;
   }
 
   public abstract show(): void;

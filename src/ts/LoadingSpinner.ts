@@ -1,7 +1,7 @@
 import { Component } from "./ComponentService";
 import { CssAnimation, CssAnimationEvent } from "./Utilities";
 
-export class LoadingSpinner extends Component<LoadingSpinner> {
+export class LoadingSpinner extends Component {
   private cssAnimation?: CssAnimation;
 
   constructor(parentElemId: string) {
