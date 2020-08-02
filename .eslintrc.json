@@ -39,7 +39,7 @@
     "@typescript-eslint/lines-between-class-members": "off",
     "class-methods-use-this": "off",
     "arrow-parens": ["error", "as-needed"],
-    "comma-dangle": ["error", {
+    "comma-dangle": ["warn", {
       "arrays": "only-multiline",
       "objects": "only-multiline",
       "imports": "never",
