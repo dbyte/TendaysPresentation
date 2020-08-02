@@ -38,6 +38,7 @@ export class PlayerController {
   }
 
   public show(): void {
+    this.video.show();
     this.hotspotsScene01.show();
     this.navbar.show();
     this.overlayHandler.repositionOnVideo(this.video.elem);
