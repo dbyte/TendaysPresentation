@@ -1,17 +1,24 @@
-import { LoadingSpinner } from "./LoadingSpinner";
 import { Component } from "./Component";
+import { LoadingSpinner } from "./LoadingSpinner";
+import { HotspotsScene01 } from "./HotspotsScene01";
 
 export class Video extends Component {
   public elem?: HTMLVideoElement;
   private baseFilename: string;
   private loadingSpinner: LoadingSpinner;
+  public hotspotComponent: HotspotsScene01;
+
   private static readonly BASE_DIR = "assets/";
   private static readonly SMALLRES_FRAGMENT = "-small";
   private static readonly MEDIUMRES_FRAGMENT = "-medium";
   private static readonly LARGE_FRAGMENT = "-large";
   private static readonly FILE_SUFFIX = ".mp4";
 
-  public constructor(parentElemId: string, baseFilename: string) {
+  public constructor(
+    parentElemId: string,
+    baseFilename: string,
+    hotspotComponent: HotspotsScene01
+  ) {
     super("video-component", parentElemId);
 
     // 'elem' also resides in superclass, but here we need to cast to HTMLVideoElement:
@@ -19,10 +26,15 @@ export class Video extends Component {
 
     this.baseFilename = baseFilename;
     this.loadingSpinner = LoadingSpinner.create("interactiveContainer");
+    this.hotspotComponent = hotspotComponent;
   }
 
-  public static create(parentElemId: string, baseFilename: string): Video {
-    const instance = new Video(parentElemId, baseFilename);
+  public static create(
+    parentElemId: string,
+    baseFilename: string,
+    hotspotComponent: HotspotsScene01
+  ): Video {
+    const instance = new Video(parentElemId, baseFilename, hotspotComponent);
     return instance;
   }
 
@@ -30,20 +42,26 @@ export class Video extends Component {
     // Set up my own component first!
     await super.render();
     // Now my children
-    await this.loadingSpinner.render();
+    Promise.all([
+      await this.loadingSpinner.render(),
+      await this.hotspotComponent.render()
+    ]);
   }
 
   public dispose(): void {
     super.dispose();
     this.elem = undefined;
     this.loadingSpinner.dispose();
+    this.hotspotComponent.dispose();
   }
 
   public show(): void {
     super.setHidden(false);
+    this.hotspotComponent.show();
   }
   public hide(): void {
     this.loadingSpinner.hide();
+    this.hotspotComponent.hide();
     super.setHidden(true);
   }
 
@@ -62,6 +80,8 @@ export class Video extends Component {
 
   public play(callback: CallableFunction): void {
     this.loadingSpinner.show();
+    this.hotspotComponent.hide();
+
     this.elem?.play().then(() => {
       this.loadingSpinner.hide();
       callback();
@@ -71,6 +91,7 @@ export class Video extends Component {
   public jumpToStart(): void {
     this.elem?.pause();
     if (this.elem) this.elem.currentTime = 0;
+    this.hotspotComponent.show();
   }
 
   public getRelativePath(): string {
