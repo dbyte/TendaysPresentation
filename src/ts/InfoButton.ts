@@ -15,7 +15,7 @@ export class InfoButton extends Button {
 
   public async render(): Promise<void> {
     await super.render();
-    this.cssAnimation = new CssAnimation(this.elem);
+    if (this.elem) this.cssAnimation = new CssAnimation(this.elem);
   }
 
   public show(): void {
@@ -36,7 +36,7 @@ export class InfoButton extends Button {
   }
 
   private animateIn(): void {
-    this.elem.addEventListener(
+    this.elem?.addEventListener(
       "animationend", event => { this.onInAnimationEnd(event); },
       { once: true }
     );

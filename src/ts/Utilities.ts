@@ -32,14 +32,21 @@ export class CssAnimation {
 }
 
 export interface HasHtmlElement {
-  elem: HTMLElement;
+  elem?: HTMLElement;
 }
 
 export function getElementsOfObjects(objects: HasHtmlElement[]): HTMLElement[] {
-  return objects.map(o => o.elem);
+  const countUndefined = objects.filter(o => o === undefined).length;
+  if (countUndefined > 0) {
+    throw new TypeError(
+      `Expected all HTMLElements to be defined but got ${countUndefined} undefined.`
+    );
+  }
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  return objects.map(o => o.elem!);
 }
 
-export function getElementByUniqueClassName(className: string): HTMLElement {
+export function getElementByUniqueClassName(className: string): HTMLElement | never {
   const elems = document.getElementsByClassName(className);
   const count: number = !elems ? 0 : elems.length;
   switch (count) {

@@ -15,19 +15,19 @@ export class LoadingSpinner extends Component {
 
   public async render(): Promise<void> {
     await super.render();
-    this.cssAnimation = new CssAnimation(this.elem);
+    if (this.elem) this.cssAnimation = new CssAnimation(this.elem);
   }
 
   public show(): void {
-    this.elem.hidden = false;
+    super.setHidden(false);
     this.cssAnimation?.start(CssAnimationEvent.ScaleIn);
   }
 
   public hide(): void {
     this.cssAnimation?.start(CssAnimationEvent.ScaleOut);
-    this.elem.addEventListener(
+    this.elem?.addEventListener(
       "animationend",
-      event => { this.elem.hidden = true; event.stopPropagation(); },
+      event => { super.setHidden(true); event.stopPropagation(); },
       { once: true }
     );
   }

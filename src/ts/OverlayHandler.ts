@@ -12,7 +12,9 @@ export class OverlayHandler {
     this.elements.forEach(elem => { this.repositionSingleElem(elem, videoObject); });
   }
 
-  private repositionSingleElem(elem: HTMLElement, videoObject: HTMLVideoElement): void {
+  private repositionSingleElem(htmlElement: HTMLElement, videoObject: HTMLVideoElement): void {
+    const elem = htmlElement;
+
     let a = videoObject.videoWidth || 1920;
     const b = videoObject.videoHeight || 1080;
     const c = videoObject.getBoundingClientRect();
@@ -22,13 +24,13 @@ export class OverlayHandler {
     if (d && c) {
       const g = Math.max(a / d, b / e);
       let l = parseFloat(this.getLeft(elem));
-      elem.style.left = 50 + a / d / g * (l - 50) + "%";
+      elem.style.left = `${50 + (a / d / g) * (l - 50)}%`;
       const y = parseFloat(this.getTop(elem));
-      elem.style.top = 50 + b / e / g * (y - 50) + "%";
+      elem.style.top = `${50 + (b / e / g) * (y - 50)}%`;
       l = Math.min(parseFloat(this.getWidth(elem)), 100 - l);
-      elem.style.width = a / d / g * l + "%";
+      elem.style.width = `${(a / d / g) * l}%`;
       a = Math.min(parseFloat(this.getHeight(elem)), 100 - y);
-      elem.style.height = b / e / g * a + "%";
+      elem.style.height = `${(b / e / g) * a}%`;
     }
   }
 

@@ -10,7 +10,7 @@ export abstract class Button extends Component {
 
   public async render(skipLoading?: "skipLoading"): Promise<void> {
     await super.render(skipLoading);
-    this.elem.hidden = true;
+    if (this.elem) this.elem.hidden = true;
     const imageElem = this.elem as HTMLImageElement;
     imageElem.src = this.buttonImageSource;
   }
@@ -20,13 +20,13 @@ export abstract class Button extends Component {
     HTML as they may have wrong positions/sizes when entering the page.
     As soon as the page got loaded and we've rearranged things, we can
     switch them on. */
-    this.elem.hidden = false;
+    super.setHidden(false);
     this.removeEventListeners();
     this.addEventListeners();
   }
 
   public hide(): void {
-    this.elem.hidden = true;
+    super.setHidden(true);
   }
 
   public dispose(): void {
@@ -36,12 +36,12 @@ export abstract class Button extends Component {
 
   protected addEventListeners(): void {
     const events = ["click", "mouseover", "mouseout"];
-    events.map(e => this.elem.addEventListener(e, this));
+    events.map(e => this.elem?.addEventListener(e, this));
   }
 
   protected removeEventListeners(): void {
     const events = ["click", "mouseover", "mouseout"];
-    events.map(e => this.elem.removeEventListener(e, this));
+    events.map(e => this.elem?.removeEventListener(e, this));
   }
 
   public abstract handleEvent(e: Event): void;

@@ -23,8 +23,8 @@ export class Navbar extends Component {
   public async render(): Promise<void> {
     // Set up my own component first!
     await super.render();
-    this.elem.hidden = true;
-    this.cssAnimation = new CssAnimation(this.elem);
+    super.setHidden(true);
+    if (this.elem) this.cssAnimation = new CssAnimation(this.elem);
 
     // Now my children (their order matters for horiz. alignment, so no Promise.all!)
     await this.fullscreenButton.render();
@@ -38,7 +38,7 @@ export class Navbar extends Component {
   }
 
   public toggleShowHide(): void {
-    if (this.elem.hidden) {
+    if (this.elem?.hidden) {
       this.show();
       return;
     }
@@ -46,14 +46,14 @@ export class Navbar extends Component {
   }
 
   public show(): void {
-    if (this.elem.hidden) {
+    if (this.elem?.hidden) {
       this.elem.addEventListener(
         "animationend",
         () => { this.cssAnimation?.removeAll(); },
         { once: true }
       );
 
-      this.elem.hidden = false;
+      super.setHidden(false);
       this.cssAnimation?.start(CssAnimationEvent.FadeIn);
       this.fullscreenButton.show();
       this.homeButton.show();
@@ -61,8 +61,8 @@ export class Navbar extends Component {
   }
 
   public hide(): void {
-    if (!this.elem.hidden) {
-      this.elem.addEventListener(
+    if (!this.elem?.hidden) {
+      this.elem?.addEventListener(
         "animationend",
         () => { this.onHideAnimationEnd(); },
         { once: true }
@@ -72,9 +72,9 @@ export class Navbar extends Component {
     }
   }
   private onHideAnimationEnd(): void {
-    this.elem.hidden = true;
+    super.setHidden(true);
     this.cssAnimation?.removeAll();
     this.fullscreenButton.hide();
-    this.homeButton.elem.hidden = true;
+    this.homeButton.hide();
   }
 }

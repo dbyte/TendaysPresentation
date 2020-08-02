@@ -38,13 +38,15 @@ export class PlayerController {
   }
 
   public show(): void {
+    if (!this.video.elem) throw new TypeError("Video element is undefined.");
+
     this.video.show();
     this.hotspotsScene01.show();
     this.navbar.show();
     this.overlayHandler.repositionOnVideo(this.video.elem);
 
     window.addEventListener("resize", () => {
-      this.overlayHandler.repositionOnVideo(this.video.elem);
+      this.overlayHandler.repositionOnVideo(this.video.elem!);
     });
     this.video.elem.addEventListener("click", event => {
       this.onClickedVideo(event);

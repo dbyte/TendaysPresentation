@@ -19,7 +19,7 @@ export class ComponentUrl {
 }
 
 export abstract class Component implements HasHtmlElement {
-  public elem: HTMLElement;
+  public elem?: HTMLElement;
   public readonly componentId: string;
   protected readonly parentElemId: string;
 
@@ -33,16 +33,24 @@ export abstract class Component implements HasHtmlElement {
     if (!parentElem) Error(`Unable to find DOM element with id '${this.parentElemId}'`);
 
     if (!skipLoading) await this.loadView();
-    this.elem = getElementByUniqueClassName(this.componentId) as HTMLElement;
+
+    // Throws on undefined or multiple found elements
+    this.elem = getElementByUniqueClassName(this.componentId);
   }
 
   public dispose(): void {
-    this.elem.remove();
-    delete this.elem;
+    this.elem?.remove();
+    this.elem = undefined;
   }
 
   public abstract show(): void;
+
   public abstract hide(): void;
+
+  // Just an often needed helper for subclasses
+  public setHidden(isHidden: boolean): void {
+    if (this.elem) this.elem.hidden = isHidden;
+  }
 
   private async loadView(): Promise<void> {
     const parentElem = getElementByUniqueClassName(this.parentElemId);

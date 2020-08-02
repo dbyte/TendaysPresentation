@@ -2,7 +2,7 @@ import { LoadingSpinner } from "./LoadingSpinner";
 import { Component } from "./Component";
 
 export class Video extends Component {
-  public elem: HTMLVideoElement;
+  public elem?: HTMLVideoElement;
   private baseFilename: string;
   private loadingSpinner: LoadingSpinner;
   private static readonly BASE_DIR = "assets/";
@@ -35,15 +35,16 @@ export class Video extends Component {
 
   public dispose(): void {
     super.dispose();
+    this.elem = undefined;
     this.loadingSpinner.dispose();
   }
 
   public show(): void {
-    this.elem.hidden = false;
+    super.setHidden(false);
   }
   public hide(): void {
     this.loadingSpinner.hide();
-    this.elem.hidden = true;
+    super.setHidden(true);
   }
 
   public switchSource(baseFilename: string): void {
@@ -53,23 +54,23 @@ export class Video extends Component {
 
     /* Only switch source if not yet set (which will reduce
     flicker when user wants to play same video as previous time) */
-    if (this.elem.src !== absolutePathToNewSource) {
-      this.elem.src = relativePath;
+    if (this.elem?.src !== absolutePathToNewSource) {
+      if (this.elem) this.elem.src = relativePath;
       console.log("Video source is now ".concat(relativePath));
     }
   }
 
   public play(callback: CallableFunction): void {
     this.loadingSpinner.show();
-    this.elem.play().then(() => {
+    this.elem?.play().then(() => {
       this.loadingSpinner.hide();
       callback();
     });
   }
 
   public jumpToStart(): void {
-    this.elem.pause();
-    this.elem.currentTime = 0;
+    this.elem?.pause();
+    if (this.elem) this.elem.currentTime = 0;
   }
 
   public getRelativePath(): string {
