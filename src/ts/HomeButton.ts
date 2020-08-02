@@ -1,7 +1,8 @@
 import { Button } from "./Button";
-import { App } from "./App";
 
 export class HomeButton extends Button {
+  public onClickCallback?: CallableFunction;
+
   constructor(parentElemID: string) {
     super("home-button-component", "assets/reload-button.svg", parentElemID);
   }
@@ -11,11 +12,16 @@ export class HomeButton extends Button {
     return instance;
   }
 
+  public dispose(): void {
+    super.dispose();
+    this.onClickCallback = undefined;
+  }
+
   // Called JS-internally by the added listeners!
   public handleEvent(e: Event): void {
     switch (e.type) {
       case "click":
-        App.instance.controller?.goHome();
+        if (this.onClickCallback) this.onClickCallback();
         break;
       default:
         break;

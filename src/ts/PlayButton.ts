@@ -1,10 +1,10 @@
 import { Button } from "./Button";
 import { CssAnimation, CssAnimationEvent } from "./Utilities";
-import { App } from "./App";
 
 export class PlayButton extends Button {
   private readonly videoFileBasename: string;
   private cssAnimation?: CssAnimation;
+  public onClickCallback?: CallableFunction;
 
   constructor(elemID: string, pathToVideo: string, parentElemId: string) {
     super(elemID, "assets/play-button-grey.svg", parentElemId);
@@ -14,6 +14,11 @@ export class PlayButton extends Button {
   public static create(elemID: string, pathToVideo: string, parentElemId: string): PlayButton {
     const instance = new PlayButton(elemID, pathToVideo, parentElemId);
     return instance;
+  }
+
+  public dispose(): void {
+    super.dispose();
+    this.onClickCallback = undefined;
   }
 
   public async render(): Promise<void> {
@@ -30,7 +35,7 @@ export class PlayButton extends Button {
   public handleEvent(e: Event): void {
     switch (e.type) {
       case "click":
-        App.instance.controller?.startVideo(this.videoFileBasename);
+        if (this.onClickCallback) this.onClickCallback(this.videoFileBasename);
         break;
       case "mouseover":
         this.animateOnMouseover();

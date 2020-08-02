@@ -8,15 +8,16 @@ export class Navbar extends Component {
   private homeButton!: HomeButton;
   private cssAnimation?: CssAnimation;
 
-  constructor(parentElemId: string) {
+  constructor(parentElemId: string, onClickHomeButtonCallback?: CallableFunction) {
     super("main-navigation-component", parentElemId);
 
     this.fullscreenButton = FullscreenButton.create(this.componentId);
     this.homeButton = HomeButton.create(this.componentId);
+    this.homeButton.onClickCallback = onClickHomeButtonCallback;
   }
 
-  public static create(parentElemId: string): Navbar {
-    const instance = new Navbar(parentElemId);
+  public static create(parentElemId: string, onClickHomeButtonCallback?: CallableFunction): Navbar {
+    const instance = new Navbar(parentElemId, onClickHomeButtonCallback);
     return instance;
   }
 

@@ -16,8 +16,10 @@ export class PlayerController {
 
   constructor() {
     this.video = Video.create(PlayerController.COMPONENT_ID, PlayerController.DEFAULT_VIDEOSOURCE);
-    this.hotspotsScene01 = HotspotsScene01.create(PlayerController.COMPONENT_ID);
-    this.navbar = Navbar.create(PlayerController.COMPONENT_ID);
+    this.hotspotsScene01 = HotspotsScene01.create(
+      PlayerController.COMPONENT_ID, this.startVideo.bind(this)
+    );
+    this.navbar = Navbar.create(PlayerController.COMPONENT_ID, this.goHome.bind(this));
     this.infoButton01 = InfoButton.create(PlayerController.COMPONENT_ID);
   }
 
@@ -46,6 +48,7 @@ export class PlayerController {
     this.overlayHandler.repositionOnVideo(this.video.elem);
 
     window.addEventListener("resize", () => {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       this.overlayHandler.repositionOnVideo(this.video.elem!);
     });
     this.video.elem.addEventListener("click", event => {
