@@ -78,12 +78,12 @@ objects. Instead define in HTML tags which are observerd by JS */
 @media (max-width: 450px) {
   .main-navigation-component .player-navigation {
     /* Minimum constraints for small screen sizes */
-    top: 0%;
+    top: 10%;
     min-height: 20px !important;
   }
 
   .main-navigation-component .desktop-hint, .main-navigation-component .touch-hint {
-    margin-top: 0.5%;
+    margin-top: 1%;
   }
 }
 
@@ -96,7 +96,7 @@ objects. Instead define in HTML tags which are observerd by JS */
   .main-navigation-component .desktop-hint {
     visibility: hidden;
   }
-  .navmain-navigation-componentbar .touch-hint {
+  .main-navigation-component .touch-hint {
     visibility: visible;
   }
 }

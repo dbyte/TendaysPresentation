@@ -1,32 +1,34 @@
-import { Component, CssAnimation, CssAnimationEvent } from "./Exporter";
+import { Component } from "./ComponentService";
+import { CssAnimation, CssAnimationEvent } from "./Utilities";
 
 export class LoadingSpinner extends Component<LoadingSpinner> {
-    private cssAnimation?: CssAnimation;
+  private cssAnimation?: CssAnimation;
 
-    constructor(parentElemId: string) {
-        super("loadingspinner-component", parentElemId);
-    }
+  constructor(parentElemId: string) {
+    super("loadingspinner-component", parentElemId);
+  }
 
-    public static create(parentElemId: string): LoadingSpinner {
-        const instance = new LoadingSpinner(parentElemId);
-        return instance;
-    }
+  public static create(parentElemId: string): LoadingSpinner {
+    const instance = new LoadingSpinner(parentElemId);
+    return instance;
+  }
 
-    public async render(): Promise<void> {
-        await super.render();
-        this.cssAnimation = new CssAnimation(this.elem);
-    }
+  public async render(): Promise<void> {
+    await super.render();
+    this.cssAnimation = new CssAnimation(this.elem);
+  }
 
-    public show(): void {
-        this.elem.hidden = false;
-        this.cssAnimation?.start(CssAnimationEvent.ScaleIn);
-    }
+  public show(): void {
+    this.elem.hidden = false;
+    this.cssAnimation?.start(CssAnimationEvent.ScaleIn);
+  }
 
-    public hide(): void {
-        this.cssAnimation?.start(CssAnimationEvent.ScaleOut);
-        this.elem.addEventListener(
-            "animationend",
-            (event) => { this.elem.hidden = true; event.stopPropagation(); },
-            { once: true });
-    }
+  public hide(): void {
+    this.cssAnimation?.start(CssAnimationEvent.ScaleOut);
+    this.elem.addEventListener(
+      "animationend",
+      event => { this.elem.hidden = true; event.stopPropagation(); },
+      { once: true }
+    );
+  }
 }
