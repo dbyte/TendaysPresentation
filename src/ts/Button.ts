@@ -1,4 +1,4 @@
-import { Component } from "./ComponentService";
+import { Component } from "./Component";
 
 export abstract class Button extends Component {
   protected buttonImageSource: string;

@@ -1,5 +1,23 @@
 import { HasHtmlElement, getElementByUniqueClassName, htmlTextToDomFragment } from "./Utilities";
 
+export class ComponentUrl {
+  private static readonly URL: Record<string, string> = {
+    "video-component": "./views/video.html",
+    "hotspots-scene-01-component": "./views/hotspots-scene-01.html",
+    "main-navigation-component": "./views/main-navigation.html",
+    "loadingspinner-component": "./views/loadingspinner.html",
+    "fullscreen-button-component": "./views/fullscreen-button.html",
+    "home-button-component": "./views/home-button.html",
+    "info-button-component": "./views/info-button.html",
+  };
+
+  public static get(componentId: string): string | never {
+    const url = ComponentUrl.URL[componentId];
+    if (url) return url;
+    throw new Error(`Could not find URL for component '${componentId}'`);
+  }
+}
+
 export abstract class Component implements HasHtmlElement {
   public elem: HTMLElement;
   public readonly componentId: string;
@@ -40,39 +58,19 @@ export abstract class Component implements HasHtmlElement {
         method: "GET",
         headers,
       });
-
-      if (!response) {
-        throw new Error(`Unable to load component. No response for request url ${url}`);
-      }
-
-      if (!response.ok) {
-        throw new Error(`Unable to load component. Response status = ${response.status}`);
-      }
     } catch (error) {
-      return Promise.reject(error);
+      throw new Error(`Unable to load component by GET. ${error}`);
     }
 
-    if (response && response.ok) {
-      const responseText = await response.text();
-      parentElem.append(htmlTextToDomFragment(responseText));
+    if (!response) {
+      throw new Error(`Unable to load component. No response for request url ${url}`);
     }
-  }
-}
 
-class ComponentUrl {
-  private static readonly URL: Record<string, string> = {
-    "video-component": "./views/video.html",
-    "hotspots-scene-01-component": "./views/hotspots-scene-01.html",
-    "main-navigation-component": "./views/main-navigation.html",
-    "loadingspinner-component": "./views/loadingspinner.html",
-    "fullscreen-button-component": "./views/fullscreen-button.html",
-    "home-button-component": "./views/home-button.html",
-    "info-button-component": "./views/info-button.html",
-  };
+    if (!response.ok) {
+      throw new Error(`Unable to load component. Response status = ${response.status}`);
+    }
 
-  public static get(componentId: string): string | never {
-    const url = ComponentUrl.URL[componentId];
-    if (url) return url;
-    throw new Error(`Could not find URL for component '${componentId}'`);
+    const responseText = await response.text();
+    parentElem.append(htmlTextToDomFragment(responseText));
   }
 }

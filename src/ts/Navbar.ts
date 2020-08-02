@@ -1,4 +1,4 @@
-import { Component } from "./ComponentService";
+import { Component } from "./Component";
 import { FullscreenButton } from "./FullscreenButton";
 import { HomeButton } from "./HomeButton";
 import { CssAnimation, CssAnimationEvent } from "./Utilities";

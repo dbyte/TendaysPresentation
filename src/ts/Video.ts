@@ -1,5 +1,5 @@
 import { LoadingSpinner } from "./LoadingSpinner";
-import { Component } from "./ComponentService";
+import { Component } from "./Component";
 
 export class Video extends Component {
   public elem: HTMLVideoElement;

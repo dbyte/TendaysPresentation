@@ -1,4 +1,4 @@
-import { Component } from "./ComponentService";
+import { Component } from "./Component";
 import { CssAnimation, CssAnimationEvent } from "./Utilities";
 
 export class LoadingSpinner extends Component {

@@ -1,4 +1,4 @@
-import { Component } from "./ComponentService";
+import { Component } from "./Component";
 import { PlayButton } from "./PlayButton";
 
 export class HotspotsScene01 extends Component {

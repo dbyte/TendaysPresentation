@@ -3,8 +3,6 @@ import "ts-polyfill/lib/es2017-object";
 import { PlayerController } from "./PlayerController";
 import { IS_CLIENT_SAFARI } from "./Utilities";
 
-// import { PlayerController, IS_CLIENT_SAFARI } from "./Exporter";
-
 export class App {
   private static Singleton: App;
 
