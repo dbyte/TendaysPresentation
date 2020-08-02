@@ -1,45 +1,24 @@
-import { Component } from "./Component";
+import { HotspotsComponent } from "./Hotspots";
 import { PlayButton } from "./PlayButton";
 
-export class HotspotsScene01 extends Component {
-  public readonly playButtons: PlayButton[];
-
+export class HotspotsScene01 extends HotspotsComponent {
   constructor(parentElemID: string, onClickPlayButtonCallback?: CallableFunction) {
-    super("hotspots-scene-01-component", parentElemID);
+    const COMPONENT_ID = "hotspots-scene-01-component";
 
-    this.playButtons = [];
-    this.playButtons.push(PlayButton.create("playVideo01", "animation-01", this.componentId));
-    this.playButtons.push(PlayButton.create("playVideo02", "animation-02", this.componentId));
-    this.playButtons.push(PlayButton.create("playVideo03", "animation-03", this.componentId));
-    this.playButtons.forEach(btn => {
+    const children = [];
+    children.push(PlayButton.create("playVideo01", "animation-01", COMPONENT_ID));
+    children.push(PlayButton.create("playVideo02", "animation-02", COMPONENT_ID));
+    children.push(PlayButton.create("playVideo03", "animation-03", COMPONENT_ID));
+    children.forEach(btn => {
       const ref = btn; ref.onClickCallback = onClickPlayButtonCallback;
     });
+
+    super(COMPONENT_ID, parentElemID, children);
   }
 
   public static create(parentElemID: string,
     onClickPlayButtonCallback?: CallableFunction): HotspotsScene01 {
     const instance = new HotspotsScene01(parentElemID, onClickPlayButtonCallback);
     return instance;
-  }
-
-  public async render(): Promise<void> {
-    // Set up my own component first!
-    await super.render();
-
-    // Now my children (their order matters for horiz. alignment, so no Promise.all!)
-    await Promise.all(this.playButtons.map(btn => btn.render()));
-  }
-
-  public dispose(): void {
-    this.playButtons.forEach(button => { button.dispose(); });
-    super.dispose();
-  }
-
-  public show(): void {
-    this.playButtons.forEach(button => { button.show(); });
-  }
-
-  public hide(): void {
-    this.playButtons.forEach(button => { button.hide(); });
   }
 }

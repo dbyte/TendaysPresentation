@@ -60,7 +60,7 @@ export class PlayerController {
   private getAllOverlayElements(): HTMLElement[] {
     // We need a value copy of playButtons
     const overlays: HasHtmlElement[] = [
-      this.navbar, this.infoButton01, ...this.video.hotspotComponent.playButtons
+      this.navbar, this.infoButton01, ...this.video.hotspotComponent.getChildren()
     ];
     return getElementsOfObjects(overlays);
   }
