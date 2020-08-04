@@ -23,7 +23,7 @@ export class HomeButton extends Button {
   public handleEvent(e: Event): void {
     switch (e.type) {
       case "click":
-        if (this.onClickCallback) this.onClickCallback();
+        if (this.onClickCallback !== undefined) this.onClickCallback();
         break;
       default:
         break;

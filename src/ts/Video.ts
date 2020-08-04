@@ -1,12 +1,14 @@
 import { Component } from "./Component";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { HotspotsScene01 } from "./HotspotsScene01";
+import { CssAnimation, CssAnimationEvent } from "./Utilities";
 
 export class Video extends Component {
   public elem?: HTMLVideoElement;
   private baseFilename: string;
   private loadingSpinner: LoadingSpinner;
   public hotspotComponent: HotspotsScene01;
+  private cssAnimation?: CssAnimation;
 
   private static readonly BASE_DIR = "assets/";
   private static readonly SMALLRES_FRAGMENT = "-small";
@@ -19,13 +21,20 @@ export class Video extends Component {
     baseFilename: string,
     hotspotComponent: HotspotsScene01
   ) {
-    super("video-component", parentElemId);
+    const COMPONENT_ID = "video-component";
+
+    const loadingSpinner = LoadingSpinner.create("interactiveContainer");
+
+    super(COMPONENT_ID, parentElemId, [hotspotComponent, loadingSpinner]);
 
     // 'elem' also resides in superclass, but here we need to cast to HTMLVideoElement:
     this.elem = super.elem as HTMLVideoElement;
 
     this.baseFilename = baseFilename;
-    this.loadingSpinner = LoadingSpinner.create("interactiveContainer");
+
+    /* We handle some behaviour of these children separately
+    in this class, so keep a ref on each of them. */
+    this.loadingSpinner = loadingSpinner;
     this.hotspotComponent = hotspotComponent;
   }
 
@@ -41,28 +50,24 @@ export class Video extends Component {
   public async render(): Promise<void> {
     // Set up my own component first!
     await super.render();
-    // Now my children
-    Promise.all([
-      await this.loadingSpinner.render(),
-      await this.hotspotComponent.render()
-    ]);
-  }
-
-  public dispose(): void {
-    super.dispose();
-    this.elem = undefined;
-    this.loadingSpinner.dispose();
-    this.hotspotComponent.dispose();
+    if (this.elem) this.cssAnimation = new CssAnimation(this.elem);
   }
 
   public show(): void {
-    super.setHidden(false);
+    this.elem?.addEventListener(
+      "animationend",
+      () => { this.cssAnimation?.removeAll(); },
+      { once: true }
+    );
+
+    this.setHidden(false);
+    this.cssAnimation?.start(CssAnimationEvent.FadeIn);
     this.hotspotComponent.show();
   }
+
   public hide(): void {
-    this.loadingSpinner.hide();
-    this.hotspotComponent.hide();
-    super.setHidden(true);
+    this.children?.forEach(child => child.hide());
+    this.setHidden(true);
   }
 
   public switchSource(baseFilename: string): void {
@@ -89,8 +94,9 @@ export class Video extends Component {
   }
 
   public jumpToStart(): void {
-    this.elem?.pause();
     if (this.elem) this.elem.currentTime = 0;
+    if (!this.elem?.paused) this.elem?.pause();
+    this.elem?.load();
     this.hotspotComponent.show();
   }
 

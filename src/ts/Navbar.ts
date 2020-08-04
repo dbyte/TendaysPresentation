@@ -4,18 +4,15 @@ import { HomeButton } from "./HomeButton";
 import { CssAnimation, CssAnimationEvent } from "./Utilities";
 
 export class Navbar extends Component {
-  private fullscreenButton!: FullscreenButton;
-  private homeButton!: HomeButton;
   private cssAnimation?: CssAnimation;
 
   constructor(parentElemId: string, onClickHomeButtonCallback?: CallableFunction) {
     const COMPONENT_ID = "main-navigation-component";
+    const fullscreenButton = FullscreenButton.create(COMPONENT_ID);
+    const homeButton = HomeButton.create(COMPONENT_ID);
+    homeButton.onClickCallback = onClickHomeButtonCallback;
 
-    super(COMPONENT_ID, parentElemId);
-
-    this.fullscreenButton = FullscreenButton.create(this.componentId);
-    this.homeButton = HomeButton.create(this.componentId);
-    this.homeButton.onClickCallback = onClickHomeButtonCallback;
+    super(COMPONENT_ID, parentElemId, [fullscreenButton, homeButton]);
   }
 
   public static create(parentElemId: string, onClickHomeButtonCallback?: CallableFunction): Navbar {
@@ -26,18 +23,8 @@ export class Navbar extends Component {
   public async render(): Promise<void> {
     // Set up my own component first!
     await super.render();
-    super.setHidden(true);
+    this.setHidden(true);
     if (this.elem) this.cssAnimation = new CssAnimation(this.elem);
-
-    // Now my children (their order matters for horiz. alignment, so no Promise.all!)
-    await this.fullscreenButton.render();
-    await this.homeButton.render();
-  }
-
-  public dispose(): void {
-    super.dispose();
-    this.fullscreenButton.dispose();
-    this.homeButton.dispose();
   }
 
   public toggleShowHide(): void {
@@ -58,8 +45,7 @@ export class Navbar extends Component {
 
       super.setHidden(false);
       this.cssAnimation?.start(CssAnimationEvent.FadeIn);
-      this.fullscreenButton.show();
-      this.homeButton.show();
+      this.children?.forEach(child => child.show());
     }
   }
 
@@ -75,9 +61,8 @@ export class Navbar extends Component {
     }
   }
   private onHideAnimationEnd(): void {
-    super.setHidden(true);
+    this.setHidden(true);
     this.cssAnimation?.removeAll();
-    this.fullscreenButton.hide();
-    this.homeButton.hide();
+    this.children?.forEach(child => child.hide());
   }
 }

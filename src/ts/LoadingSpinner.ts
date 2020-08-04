@@ -21,7 +21,7 @@ export class LoadingSpinner extends Component {
   }
 
   public show(): void {
-    super.setHidden(false);
+    this.setHidden(false);
     this.cssAnimation?.start(CssAnimationEvent.ScaleIn);
   }
 

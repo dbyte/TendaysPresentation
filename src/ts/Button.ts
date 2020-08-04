@@ -8,8 +8,8 @@ export abstract class Button extends Component {
     this.buttonImageSource = buttonImageSource;
   }
 
-  public async render(skipLoading?: "skipLoading"): Promise<void> {
-    await super.render(skipLoading);
+  public async render(): Promise<void> {
+    await super.render();
     if (this.elem) this.elem.hidden = true;
     const imageElem = this.elem as HTMLImageElement;
     imageElem.src = this.buttonImageSource;
@@ -20,13 +20,13 @@ export abstract class Button extends Component {
     HTML as they may have wrong positions/sizes when entering the page.
     As soon as the page got loaded and we've rearranged things, we can
     switch them on. */
-    super.setHidden(false);
+    this.setHidden(false);
     this.removeEventListeners();
     this.addEventListeners();
   }
 
   public hide(): void {
-    super.setHidden(true);
+    this.setHidden(true);
   }
 
   public dispose(): void {

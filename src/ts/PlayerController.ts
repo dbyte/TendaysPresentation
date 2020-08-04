@@ -3,7 +3,7 @@ import { HotspotsScene01 } from "./HotspotsScene01";
 import { InfoButton } from "./InfoButton";
 import { OverlayHandler } from "./OverlayHandler";
 import { Navbar } from "./Navbar";
-import { HasHtmlElement, getElementsOfObjects, IS_CLIENT_SAFARI } from "./Utilities";
+import { HasHtmlElement, getElementsOfObjects } from "./Utilities";
 
 export class PlayerController {
   private static readonly DEFAULT_VIDEOSOURCE = "animation-01";
@@ -51,13 +51,8 @@ export class PlayerController {
       this.overlayHandler.repositionOnVideo(this.video.elem!);
     });
 
-    this.video.elem.addEventListener("click", event => {
-      this.onClickedVideo(event);
-    });
-
-    this.video.elem.addEventListener("ended", () => {
-      this.onVideoEnded();
-    });
+    this.video.elem?.addEventListener("click", event => this.onClickedVideo(event));
+    this.video.elem?.addEventListener("ended", event => this.onVideoEnded(event));
   }
 
   private getAllOverlayElements(): HTMLElement[] {
@@ -75,22 +70,18 @@ export class PlayerController {
     });
   }
 
-  private onVideoEnded(): void {
-    if (IS_CLIENT_SAFARI && this.video.elem) {
-      // Workaround for Safari Client, which sometimes shows white frame at end.
-      this.video.elem.currentTime = this.video.elem.duration;
-    }
-
+  private onVideoEnded(event: Event): void {
+    event.stopPropagation();
+    if (event.type !== "ended") return;
     this.navbar.show();
     this.infoButton01.show();
   }
 
   private onClickedVideo(event: Event): void {
-    if (event.type === "click") {
-      event.preventDefault();
-      this.navbar.toggleShowHide();
-    }
     event.stopPropagation();
+    if (event.type !== "click") return;
+    event.preventDefault();
+    this.navbar.toggleShowHide();
   }
 
   public goHome(): void {

@@ -1,44 +1,52 @@
 import { HasHtmlElement, getElementByUniqueClassName, htmlTextToDomFragment } from "./Utilities";
-
-export class ComponentUrl {
-  private static readonly URL: Record<string, string> = {
-    "video-component": "./views/video.html",
-    "hotspots-scene-01-component": "./views/hotspots-scene-01.html",
-    "main-navigation-component": "./views/main-navigation.html",
-    "loadingspinner-component": "./views/loadingspinner.html",
-    "fullscreen-button-component": "./views/fullscreen-button.html",
-    "home-button-component": "./views/home-button.html",
-    "info-button-component": "./views/info-button.html",
-  };
-
-  public static get(componentId: string): string | never {
-    const url = ComponentUrl.URL[componentId];
-    if (url) return url;
-    throw new Error(`Could not find URL for component '${componentId}'`);
-  }
-}
+import { ComponentUrl } from "./ComponentUrl";
 
 export abstract class Component implements HasHtmlElement {
   public elem?: HTMLElement;
+  protected children?: Component[];
   public readonly componentId: string;
+  private readonly componentURL?: string;
   protected readonly parentElemId: string;
 
-  constructor(componentId: string, parentElemId: string) {
+  constructor(componentId: string, parentElemId: string, children?: Component[]) {
     this.componentId = componentId;
     this.parentElemId = parentElemId;
+    this.children = children;
+    this.componentURL = ComponentUrl.get(this.componentId);
   }
 
-  public async render(skipLoading?: "skipLoading"): Promise<void> {
+  public getChildren(): Component[] {
+    if (!this.children) return [];
+    return this.children;
+  }
+
+  public async render(): Promise<void> {
     const parentElem = getElementByUniqueClassName(this.parentElemId);
     if (!parentElem) Error(`Unable to find DOM element with id '${this.parentElemId}'`);
 
-    if (!skipLoading) await this.loadView();
+    if (this.componentURL) {
+      await this.loadView();
+    } else {
+      console.info(
+        `Skipping fetch of component ${this.componentId} because it's an embedded component.`
+      );
+    }
 
     // Throws on undefined or multiple found elements
     this.elem = getElementByUniqueClassName(this.componentId);
+
+    if (this.children) {
+      /* Composite - deep loop through all children. Wait until all children finished rendering.
+      Note: Children are rendered in parallel inside map call! Hence, we
+      do not guarantee the order in which renderings of them get finished */
+      await Promise.all(this.children.map(async child => {
+        await child.render();
+      }));
+    }
   }
 
   public dispose(): void {
+    this.children?.forEach(child => child.dispose());
     this.elem?.remove();
     this.elem = undefined;
   }
@@ -47,22 +55,29 @@ export abstract class Component implements HasHtmlElement {
 
   public abstract hide(): void;
 
-  // Just an often needed helper for subclasses
+  /* Just an often needed helper for subclasses.
+  We do not recursively hide/show children here, as it may not be desired
+  to hide/show them at the same time. */
   public setHidden(isHidden: boolean): void {
     if (this.elem) this.elem.hidden = isHidden;
   }
 
+  /* Fetch HTML component and insert into live DOM. Do not call for
+  "embedded" components which HTML is nested inside their parents. */
   private async loadView(): Promise<void> {
     const parentElem = getElementByUniqueClassName(this.parentElemId);
     if (!parentElem) Error(`Unable to find DOM element with id '${this.parentElemId}'`);
 
-    const url = ComponentUrl.get(this.componentId);
+    if (!this.componentURL) {
+      throw new Error(`Could not find URL for component '${this.componentId}'`);
+    }
+
     let response;
     const headers = new Headers();
     headers.append("Content-Type", "text/html");
 
     try {
-      response = await fetch(url, {
+      response = await fetch(this.componentURL, {
         method: "GET",
         headers,
       });
@@ -71,7 +86,7 @@ export abstract class Component implements HasHtmlElement {
     }
 
     if (!response) {
-      throw new Error(`Unable to load component. No response for request url ${url}`);
+      throw new Error(`Unable to load component. No response for request url ${this.componentURL}`);
     }
 
     if (!response.ok) {

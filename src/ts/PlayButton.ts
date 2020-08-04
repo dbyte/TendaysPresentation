@@ -22,7 +22,7 @@ export class PlayButton extends Button {
   }
 
   public async render(): Promise<void> {
-    super.render("skipLoading");
+    super.render();
     if (this.elem) this.cssAnimation = new CssAnimation(this.elem);
   }
 
