@@ -133,6 +133,11 @@ objects. Instead define in HTML tags which are observerd by JS */
   animation-fill-mode: forwards;
 }
 
+.slideOutLeft {
+  animation: 0.5s ease-in 0s 1 slideOutLeft;
+  animation-fill-mode: forwards;
+}
+
 .onMouseoverAnimate {
     cursor: pointer;
     animation: 0.2s ease 0s 1 emphasizeScale;
@@ -160,6 +165,11 @@ objects. Instead define in HTML tags which are observerd by JS */
         opacity: 0.0;
         transform: scale(0.0);
     }
+  }
+
+  @keyframes slideOutLeft {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-100%); }
   }
 
   @keyframes fadeIn {

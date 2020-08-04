@@ -2,16 +2,21 @@ import { Button } from "./Button";
 import { CssAnimation, CssAnimationEvent } from "./Utilities";
 
 export class InfoButton extends Button {
+  private onClickCallback?: CallableFunction;
   private cssAnimation?: CssAnimation;
 
-  constructor(parentElemID: string) {
+  constructor(parentElemID: string, onClickCallback?: CallableFunction) {
     const COMPONENT_ID = "info-button-component";
 
     super(COMPONENT_ID, "assets/info-button.png", parentElemID);
+    this.onClickCallback = onClickCallback;
   }
 
-  public static create(parentElemID: string): InfoButton {
-    const instance = new InfoButton(parentElemID);
+  public static create(
+    parentElemID: string,
+    onClickCallback?: CallableFunction
+  ): InfoButton {
+    const instance = new InfoButton(parentElemID, onClickCallback);
     return instance;
   }
 
@@ -29,7 +34,7 @@ export class InfoButton extends Button {
   public handleEvent(e: Event): void {
     switch (e.type) {
       case "click":
-        // ToDo
+        if (this.onClickCallback) this.onClickCallback();
         break;
       default:
         break;

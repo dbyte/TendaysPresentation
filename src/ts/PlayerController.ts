@@ -3,7 +3,9 @@ import { HotspotsScene01 } from "./HotspotsScene01";
 import { InfoButton } from "./InfoButton";
 import { OverlayHandler } from "./OverlayHandler";
 import { Navbar } from "./Navbar";
-import { HasHtmlElement, getElementsOfObjects } from "./Utilities";
+import {
+  HasHtmlElement, getElementsOfObjects
+} from "./Utilities";
 
 export class PlayerController {
   private static readonly DEFAULT_VIDEOSOURCE = "animation-01";
@@ -21,7 +23,7 @@ export class PlayerController {
       HotspotsScene01.create(COMPONENT_ID, this.startVideo.bind(this))
     );
     this.navbar = Navbar.create(COMPONENT_ID, this.goHome.bind(this));
-    this.infoButton01 = InfoButton.create(COMPONENT_ID);
+    this.infoButton01 = InfoButton.create(COMPONENT_ID, this.onClickedInfo.bind(this));
   }
 
   public static create(): PlayerController {
@@ -82,6 +84,17 @@ export class PlayerController {
     if (event.type !== "click") return;
     event.preventDefault();
     this.navbar.toggleShowHide();
+  }
+
+  private onClickedInfo() {
+    this.video.elem?.addEventListener(
+      "animationend", () => {
+        this.goHome();
+        this.video.elem?.classList.remove("slideOutLeft");
+        this.video.show();
+      }, { once: true }
+    );
+    this.video.elem?.classList.add("slideOutLeft");
   }
 
   public goHome(): void {
