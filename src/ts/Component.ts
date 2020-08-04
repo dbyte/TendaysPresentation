@@ -3,7 +3,7 @@ import { ComponentUrl } from "./ComponentUrl";
 
 export abstract class Component implements HasHtmlElement {
   public elem?: HTMLElement;
-  protected children?: Component[];
+  protected readonly children?: Component[];
   public readonly componentId: string;
   private readonly componentURL?: string;
   protected readonly parentElemId: string;
