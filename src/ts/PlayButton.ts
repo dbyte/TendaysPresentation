@@ -1,9 +1,9 @@
 import { Button } from "./Button";
-import { CssAnimation, CssAnimationEvent } from "./CssAnimationService";
+import { CssAnimationService, CssAnimationEvent } from "./CssAnimationService";
 
 export class PlayButton extends Button {
   private readonly videoFileBasename: string;
-  private cssAnimation?: CssAnimation;
+  private cssAnimation?: CssAnimationService;
   public onClickCallback?: CallableFunction;
 
   constructor(elemID: string, pathToVideo: string, parentElemId: string) {
@@ -23,7 +23,7 @@ export class PlayButton extends Button {
 
   public async render(): Promise<void> {
     await super.render();
-    if (this.elem) this.cssAnimation = new CssAnimation(this.elem);
+    if (this.elem) this.cssAnimation = new CssAnimationService(this.elem);
   }
 
   public show(): void {

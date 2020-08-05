@@ -18,7 +18,7 @@ export interface CssAnimationOptions {
 /**
  * Trigger CSS animations by manipulating HTMLDomElement-Classes
  */
-export class CssAnimation {
+export class CssAnimationService {
   private readonly element: HTMLElement;
 
   constructor(element: HTMLElement) {
@@ -30,10 +30,10 @@ export class CssAnimation {
 
     // Wait for animation end and perform additional actions if requested.
     if (handleAnimationEnd) {
-      const capturedCssParam = cssEvent;
+      const capturedClassname = cssEvent;
       this.element.addEventListener(
         "animationend", () => {
-          if (options?.removeClassOnEnd) this.element.classList.remove(capturedCssParam);
+          if (options?.removeClassOnEnd) this.element.classList.remove(capturedClassname);
           if (options?.callbackOnEnd) options.callbackOnEnd();
         },
         { once: true }

@@ -1,9 +1,9 @@
 import { Button } from "./Button";
-import { CssAnimation, CssAnimationEvent } from "./CssAnimationService";
+import { CssAnimationService, CssAnimationEvent } from "./CssAnimationService";
 
 export class InfoButton extends Button {
   private onClickCallback?: CallableFunction;
-  private cssAnimation?: CssAnimation;
+  private cssAnimation?: CssAnimationService;
 
   constructor(parentElemID: string, onClickCallback?: CallableFunction) {
     const COMPONENT_ID = "info-button-component";
@@ -22,7 +22,7 @@ export class InfoButton extends Button {
 
   public async render(): Promise<void> {
     await super.render();
-    if (this.elem) this.cssAnimation = new CssAnimation(this.elem);
+    if (this.elem) this.cssAnimation = new CssAnimationService(this.elem);
   }
 
   public show(): void {

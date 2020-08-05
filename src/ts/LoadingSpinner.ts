@@ -1,8 +1,12 @@
 import { Component } from "./Component";
-import { CssAnimation, CssAnimationEvent, CssAnimationOptions } from "./CssAnimationService";
+import {
+  CssAnimationService,
+  CssAnimationEvent,
+  CssAnimationOptions
+} from "./CssAnimationService";
 
 export class LoadingSpinner extends Component {
-  private cssAnimation?: CssAnimation;
+  private cssAnimation?: CssAnimationService;
 
   constructor(parentElemId: string) {
     const COMPONENT_ID = "loadingspinner-component";
@@ -17,7 +21,7 @@ export class LoadingSpinner extends Component {
 
   public async render(): Promise<void> {
     await super.render();
-    if (this.elem) this.cssAnimation = new CssAnimation(this.elem);
+    if (this.elem) this.cssAnimation = new CssAnimationService(this.elem);
   }
 
   public show(): void {

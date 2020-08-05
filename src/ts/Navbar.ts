@@ -1,10 +1,10 @@
 import { Component } from "./Component";
 import { FullscreenButton } from "./FullscreenButton";
 import { HomeButton } from "./HomeButton";
-import { CssAnimation, CssAnimationEvent } from "./CssAnimationService";
+import { CssAnimationService, CssAnimationEvent } from "./CssAnimationService";
 
 export class Navbar extends Component {
-  private cssAnimation?: CssAnimation;
+  private cssAnimation?: CssAnimationService;
 
   constructor(parentElemId: string, onClickHomeButtonCallback?: CallableFunction) {
     const COMPONENT_ID = "main-navigation-component";
@@ -24,7 +24,7 @@ export class Navbar extends Component {
     // Set up my own component first!
     await super.render();
     this.setHidden(true);
-    if (this.elem) this.cssAnimation = new CssAnimation(this.elem);
+    if (this.elem) this.cssAnimation = new CssAnimationService(this.elem);
   }
 
   public toggleShowHide(): void {

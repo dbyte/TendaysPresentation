@@ -1,14 +1,14 @@
 import { Component } from "./Component";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { HotspotsScene01 } from "./HotspotsScene01";
-import { CssAnimation, CssAnimationEvent } from "./CssAnimationService";
+import { CssAnimationService, CssAnimationEvent } from "./CssAnimationService";
 
 export class Video extends Component {
   public elem?: HTMLVideoElement;
   private baseFilename: string;
   private loadingSpinner: LoadingSpinner;
   public hotspotComponent: HotspotsScene01;
-  private cssAnimation?: CssAnimation;
+  private cssAnimation?: CssAnimationService;
 
   private static readonly BASE_DIR = "assets/";
   private static readonly SMALLRES_FRAGMENT = "-small";
@@ -50,7 +50,7 @@ export class Video extends Component {
   public async render(): Promise<void> {
     // Set up my own component first!
     await super.render();
-    if (this.elem) this.cssAnimation = new CssAnimation(this.elem);
+    if (this.elem) this.cssAnimation = new CssAnimationService(this.elem);
   }
 
   public show(): void {
