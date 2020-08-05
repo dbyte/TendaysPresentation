@@ -87,18 +87,21 @@ export class PlayerController {
 
   private onClickedInfo() {
     if (!this.video.elem) return;
+
+    this.infoButton01.hide();
+
     const cssAnimation = new CssAnimationService(this.video.elem);
     cssAnimation.start(CssAnimationClass.SlideOutLeft, {
       removeClassOnEnd: true,
       callbackOnEnd: () => {
-        this.goHome();
+        this.video.jumpToStart();
         this.video.show();
       }
     });
   }
 
   public goHome(): void {
-    this.video.jumpToStart();
     this.infoButton01.hide();
+    this.video.jumpToStart();
   }
 }

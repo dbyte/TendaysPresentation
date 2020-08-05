@@ -92,7 +92,7 @@ export class Video extends Component {
   public jumpToStart(): void {
     if (this.elem) this.elem.currentTime = 0;
     if (!this.elem?.paused) this.elem?.pause();
-    this.elem?.load();
+    // this.elem?.load();
     this.hotspotComponent.show();
   }
 

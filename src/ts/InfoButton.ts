@@ -27,7 +27,14 @@ export class InfoButton extends Button {
 
   public show(): void {
     super.show();
-    this.animateIn();
+    this.cssAnimation?.start(CssAnimationClass.ScaleIn);
+  }
+
+  public hide(): void {
+    this.cssAnimation?.start(CssAnimationClass.ScaleOut, {
+      callbackOnEnd: () => super.hide(),
+      removeClassOnEnd: true
+    });
   }
 
   // Called JS-internally by the added listeners!
@@ -40,9 +47,5 @@ export class InfoButton extends Button {
         break;
     }
     e.stopPropagation();
-  }
-
-  private animateIn(): void {
-    this.cssAnimation?.start(CssAnimationClass.ScaleIn);
   }
 }
