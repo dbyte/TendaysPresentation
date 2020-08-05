@@ -29,20 +29,22 @@ export class CssAnimationService {
   public start(cssEvent: string, options?: CssAnimationOptions): void {
     const handleAnimationEnd = options?.callbackOnEnd || options?.removeClassOnEnd;
 
+    // Remove all animation classes of this element.
+    this.removeAll();
+
     // Wait for animation end and perform additional actions if requested.
     if (handleAnimationEnd) {
       const capturedClassname = cssEvent;
       this.element.addEventListener(
         "animationend", () => {
+          if (!capturedClassname) throw new Error("css classname is undefined!");
           if (options?.removeClassOnEnd) this.element.classList.remove(capturedClassname);
-          if (options?.callbackOnEnd) options.callbackOnEnd();
+          if (options?.callbackOnEnd !== undefined) options.callbackOnEnd();
         },
         { once: true }
       );
     }
 
-    // Remove all animation classes of this element.
-    this.removeAll();
     // Trigger animation start by adding class which is referenced in CSS
     this.element.classList.add(cssEvent);
   }

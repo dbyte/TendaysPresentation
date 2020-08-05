@@ -31,7 +31,7 @@ body {
 
 /* Do not use any positioning or sizing for video overlay
 objects. Instead define in HTML tags which are observerd by JS */
-.button-player {
+.button-player, .button-info {
     position: absolute;
     z-index: 2; 
     opacity: 0.7;
@@ -101,18 +101,10 @@ objects. Instead define in HTML tags which are observerd by JS */
   }
 }
 
-.main-navigation-component .player-navigation:hover, .button-info:hover {
+.main-navigation-component .player-navigation:hover {
     cursor: pointer;
     opacity: 1.0;
     transform: scale(1.15) perspective(1px);
-}
-
-.button-info {
-  position: absolute;
-  z-index: 2; 
-  transition: all 0.2s ease-in-out;
-  opacity: 0.7;
-  animation: 0.5s ease-out 0s 1 scaleIn;
 }
 
 .scaleIn {
@@ -162,8 +154,8 @@ objects. Instead define in HTML tags which are observerd by JS */
 
   @keyframes scaleOut {
     to {
-        opacity: 0.0;
         transform: scale(0.0);
+        opacity: 0.0;
     }
   }
 

@@ -27,12 +27,13 @@ export class InfoButton extends Button {
 
   public show(): void {
     super.show();
-    this.cssAnimation?.start(CssAnimationClass.ScaleIn);
+    this.cssAnimation?.start(CssAnimationClass.ScaleIn, { removeClassOnEnd: true });
   }
 
   public hide(): void {
+    this.removeEventListeners();
     this.cssAnimation?.start(CssAnimationClass.ScaleOut, {
-      callbackOnEnd: () => super.hide(),
+      callbackOnEnd: super.hide.bind(this),
       removeClassOnEnd: true
     });
   }
@@ -41,7 +42,13 @@ export class InfoButton extends Button {
   public handleEvent(e: Event): void {
     switch (e.type) {
       case "click":
-        if (this.onClickCallback) this.onClickCallback();
+        if (this.onClickCallback !== undefined) this.onClickCallback();
+        break;
+      case "mouseover":
+        this.cssAnimation?.start(CssAnimationClass.OnMouseOver);
+        break;
+      case "mouseout":
+        this.cssAnimation?.start(CssAnimationClass.OnMouseOut);
         break;
       default:
         break;
