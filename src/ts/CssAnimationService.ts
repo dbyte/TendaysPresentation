@@ -7,7 +7,8 @@ export enum CssAnimationEvent {
   FadeIn = "fadeIn",
   FadeOut = "fadeOut",
   OnMouseOver = "onMouseoverAnimate",
-  OnMouseOut = "onMouseoutAnimate"
+  OnMouseOut = "onMouseoutAnimate",
+  SlideOutLeft = "slideOutLeft"
 }
 
 export interface CssAnimationOptions {
