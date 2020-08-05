@@ -1,7 +1,7 @@
 /**
  * These are the mappings to literal CSS definitions.
  */
-export enum CssAnimationEvent {
+export enum CssAnimationClass {
   ScaleIn = "scaleIn",
   ScaleOut = "scaleOut",
   FadeIn = "fadeIn",
@@ -48,7 +48,7 @@ export class CssAnimationService {
   }
 
   public removeAll(): void {
-    const animationsToRemove: string[] = Object.values(CssAnimationEvent);
+    const animationsToRemove: string[] = Object.values(CssAnimationClass);
     this.element.classList.remove(...animationsToRemove);
   }
 }

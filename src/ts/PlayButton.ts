@@ -1,5 +1,5 @@
 import { Button } from "./Button";
-import { CssAnimationService, CssAnimationEvent } from "./CssAnimationService";
+import { CssAnimationService, CssAnimationClass } from "./CssAnimationService";
 
 export class PlayButton extends Button {
   private readonly videoFileBasename: string;
@@ -50,21 +50,21 @@ export class PlayButton extends Button {
   }
 
   private animateIn(): void {
-    this.cssAnimation?.start(CssAnimationEvent.ScaleIn);
+    this.cssAnimation?.start(CssAnimationClass.ScaleIn);
   }
 
   private animateOnMouseover(): void {
-    this.cssAnimation?.start(CssAnimationEvent.OnMouseOver);
+    this.cssAnimation?.start(CssAnimationClass.OnMouseOver);
   }
 
   private animateOnMouseout(): void {
-    this.cssAnimation?.start(CssAnimationEvent.OnMouseOut);
+    this.cssAnimation?.start(CssAnimationClass.OnMouseOut);
   }
 
   public hide(): void {
     this.removeEventListeners();
     this.cssAnimation?.start(
-      CssAnimationEvent.ScaleOut, { callbackOnEnd: super.hide.bind(this), removeClassOnEnd: true }
+      CssAnimationClass.ScaleOut, { callbackOnEnd: super.hide.bind(this), removeClassOnEnd: true }
     );
   }
 }

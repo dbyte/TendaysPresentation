@@ -1,7 +1,7 @@
 import { Component } from "./Component";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { HotspotsScene01 } from "./HotspotsScene01";
-import { CssAnimationService, CssAnimationEvent } from "./CssAnimationService";
+import { CssAnimationService, CssAnimationClass } from "./CssAnimationService";
 
 export class Video extends Component {
   public elem?: HTMLVideoElement;
@@ -55,7 +55,7 @@ export class Video extends Component {
 
   public show(): void {
     this.setHidden(false);
-    this.cssAnimation?.start(CssAnimationEvent.FadeIn, {
+    this.cssAnimation?.start(CssAnimationClass.FadeIn, {
       callbackOnEnd: () => this.cssAnimation?.removeAll()
     });
     this.hotspotComponent.show();

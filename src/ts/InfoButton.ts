@@ -1,5 +1,5 @@
 import { Button } from "./Button";
-import { CssAnimationService, CssAnimationEvent } from "./CssAnimationService";
+import { CssAnimationService, CssAnimationClass } from "./CssAnimationService";
 
 export class InfoButton extends Button {
   private onClickCallback?: CallableFunction;
@@ -43,6 +43,6 @@ export class InfoButton extends Button {
   }
 
   private animateIn(): void {
-    this.cssAnimation?.start(CssAnimationEvent.ScaleIn);
+    this.cssAnimation?.start(CssAnimationClass.ScaleIn);
   }
 }

@@ -4,7 +4,7 @@ import { InfoButton } from "./InfoButton";
 import { OverlayHandler } from "./OverlayHandler";
 import { Navbar } from "./Navbar";
 import { HasHtmlElement, getElementsOfObjects } from "./Utilities";
-import { CssAnimationService, CssAnimationEvent } from "./CssAnimationService";
+import { CssAnimationService, CssAnimationClass } from "./CssAnimationService";
 
 export class PlayerController {
   private static readonly DEFAULT_VIDEOSOURCE = "animation-01";
@@ -88,7 +88,7 @@ export class PlayerController {
   private onClickedInfo() {
     if (!this.video.elem) return;
     const cssAnimation = new CssAnimationService(this.video.elem);
-    cssAnimation.start(CssAnimationEvent.SlideOutLeft, {
+    cssAnimation.start(CssAnimationClass.SlideOutLeft, {
       removeClassOnEnd: true,
       callbackOnEnd: () => {
         this.goHome();

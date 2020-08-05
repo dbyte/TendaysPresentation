@@ -1,7 +1,7 @@
 import { Component } from "./Component";
 import { FullscreenButton } from "./FullscreenButton";
 import { HomeButton } from "./HomeButton";
-import { CssAnimationService, CssAnimationEvent } from "./CssAnimationService";
+import { CssAnimationService, CssAnimationClass } from "./CssAnimationService";
 
 export class Navbar extends Component {
   private cssAnimation?: CssAnimationService;
@@ -38,14 +38,14 @@ export class Navbar extends Component {
   public show(): void {
     if (this.elem?.hidden) {
       super.setHidden(false);
-      this.cssAnimation?.start(CssAnimationEvent.FadeIn, { removeClassOnEnd: true });
+      this.cssAnimation?.start(CssAnimationClass.FadeIn, { removeClassOnEnd: true });
       this.children?.forEach(child => child.show());
     }
   }
 
   public hide(): void {
     if (!this.elem?.hidden) {
-      this.cssAnimation?.start(CssAnimationEvent.FadeOut, {
+      this.cssAnimation?.start(CssAnimationClass.FadeOut, {
         callbackOnEnd: () => this.onHideAnimationEnd(),
         removeClassOnEnd: true
       });
