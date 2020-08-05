@@ -43,14 +43,6 @@ export class InfoButton extends Button {
   }
 
   private animateIn(): void {
-    this.elem?.addEventListener(
-      "animationend", event => { this.onInAnimationEnd(event); },
-      { once: true }
-    );
     this.cssAnimation?.start(CssAnimationEvent.ScaleIn);
-  }
-  private onInAnimationEnd(event: AnimationEvent): void {
-    this.cssAnimation?.removeAll();
-    event.stopPropagation();
   }
 }

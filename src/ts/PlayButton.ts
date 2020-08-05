@@ -22,7 +22,7 @@ export class PlayButton extends Button {
   }
 
   public async render(): Promise<void> {
-    super.render();
+    await super.render();
     if (this.elem) this.cssAnimation = new CssAnimation(this.elem);
   }
 
@@ -50,41 +50,21 @@ export class PlayButton extends Button {
   }
 
   private animateIn(): void {
-    this.elem?.addEventListener("animationend", () => { this.onInAnimationEnd(); }, { once: true });
     this.cssAnimation?.start(CssAnimationEvent.ScaleIn);
-  }
-  private onInAnimationEnd(): void {
-    this.cssAnimation?.removeAll();
   }
 
   private animateOnMouseover(): void {
-    this.elem?.addEventListener(
-      "animationend", () => { this.onMouseoverAnimationEnd(); }, { once: true }
-    );
     this.cssAnimation?.start(CssAnimationEvent.OnMouseOver);
-  }
-  private onMouseoverAnimationEnd(): void {
-    // TODO
   }
 
   private animateOnMouseout(): void {
-    this.elem?.addEventListener(
-      "animationend", () => { this.onMouseoutAnimationEnd(); }, { once: true }
-    );
     this.cssAnimation?.start(CssAnimationEvent.OnMouseOut);
-  }
-  private onMouseoutAnimationEnd(): void {
-    // TODO
   }
 
   public hide(): void {
     this.removeEventListeners();
-    this.elem?.addEventListener(
-      "animationend", () => { this.onHideAnimationEnd(); }, { once: true }
+    this.cssAnimation?.start(
+      CssAnimationEvent.ScaleOut, { callbackOnEnd: super.hide.bind(this), removeClassOnEnd: true }
     );
-    this.cssAnimation?.start(CssAnimationEvent.ScaleOut);
-  }
-  private onHideAnimationEnd(): void {
-    super.hide();
   }
 }

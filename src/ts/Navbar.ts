@@ -37,32 +37,22 @@ export class Navbar extends Component {
 
   public show(): void {
     if (this.elem?.hidden) {
-      this.elem.addEventListener(
-        "animationend",
-        () => { this.cssAnimation?.removeAll(); },
-        { once: true }
-      );
-
       super.setHidden(false);
-      this.cssAnimation?.start(CssAnimationEvent.FadeIn);
+      this.cssAnimation?.start(CssAnimationEvent.FadeIn, { removeClassOnEnd: true });
       this.children?.forEach(child => child.show());
     }
   }
 
   public hide(): void {
     if (!this.elem?.hidden) {
-      this.elem?.addEventListener(
-        "animationend",
-        () => { this.onHideAnimationEnd(); },
-        { once: true }
-      );
-
-      this.cssAnimation?.start(CssAnimationEvent.FadeOut);
+      this.cssAnimation?.start(CssAnimationEvent.FadeOut, {
+        callbackOnEnd: () => this.onHideAnimationEnd(),
+        removeClassOnEnd: true
+      });
     }
   }
   private onHideAnimationEnd(): void {
     this.setHidden(true);
-    this.cssAnimation?.removeAll();
     this.children?.forEach(child => child.hide());
   }
 }

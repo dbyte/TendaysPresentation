@@ -54,14 +54,10 @@ export class Video extends Component {
   }
 
   public show(): void {
-    this.elem?.addEventListener(
-      "animationend",
-      () => { this.cssAnimation?.removeAll(); },
-      { once: true }
-    );
-
     this.setHidden(false);
-    this.cssAnimation?.start(CssAnimationEvent.FadeIn);
+    this.cssAnimation?.start(CssAnimationEvent.FadeIn, {
+      callbackOnEnd: () => this.cssAnimation?.removeAll()
+    });
     this.hotspotComponent.show();
   }
 

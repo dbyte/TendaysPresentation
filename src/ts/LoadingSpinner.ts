@@ -1,5 +1,5 @@
 import { Component } from "./Component";
-import { CssAnimation, CssAnimationEvent } from "./Utilities";
+import { CssAnimation, CssAnimationEvent, CssAnimationOptions } from "./Utilities";
 
 export class LoadingSpinner extends Component {
   private cssAnimation?: CssAnimation;
@@ -26,11 +26,11 @@ export class LoadingSpinner extends Component {
   }
 
   public hide(): void {
-    this.cssAnimation?.start(CssAnimationEvent.ScaleOut);
-    this.elem?.addEventListener(
-      "animationend",
-      event => { super.setHidden(true); event.stopPropagation(); },
-      { once: true }
-    );
+    const options: CssAnimationOptions = {
+      callbackOnEnd: () => this.setHidden(true),
+      removeClassOnEnd: true
+    };
+
+    this.cssAnimation?.start(CssAnimationEvent.ScaleOut, options);
   }
 }
