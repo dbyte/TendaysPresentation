@@ -1,5 +1,5 @@
 import { Component } from "./Component";
-import { CssAnimation, CssAnimationEvent, CssAnimationOptions } from "./Utilities";
+import { CssAnimation, CssAnimationEvent, CssAnimationOptions } from "./CssAnimationService";
 
 export class LoadingSpinner extends Component {
   private cssAnimation?: CssAnimation;

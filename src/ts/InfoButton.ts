@@ -1,5 +1,5 @@
 import { Button } from "./Button";
-import { CssAnimation, CssAnimationEvent } from "./Utilities";
+import { CssAnimation, CssAnimationEvent } from "./CssAnimationService";
 
 export class InfoButton extends Button {
   private onClickCallback?: CallableFunction;

@@ -1,7 +1,7 @@
 import { Component } from "./Component";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { HotspotsScene01 } from "./HotspotsScene01";
-import { CssAnimation, CssAnimationEvent } from "./Utilities";
+import { CssAnimation, CssAnimationEvent } from "./CssAnimationService";
 
 export class Video extends Component {
   public elem?: HTMLVideoElement;

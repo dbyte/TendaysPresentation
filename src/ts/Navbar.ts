@@ -1,7 +1,7 @@
 import { Component } from "./Component";
 import { FullscreenButton } from "./FullscreenButton";
 import { HomeButton } from "./HomeButton";
-import { CssAnimation, CssAnimationEvent } from "./Utilities";
+import { CssAnimation, CssAnimationEvent } from "./CssAnimationService";
 
 export class Navbar extends Component {
   private cssAnimation?: CssAnimation;

@@ -1,5 +1,5 @@
 import { Button } from "./Button";
-import { CssAnimation, CssAnimationEvent } from "./Utilities";
+import { CssAnimation, CssAnimationEvent } from "./CssAnimationService";
 
 export class PlayButton extends Button {
   private readonly videoFileBasename: string;
