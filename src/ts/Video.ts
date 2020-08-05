@@ -1,13 +1,13 @@
 import { Component } from "./Component";
 import { LoadingSpinner } from "./LoadingSpinner";
-import { HotspotsScene01 } from "./HotspotsScene01";
+import { HotspotsComponent } from "./Hotspots";
 import { CssAnimationService, CssAnimationClass } from "./CssAnimationService";
 
 export class Video extends Component {
   public elem?: HTMLVideoElement;
   private baseFilename: string;
   private loadingSpinner: LoadingSpinner;
-  public hotspotComponent: HotspotsScene01;
+  public hotspotComponent: HotspotsComponent;
   private cssAnimation?: CssAnimationService;
 
   private static readonly BASE_DIR = "assets/";
@@ -19,7 +19,7 @@ export class Video extends Component {
   public constructor(
     parentElemId: string,
     baseFilename: string,
-    hotspotComponent: HotspotsScene01
+    hotspotComponent: HotspotsComponent
   ) {
     const COMPONENT_ID = "video-component";
 
@@ -41,7 +41,7 @@ export class Video extends Component {
   public static create(
     parentElemId: string,
     baseFilename: string,
-    hotspotComponent: HotspotsScene01
+    hotspotComponent: HotspotsComponent
   ): Video {
     const instance = new Video(parentElemId, baseFilename, hotspotComponent);
     return instance;
